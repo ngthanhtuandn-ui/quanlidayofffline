@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Bộ Tạo Mã Phê Duyệt Quản Trị</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 400px; margin: auto; }
+    input, button { width: 100%; padding: 10px; margin: 8px 0; font-size: 16px; }
+    .res { background: #e0f2fe; padding: 12px; font-size: 20px; font-weight: bold; text-align: center; color: #0369a1; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h3>🔑 TẠO MÃ DUYỆT CÁN BỘ</h3>
+  <label>Nhập Mã Thiết Bị cán bộ gửi (VD: LT-9GYG-2436):</label>
+  <input type="text" id="devInput" placeholder="LT-XXXX-YYYY">
+  <button onclick="calcKey()">TẠO MÃ KÍCH HOẠT</button>
+  <div class="res" id="resultBox">------</div>
+
+  <script>
+    function calcKey() {
+      const devId = document.getElementById('devInput').value.trim();
+      if (!devId) return alert("Vui lòng nhập mã thiết bị!");
+      const salt = "CAMP_SECURE_2026";
+      let hash = 0;
+      const str = devId + salt;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      const code = String(Math.abs(hash) % 900000 + 100000);
+      document.getElementById('resultBox').innerText = code;
+    }
+  </script>
+</body>
+</html>

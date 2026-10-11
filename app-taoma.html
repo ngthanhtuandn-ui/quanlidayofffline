@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Admin Key Generator</title>
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+    .card { background: #1e293b; width: 100%; max-width: 380px; border-radius: 16px; padding: 24px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #334155; text-align: center; }
+    .icon-lock { font-size: 2.8rem; margin-bottom: 8px; }
+    h2 { font-size: 1.25rem; font-weight: 800; color: #38bdf8; margin-bottom: 4px; }
+    p.desc { font-size: 0.78rem; color: #94a3b8; margin-bottom: 18px; }
+    
+    .input-wrapper { display: flex; gap: 6px; margin-bottom: 14px; }
+    input { flex: 1; padding: 12px; font-size: 1rem; border-radius: 8px; border: 1.5px solid #475569; background: #0f172a; color: #f8fafc; text-align: center; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; }
+    input:focus { outline: none; border-color: #38bdf8; }
+    .btn-paste { background: #475569; color: white; border: none; border-radius: 8px; padding: 0 14px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+
+    .btn-action { width: 100%; padding: 13px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; border: none; cursor: pointer; margin-bottom: 14px; }
+    .btn-gen { background: #16a34a; color: white; box-shadow: 0 4px 12px rgba(22,163,74,0.3); }
+    .btn-gen:active { transform: scale(0.98); }
+
+    .result-box { background: #0f172a; border: 2px dashed #0284c7; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+    .result-lbl { font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+    .result-code { font-size: 2.2rem; font-weight: 900; letter-spacing: 6px; color: #38bdf8; user-select: all; }
+    
+    .btn-copy { background: #0284c7; color: white; }
+    .btn-copy:active { transform: scale(0.98); }
+    .toast { display: none; font-size: 0.78rem; color: #4ade80; font-weight: bold; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="icon-lock">🔑</div>
+    <h2>BỘ TẠO MÃ DUYỆT</h2>
+    <p class="desc">Cấp mã phê duyệt cho cán bộ quản lý</p>
+
+    <div class="input-wrapper">
+      <input type="text" id="devIdInput" placeholder="VD: LT-XXXX-YYYY">
+      <button class="btn-paste" onclick="pasteFromClipboard()">📋 Dán</button>
+    </div>
+
+    <button class="btn-action btn-gen" onclick="generateKey()">⚡ TẠO MÃ KÍCH HOẠT</button>
+
+    <div class="result-box">
+      <div class="result-lbl">MÃ PHÊ DUYỆT (6 SỐ)</div>
+      <div class="result-code" id="outCode">------</div>
+    </div>
+
+    <button class="btn-action btn-copy" onclick="copyResult()">📄 Sao Chép Mã Gửi Cán Bộ</button>
+    <div class="toast" id="toastMsg">✓ Đã sao chép vào bộ nhớ tạm!</div>
+  </div>
+
+  <script>
+    const SALT = "CAMP_SECURE_2026";
+
+    // Nút Dán nhanh từ Zalo/Tin nhắn
+    async function pasteFromClipboard() {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          document.getElementById('devIdInput').value = text.trim().toUpperCase();
+          generateKey();
+        }
+      } catch (err) {
+        alert("Hãy cấp quyền truy cập bộ nhớ tạm hoặc chạm giữ vào ô để dán.");
+      }
+    }
+
+    // Thuật toán băm tương thích với index.html
+    function generateKey() {
+      const dev = document.getElementById('devIdInput').value.trim().toUpperCase();
+      if (!dev) return alert("Vui lòng nhập hoặc dán mã thiết bị!");
+
+      let hash = 0;
+      const str = dev + SALT;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      const code = String(Math.abs(hash) % 900000 + 100000);
+      document.getElementById('outCode').innerText = code;
+    }
+
+    // Sao chép nhanh mã để gửi
+    async function copyResult() {
+      const code = document.getElementById('outCode').innerText;
+      if (code === "------") return alert("Chưa có mã để sao chép!");
+
+      try {
+        await navigator.clipboard.writeText(code);
+        const t = document.getElementById('toastMsg');
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 2000);
+      } catch (e) {
+        alert("Mã là: " + code);
+      }
+    }
+  </script>
+</body>
+</html>
