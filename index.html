@@ -7,10 +7,17 @@
   <meta name="theme-color" content="#1e3a8a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="application-name" content="Quản Lý Lán Trại">
+  <meta name="description" content="Quản lý phòng, công nhân, điểm danh và báo cáo cục bộ.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="data:,">
 
   <!-- NẠP THƯ VIỆN TRỰC TIẾP TỪ CDN ỔN ĐỊNH ĐỂ TRÁNH LỖI THIẾU FILE TRÊN VERCEL -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+  <!-- OCR chữ in: tải Tesseract.js khi có mạng; engine và dữ liệu vie+eng khá lớn, xem giới hạn trong README. -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
 
   <style>
     :root {
@@ -165,6 +172,8 @@
   <input type="file" id="fileFallbackCamera" accept="image/*" capture="camera" onchange="handleProcessImage(this)" style="display:none;">
   <input type="file" id="fileFallbackGallery" accept="image/*" onchange="handleProcessImage(this)" style="display:none;">
   <input type="file" id="fileRestoreDb" accept=".json" onchange="restoreJsonDatabase(event)" style="display:none;">
+
+  <div id="runtimeStatus" role="status" aria-live="polite" style="display:none;position:sticky;top:0;z-index:700;background:#fef3c7;color:#92400e;border:1px solid #f59e0b;border-radius:6px;padding:6px 8px;margin-bottom:6px;font-weight:700;"></div>
 
   <!-- MOBILE QUICKBAR -->
   <div class="mobile-quickbar">
@@ -438,7 +447,7 @@
   <div class="modal" id="globalScanModal">
     <div class="modal-content">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:6px;">
-        <h3 style="color:var(--navy); font-size:0.95rem;">📷 Quét CCCD Gắn Chip & OCR</h3>
+        <h3 style="color:var(--navy); font-size:0.95rem;">📷 Quét QR + OCR chữ in CCCD</h3>
         <button onclick="closeGlobalScanner()" class="btn" style="background:#e2e8f0; color:#334155;">✕ Đóng</button>
       </div>
 
@@ -448,9 +457,10 @@
       </div>
       <canvas id="qrCanvas" style="display:none;"></canvas>
 
-      <div id="camStatusMsg" style="text-align:center; font-size:0.75rem; color:var(--primary); font-weight:bold; margin:4px 0;">
-        Đang khởi động camera quét tự động...
+      <div id="camStatusMsg" role="status" aria-live="polite" style="text-align:center; font-size:0.75rem; color:var(--primary); font-weight:bold; margin:4px 0;">
+        Đang khởi động camera. QR được ưu tiên; OCR chữ in dùng khi QR không đọc được.
       </div>
+      <canvas id="ocrCanvas" style="display:none;"></canvas>
 
       <div style="display:flex; gap:6px; margin-bottom:8px;">
         <button onclick="triggerDirectFrameCapture()" class="btn" style="background:#16a34a; color:white; flex:1.3; padding:9px; font-weight:bold;">
@@ -460,8 +470,9 @@
           🔦
         </button>
         <button onclick="document.getElementById('fileFallbackGallery').click()" class="btn" style="background:#475569; color:white; flex:1; padding:9px; font-weight:bold;">
-          🖼 Thư viện ảnh
+          🖼 Tải ảnh CCCD
         </button>
+        <button onclick="runOcrFromCurrentImage()" class="btn" style="background:#7c3aed; color:white; flex:1; padding:9px; font-weight:bold;">🔎 Đọc chữ OCR</button>
       </div>
 
       <div style="background:#f8fafc; border:1px solid var(--border); padding:8px; border-radius:5px;">
@@ -470,7 +481,7 @@
           <div class="col"><label>Mã NV</label><input type="text" id="gEmpId" placeholder="Ví dụ: NV01"></div>
         </div>
         <div class="form-row">
-          <div class="col"><label>Họ và Tên *</label><input type="text" id="gName" placeholder="Tự động điền khi quét"></div>
+          <div class="col"><label>Họ và Tên *</label><input type="text" id="gName" placeholder="Tự động điền khi đọc được QR"></div>
           <div class="col" style="max-width:80px;"><label>Giới Tính</label><select id="gGender"><option>Nam</option><option>Nữ</option></select></div>
         </div>
         <div class="form-row">
@@ -798,10 +809,17 @@
 
     function saveOfflineData() {
       try {
+        // Ghi dữ liệu theo từng khóa và báo lỗi rõ ràng nếu bộ nhớ trình duyệt đầy/bị chặn.
         localStorage.setItem('CAMP_OFFLINE_DB_30', JSON.stringify(db));
         localStorage.setItem('CAMP_OFFLINE_RETIRED', JSON.stringify(retiredList));
-      } catch (e) {}
-      updateDashboardStats();
+        updateDashboardStats();
+        return true;
+      } catch (e) {
+        console.error('Không thể lưu dữ liệu cục bộ:', e);
+        updateDashboardStats();
+        alert('⚠️ Dữ liệu đang có trong màn hình nhưng chưa chắc đã được lưu vào máy. Hãy xuất Sao Lưu JSON ngay, kiểm tra dung lượng trình duyệt và thử lại. Chi tiết: ' + (e && e.message ? e.message : 'Lỗi bộ nhớ'));
+        return false;
+      }
     }
 
     /* XỬ LÝ NHẤN GIỮ ĐỂ TẠO GHI CHÚ PHÒNG */
@@ -1350,6 +1368,7 @@
       const empId = document.getElementById('wEmpId').value.trim();
 
       if (!name || !idCard) return alert("Vui lòng điền đủ Tên và CCCD!");
+      if (!/^\d{12}$/.test(cleanId(idCard))) return alert("CCCD phải gồm đúng 12 chữ số!");
       const dupError = findDuplicateWorker(idCard, empId);
       if (dupError) return alert(dupError);
 
@@ -1464,11 +1483,116 @@
     /* ==========================================================================
        5. XỬ LÝ CAMERA CCCD
        ========================================================================== */
+    /* OCR chữ in CCCD. OCR chỉ gợi ý điền biểu mẫu; người dùng phải đối chiếu trước khi lưu. */
+    let lastCccdImageForOcr = null;
+    let ocrWorkerPromise = null;
+
+    async function getOcrWorker() {
+      if (typeof Tesseract === 'undefined' || !Tesseract.createWorker) {
+        throw new Error('Thư viện OCR chưa tải. Hãy kết nối mạng, tải lại app rồi thử lại.');
+      }
+      if (!ocrWorkerPromise) {
+        ocrWorkerPromise = Tesseract.createWorker('vie+eng', 1, {
+          logger: (m) => {
+            if (m && m.status) {
+              const pct = Number.isFinite(m.progress) ? ` ${Math.round(m.progress * 100)}%` : '';
+              const msg = document.getElementById('camStatusMsg');
+              if (msg) msg.textContent = `OCR: ${m.status}${pct}`;
+            }
+          }
+        });
+      }
+      return ocrWorkerPromise;
+    }
+
+    function normalizeOcrDate(text) {
+      const s = String(text || '').replace(/[.\-]/g, '/');
+      let m = s.match(/\b([0-3]?\d)\s*\/\s*([01]?\d)\s*\/\s*((?:19|20)?\d{2})\b/);
+      if (!m) m = s.match(/\b([0-3]?\d)([01]\d)((?:19|20)\d{2})\b/);
+      if (!m) return '';
+      let y = m[3]; if (y.length === 2) y = (Number(y) > 30 ? '19' : '20') + y;
+      const d = String(m[1]).padStart(2, '0'), mo = String(m[2]).padStart(2, '0');
+      const dt = new Date(Number(y), Number(mo)-1, Number(d));
+      if (dt.getFullYear() !== Number(y) || dt.getMonth() !== Number(mo)-1 || dt.getDate() !== Number(d)) return '';
+      return `${d}/${mo}/${y}`;
+    }
+
+    function applyOcrText(text) {
+      const raw = String(text || '').replace(/\r/g, '\n');
+      const lines = raw.split('\n').map(s => s.replace(/[|]/g, 'I').replace(/\s+/g, ' ').trim()).filter(Boolean);
+      const upper = raw.toLocaleUpperCase('vi-VN');
+      // Số định danh: chỉ chấp nhận cụm 12 chữ số; ưu tiên dòng có nhãn định danh/CCCD.
+      const idCandidates = [];
+      for (let i=0;i<lines.length;i++) {
+        const digits = lines[i].replace(/\D/g, '');
+        if (/\d{12}/.test(digits)) idCandidates.push({value: digits.match(/\d{12}/)[0], score: /ĐỊNH DANH|DINH DANH|CCCD|CĂN CƯỚC|CAN CUOC|PERSONAL/i.test(lines[i]) ? 2 : 1});
+      }
+      idCandidates.sort((a,b)=>b.score-a.score);
+      if (idCandidates[0]) document.getElementById('gIdCard').value = idCandidates[0].value;
+
+      const date = normalizeOcrDate(raw);
+      if (date) document.getElementById('gDob').value = date;
+
+      if (/\bNỮ\b|\bNU\b/.test(upper)) document.getElementById('gGender').value = 'Nữ';
+      else if (/\bNAM\b/.test(upper)) document.getElementById('gGender').value = 'Nam';
+
+      // Tìm dòng sau nhãn HỌ VÀ TÊN; bỏ các dòng nhãn/tiếng Anh và số.
+      let name = '';
+      for (let i=0;i<lines.length;i++) {
+        const clean = lines[i].replace(/^[^:]{0,40}[:：]\s*/, '').trim();
+        if (/HỌ\s*(VÀ|VA)\s*TÊN|HO\s*(VA|VÀ)\s*TEN|FULL\s*NAME/i.test(lines[i])) {
+          const after = clean.replace(/.*?(HỌ\s*(VÀ|VA)\s*TÊN|HO\s*(VA|VÀ)\s*TEN|FULL\s*NAME)\s*/i, '').replace(/^[:：\- ]+/, '').trim();
+          if (after && /[A-ZÀ-Ỹ]/i.test(after) && !/\d{4}/.test(after)) name = after;
+          else if (lines[i+1] && /[A-ZÀ-Ỹ]{2,}/i.test(lines[i+1]) && !/\d{4}|CỘNG HÒA|SOCIALIST|CITIZEN|IDENTITY|CĂN CƯỚC|ĐỊNH DANH/i.test(lines[i+1])) name = lines[i+1];
+          if (name) break;
+        }
+      }
+      if (!name) {
+        const candidate = lines.find(line => /^[A-ZÀ-ỸĐ][A-ZÀ-ỸĐ ]{5,}$/i.test(line) && !/CỘNG HÒA|SOCIALIST|VIỆT NAM|VIET NAM|CĂN CƯỚC|CITIZEN|IDENTITY|ĐỊNH DANH|PERSONAL|GIỚI TÍNH|QUÊ QUÁN|NƠI THƯỜNG TRÚ|DATE OF BIRTH|SEX|PLACE OF BIRTH/i.test(line) && !/\d/.test(line));
+        if (candidate) name = candidate;
+      }
+      if (name) document.getElementById('gName').value = name.toLocaleUpperCase('vi-VN').replace(/[^A-ZÀ-ỸĐ ]/g, '').replace(/\s+/g, ' ').trim();
+
+      const got = [];
+      if (idCandidates[0]) got.push('CCCD'); if (name) got.push('họ tên'); if (date) got.push('ngày sinh');
+      if (/\bNAM\b|\bNỮ\b|\bNU\b/.test(upper)) got.push('giới tính');
+      const msg = document.getElementById('camStatusMsg');
+      if (msg) msg.textContent = got.length ? `OCR đã điền gợi ý: ${got.join(', ')}. Vui lòng đối chiếu với thẻ.` : 'OCR chưa nhận được trường rõ ràng. Hãy chụp gần, đủ sáng và thử lại.';
+      if (!got.length) alert('OCR chưa nhận diện chắc chắn được dữ liệu. Thử ảnh rõ nét, không lóa và đặt thẻ thẳng.');
+    }
+
+    async function runOcrOnImage(imageSource) {
+      const msg = document.getElementById('camStatusMsg');
+      try {
+        if (!imageSource) throw new Error('Chưa có ảnh CCCD. Hãy chụp ảnh hoặc chọn ảnh từ thư viện.');
+        if (msg) msg.textContent = 'Đang khởi tạo OCR; lần đầu có thể tải bộ dữ liệu ngôn ngữ và mất thời gian...';
+        const worker = await getOcrWorker();
+        const result = await worker.recognize(imageSource);
+        applyOcrText(result && result.data ? result.data.text : '');
+      } catch (e) {
+        if (msg) msg.textContent = 'OCR không chạy được: ' + (e.message || e);
+        alert('Không chạy được OCR: ' + (e.message || e) + '\nNếu đang offline và bộ OCR chưa tải/cached, cần kết nối mạng để tải lần đầu.');
+      }
+    }
+
+    function runOcrFromCurrentImage() {
+      if (lastCccdImageForOcr) return runOcrOnImage(lastCccdImageForOcr);
+      const video = document.getElementById('camVideo');
+      if (localStream && video && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        const canvas = document.getElementById('ocrCanvas');
+        canvas.width = video.videoWidth || 1280; canvas.height = video.videoHeight || 720;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        lastCccdImageForOcr = canvas;
+        return runOcrOnImage(canvas);
+      }
+      document.getElementById('fileFallbackGallery').click();
+    }
+
     async function startLiveCameraStream() {
       const video = document.getElementById('camVideo');
       const msg = document.getElementById('camStatusMsg');
       closeCameraStream();
-      msg.innerText = "Đang kết nối camera quét QR & OCR...";
+      msg.innerText = "Đang kết nối camera đọc mã QR...";
 
       try {
         localStream = await navigator.mediaDevices.getUserMedia({
@@ -1478,7 +1602,7 @@
         await video.play();
         isScanning = true;
         lastScanTime = performance.now();
-        msg.innerText = "Đặt mã QR hoặc toàn bộ mặt thẻ CCCD vào khung chữ nhật";
+        msg.innerText = "Đưa vùng mã QR trên CCCD vào giữa khung. Bản này đọc QR, chưa có OCR chữ in.";
         requestAnimationFrame(scanLiveVideo);
       } catch (e) {
         msg.innerText = "Camera luồng bị hạn chế. Hãy bấm nút 'Chụp ảnh gốc trực tiếp'!";
@@ -1513,6 +1637,7 @@
       const ctx = capCanvas.getContext('2d');
       ctx.drawImage(video, 0, 0, capCanvas.width, capCanvas.height);
 
+      lastCccdImageForOcr = capCanvas;
       const base64Img = capCanvas.toDataURL('image/jpeg', 0.95);
       const img = new Image();
       img.onload = () => {
@@ -1520,8 +1645,8 @@
         if (code && code.data) {
           parseCccdData(code.data);
         } else {
-          alert("Không nhận diện được mã QR. Vui lòng căn chỉnh lại góc thẻ!");
-          document.getElementById('camStatusMsg').innerText = "Thử đưa gần hơn vào góc có mã QR.";
+          document.getElementById('camStatusMsg').innerText = "Không thấy QR. Đang thử OCR chữ in...";
+          runOcrOnImage(capCanvas);
         }
       };
       img.src = base64Img;
@@ -1531,6 +1656,13 @@
       if (!isScanning) return;
       const video = document.getElementById('camVideo');
       const canvas = document.getElementById('qrCanvas');
+
+      if (typeof jsQR !== 'function') {
+        isScanning = false;
+        const msg = document.getElementById('camStatusMsg');
+        if (msg) msg.innerText = 'Thư viện đọc QR chưa tải. Hãy kết nối mạng và tải lại, hoặc chọn ảnh có QR sau khi thư viện sẵn sàng.';
+        return;
+      }
 
       if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && (now - lastScanTime > 120)) {
         lastScanTime = now;
@@ -1558,6 +1690,10 @@
     }
 
     function advancedScanCCCD(img) {
+      if (typeof jsQR !== 'function') {
+        alert('Thư viện đọc mã QR chưa tải. Nếu đang offline, hãy mở app khi có mạng một lần rồi thử lại.');
+        return null;
+      }
       const origW = img.naturalWidth || img.width;
       const origH = img.naturalHeight || img.height;
       const canvas = document.createElement('canvas');
@@ -1605,9 +1741,10 @@
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
+          lastCccdImageForOcr = img;
           let code = advancedScanCCCD(img);
           if (code && code.data) parseCccdData(code.data);
-          else alert("Không nhận diện được mã QR trên ảnh. Hãy thử chụp lại!");
+          else runOcrOnImage(img);
         };
         img.src = e.target.result;
       };
@@ -1622,7 +1759,10 @@
       const empId = document.getElementById('gEmpId').value.trim();
 
       if (!targetKey || !db[targetKey]) return alert("Vui lòng chọn phòng!");
+      if (db[targetKey].isLocked) return alert("Phòng đang khóa, vui lòng chọn phòng khác!");
+      if ((db[targetKey].workers || []).length >= CAPACITY) return alert("Phòng đã đủ 20 người, vui lòng chọn phòng còn chỗ!");
       if (!name || !idCard) return alert("Vui lòng nhập Tên và CCCD!");
+      if (!/^\d{12}$/.test(cleanId(idCard))) return alert("CCCD phải gồm đúng 12 chữ số!");
 
       const dupError = findDuplicateWorker(idCard, empId);
       if (dupError) return alert(dupError);
@@ -1652,6 +1792,7 @@
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
+      lastCccdImageForOcr = null;
       openModal('globalScanModal');
       startLiveCameraStream();
     }
@@ -1870,6 +2011,7 @@
       retiredList = [];
       renderRooms();
       populateTargetRooms();
+      updateDashboardStats();
       alert("Đã làm sạch dữ liệu!");
     }
 
@@ -1913,6 +2055,32 @@
       if (id === 'globalScanModal') closeCameraStream();
       document.getElementById(id).style.display = 'none'; 
     }
+
+    // PWA: đăng ký Service Worker khi được mở qua HTTPS/localhost.
+    // Lưu ý: Service Worker không hoạt động với file://; cần triển khai HTTPS để cài như ứng dụng.
+    (function setupPWAAndStatus() {
+      const box = document.getElementById('runtimeStatus');
+      function updateNetworkStatus() {
+        if (!box) return;
+        if (!navigator.onLine) {
+          box.style.display = 'block';
+          box.textContent = '📴 Đang offline. Dữ liệu cục bộ vẫn dùng được; Excel/đọc QR có thể cần thư viện đã được lưu cache từ lần online trước.';
+        } else {
+          box.style.display = 'none';
+        }
+      }
+      window.addEventListener('online', updateNetworkStatus);
+      window.addEventListener('offline', updateNetworkStatus);
+      updateNetworkStatus();
+
+      if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(err => {
+            console.warn('Không đăng ký được Service Worker:', err);
+          });
+        });
+      }
+    })();
 
     // KHỞI ĐỘNG HỆ THỐNG TRỰC TIẾP
     (function init() {
