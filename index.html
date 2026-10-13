@@ -28,42 +28,34 @@
       --journal-bg: #fefce8;
       --journal-border: #fef08a;
       --journal-title: #854d0e;
-      --shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
-      --radius: 10px;
+      --shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+      --radius: 8px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: #1e293b; padding: 8px 10px 84px; font-size: 13px; min-height: 100vh; }
+    body { background: var(--bg); color: #1e293b; padding: 6px 8px 76px; font-size: 12.5px; min-height: 100vh; }
 
-    /* BANNER THỜI TIẾT DỰ BÁO SINH ĐỘNG */
+    /* BANNER THỜI TIẾT DỰ BÁO NHỎ GỌN */
     .welcome-banner {
       background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
-      border: 1.5px solid #86efac;
-      border-radius: 12px;
-      padding: 8px 12px;
-      margin-bottom: 8px;
+      border: 1px solid #86efac;
+      border-radius: var(--radius);
+      padding: 6px 10px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.06);
-      position: relative;
-      overflow: hidden;
+      gap: 10px;
+      box-shadow: 0 1px 4px rgba(16, 185, 129, 0.05);
     }
-
-    /* KHUNG BIỂU TƯỢNG THỜI TIẾT DỊU MẮT */
     .weather-widget-box {
-      width: 46px;
-      height: 46px;
-      min-width: 46px;
-      position: relative;
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      user-select: none;
     }
-
-    /* TIA NẮNG XOAY TRÒN ĐỀU VÀ DỊU NHẸ */
     .sun-rays {
       animation: rotateRays 14s linear infinite;
       transform-origin: 24px 24px;
@@ -72,88 +64,89 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
-
-    /* HIỆU ỨNG MƯA RƠI */
-    .rain-drop {
-      animation: fallDrop 1s linear infinite;
-    }
+    .rain-drop { animation: fallDrop 1s linear infinite; }
     .rain-drop:nth-child(2) { animation-delay: 0.35s; }
-    .rain-drop:nth-child(3) { animation-delay: 0.7s; }
     @keyframes fallDrop {
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(8px); opacity: 0; }
     }
-
-    /* HIỆU ỨNG MÂY TRÔI DỊU DÀNG */
-    .cloud-float {
-      animation: floatCloud 3s ease-in-out infinite alternate;
-    }
+    .cloud-float { animation: floatCloud 3s ease-in-out infinite alternate; }
     @keyframes floatCloud {
       from { transform: translateX(-1.5px); }
       to { transform: translateX(1.5px); }
     }
+    .welcome-banner .greeting { font-size: 0.88rem; font-weight: 800; color: #166534; }
+    .welcome-banner .date-str { font-size: 0.72rem; font-weight: 600; color: #0369a1; margin-top: 1px; }
 
-    .welcome-banner .greeting { font-size: 0.95rem; font-weight: 800; color: #166534; }
-    .welcome-banner .date-str { font-size: 0.78rem; font-weight: 600; color: #0369a1; margin-top: 1px; }
-
-    /* HEADER */
+    /* HEADER & HÀNG NÚT BẤM TRÊN CÙNG 1 DÒNG */
     header { 
-      display: flex; justify-content: space-between; align-items: center; 
-      background: var(--card-bg); padding: 10px 12px; border-radius: var(--radius);
-      box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 8px; gap: 8px;
+      background: var(--card-bg); padding: 7px 9px; border-radius: var(--radius);
+      box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 6px;
     }
-    .brand-title { display: flex; align-items: center; gap: 6px; font-size: 1.1rem; font-weight: 800; color: #1e3a8a; white-space: nowrap; }
-    .header-actions { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+    .brand-title { display: flex; align-items: center; gap: 5px; font-size: 0.96rem; font-weight: 800; color: #1e3a8a; margin-bottom: 6px; }
 
-    /* DASHBOARD */
+    .header-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 2px;
+    }
+    .header-actions-row::-webkit-scrollbar { display: none; }
+
+    .btn { 
+      padding: 5px 8px; border-radius: 5px; border: none; font-size: 0.72rem; 
+      cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; 
+      justify-content: center; gap: 3px; flex-shrink: 0; touch-action: manipulation;
+    }
+    .btn:active { transform: scale(0.96); }
+    .btn-drive { background: #0284c7; color: white; }
+    .btn-journal { background: #eab308; color: #713f12; }
+    .btn-row { background: #0f766e; color: white; }
+    .btn-backup { background: #475569; color: white; }
+    .btn-restore { background: #d97706; color: white; }
+    .btn-danger { background: var(--red); color: white; }
+    .btn-scan { background: var(--green); color: white; }
+
+    /* DASHBOARD NHỎ GỌN */
     .dashboard-container { 
-      display: flex; gap: 6px; margin-bottom: 8px; overflow-x: auto; 
-      -webkit-overflow-scrolling: touch; padding-bottom: 4px; scrollbar-width: none;
+      display: flex; gap: 5px; margin-bottom: 6px; overflow-x: auto; 
+      -webkit-overflow-scrolling: touch; padding-bottom: 3px; scrollbar-width: none;
     }
     .dashboard-container::-webkit-scrollbar { display: none; }
     .kpi-chip { 
-      background: var(--card-bg); padding: 7px 10px; border-radius: var(--radius); 
+      background: var(--card-bg); padding: 5px 8px; border-radius: 6px; 
       border: 1px solid var(--border); box-shadow: var(--shadow); text-align: center; 
-      white-space: nowrap; min-width: 82px; flex: 1; flex-shrink: 0;
+      white-space: nowrap; min-width: 76px; flex: 1; flex-shrink: 0;
     }
-    .kpi-chip .lbl { font-size: 0.62rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.2px; }
-    .kpi-chip .val { font-size: 0.95rem; font-weight: 800; margin-top: 2px; color: var(--navy); }
+    .kpi-chip .lbl { font-size: 0.58rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.2px; }
+    .kpi-chip .val { font-size: 0.88rem; font-weight: 800; margin-top: 1px; color: var(--navy); }
 
     #absenceAlertBar {
-      display: none; background: #fee2e2; border: 1.5px solid #f87171; border-radius: var(--radius);
-      padding: 7px 10px; margin-bottom: 8px; font-size: 0.75rem; color: #991b1b;
+      display: none; background: #fee2e2; border: 1px solid #f87171; border-radius: var(--radius);
+      padding: 6px 8px; margin-bottom: 6px; font-size: 0.72rem; color: #991b1b;
     }
 
-    /* TOOLBAR */
+    /* TOOLBAR TÌM KIẾM */
     .compact-toolbar { 
-      display: flex; flex-wrap: wrap; gap: 5px; align-items: center; 
-      background: var(--card-bg); padding: 6px 8px; border-radius: var(--radius); 
-      border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 8px;
+      display: flex; flex-wrap: wrap; gap: 4px; align-items: center; 
+      background: var(--card-bg); padding: 5px 7px; border-radius: var(--radius); 
+      border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 6px;
     }
     .compact-toolbar input, .compact-toolbar select { 
-      padding: 6px 8px; border: 1.5px solid var(--border); border-radius: 6px; 
-      font-size: 0.8rem; background: #ffffff; color: var(--navy); outline: none;
+      padding: 5px 7px; border: 1px solid var(--border); border-radius: 5px; 
+      font-size: 0.76rem; background: #ffffff; color: var(--navy); outline: none;
     }
-    .compact-toolbar input#mainSearch { flex: 2; min-width: 140px; }
-
-    /* NÚT BẤM CHUNG */
-    .btn { 
-      padding: 6px 10px; border-radius: 6px; border: none; font-size: 0.75rem; 
-      cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; 
-      justify-content: center; gap: 4px; transition: transform 0.1s ease; touch-action: manipulation;
-    }
-    .btn:active { transform: scale(0.95); }
-    .btn-journal { background: #eab308; color: #713f12; }
-    .btn-cloud { background: #0284c7; color: white; }
-    .btn-scan { background: var(--green); color: white; }
-    .btn-import { background: var(--amber); color: white; }
-    .btn-export { background: #334155; color: white; }
-    .btn-danger { background: var(--red); color: white; }
+    .compact-toolbar input#mainSearch { flex: 2; min-width: 130px; }
+    .compact-toolbar select { flex: 1; }
 
     /* LƯỚI PHÒNG */
-    .room-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px; min-height: 250px; }
+    .room-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; min-height: 250px; }
     .room-card { 
-      padding: 8px; border-radius: var(--radius); border: 1.5px solid var(--border); cursor: pointer; 
+      padding: 7px 8px; border-radius: var(--radius); border: 1.5px solid var(--border); cursor: pointer; 
       position: relative; background: var(--card-bg); box-shadow: var(--shadow);
       display: flex; flex-direction: column; justify-content: space-between; user-select: none;
     }
@@ -167,66 +160,57 @@
     .status-full .room-title { color: #dc2626 !important; font-weight: 800; }
     .status-lock { background: #475569; color: #ffffff; border-color: #334155; }
 
-    .badge-tag { font-size: 0.65rem; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.06); font-weight: 800; }
-    .progress-bar-bg { width: 100%; height: 5px; background: #e2e8f0; border-radius: 3px; margin: 5px 0 3px; overflow: hidden; }
-    .progress-bar-fill { height: 100%; background: var(--green); border-radius: 3px; }
+    .badge-tag { font-size: 0.62rem; padding: 1px 4px; border-radius: 3px; background: rgba(0,0,0,0.06); font-weight: 800; }
+    .progress-bar-bg { width: 100%; height: 4px; background: #e2e8f0; border-radius: 2px; margin: 4px 0 2px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--green); border-radius: 2px; }
     .progress-bar-fill.full { background: var(--red); }
 
-    .room-absent-alert { background: #fee2e2; color: #dc2626; border: 1px solid #f87171; border-radius: 4px; padding: 2px 4px; font-size: 0.62rem; font-weight: 700; margin-top: 3px; }
-    .room-dirty-alert { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; border-radius: 4px; padding: 2px 4px; font-size: 0.62rem; font-weight: 700; margin-top: 3px; }
-    .room-custom-note { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; border-radius: 4px; padding: 2px 4px; font-size: 0.62rem; font-weight: 700; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .room-absent-alert { background: #fee2e2; color: #dc2626; border: 1px solid #f87171; border-radius: 3px; padding: 1px 3px; font-size: 0.6rem; font-weight: 700; margin-top: 2px; }
+    .room-dirty-alert { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; border-radius: 3px; padding: 1px 3px; font-size: 0.6rem; font-weight: 700; margin-top: 2px; }
+    .room-custom-note { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; border-radius: 3px; padding: 1px 3px; font-size: 0.6rem; font-weight: 700; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* MODAL */
-    .modal { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px); z-index: 9999; justify-content: center; align-items: center; padding: 8px; }
-    .modal-content { background: white; border-radius: 12px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 14px; box-shadow: 0 16px 36px rgba(0,0,0,0.25); }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); z-index: 9999; justify-content: center; align-items: center; padding: 6px; }
+    .modal-content { background: white; border-radius: 10px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.2); }
     
-    .form-row { display: flex; gap: 6px; margin-bottom: 6px; }
+    .form-row { display: flex; gap: 5px; margin-bottom: 5px; }
     .form-row .col { flex: 1; }
-    .form-row label { display: block; font-size: 0.7rem; font-weight: 700; margin-bottom: 2px; color: #475569; }
-    .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 6px 8px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 0.8rem; }
+    .form-row label { display: block; font-size: 0.68rem; font-weight: 700; margin-bottom: 2px; color: #475569; }
+    .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 5px 7px; border: 1px solid var(--border); border-radius: 5px; font-size: 0.78rem; }
 
-    .table-container { width: 100%; overflow-x: auto; margin-top: 6px; border: 1px solid var(--border); border-radius: 6px; }
-    table.data-table { width: 100%; border-collapse: collapse; font-size: 0.73rem; }
-    table.data-table th, table.data-table td { border: 1px solid var(--border); padding: 7px 5px; text-align: left; }
+    .table-container { width: 100%; overflow-x: auto; margin-top: 5px; border: 1px solid var(--border); border-radius: 5px; }
+    table.data-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+    table.data-table th, table.data-table td { border: 1px solid var(--border); padding: 6px 4px; text-align: left; }
     table.data-table th { background: #f8fafc; font-weight: 700; color: #475569; white-space: nowrap; }
 
-    .journal-box { background: var(--journal-bg); border: 2px solid var(--journal-border); border-radius: 12px; padding: 14px; }
-    .journal-title { color: var(--journal-title); font-size: 1.05rem; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+    .journal-box { background: var(--journal-bg); border: 1.5px solid var(--journal-border); border-radius: 10px; padding: 12px; }
+    .journal-title { color: var(--journal-title); font-size: 0.98rem; font-weight: 800; display: flex; align-items: center; gap: 5px; }
 
-    /* BOTTOM BAR DI ĐỘNG */
+    /* THANH ĐIỀU HƯỚNG DƯỚI CÙNG */
     .mobile-quickbar { 
-      position: fixed; left: 6px; right: 6px; bottom: 6px; z-index: 500; 
-      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-      border: 1px solid var(--border); border-radius: 12px;
-      display: flex; gap: 4px; padding: 5px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); 
+      position: fixed; left: 5px; right: 5px; bottom: 5px; z-index: 500; 
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 10px;
+      display: flex; gap: 3px; padding: 4px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); 
     }
-    .mobile-quickbar button { flex: 1; min-height: 42px; border: none; border-radius: 8px; font-weight: 800; font-size: 0.72rem; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+    .mobile-quickbar button { flex: 1; min-height: 40px; border: none; border-radius: 6px; font-weight: 800; font-size: 0.7rem; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
     .mobile-quickbar .journal { background: #eab308; color: #713f12; }
     .mobile-quickbar .scan { background: var(--green); }
     .mobile-quickbar .import { background: var(--amber); }
     .mobile-quickbar .export { background: #334155; }
     .mobile-quickbar .retired { background: #7c3aed; }
 
-    .camera-wrapper { position: relative; width: 100%; height: 250px; background: #000; border-radius: 10px; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-bottom: 6px; }
+    .camera-wrapper { position: relative; width: 100%; height: 240px; background: #000; border-radius: 8px; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-bottom: 5px; }
     #camVideo { width: 100%; height: 100%; object-fit: cover; }
-    .scan-guide-box-rect { position: absolute; width: 260px; height: 160px; border: 2.5px solid #22c55e; border-radius: 8px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.55); pointer-events: none; }
+    .scan-guide-box-rect { position: absolute; width: 250px; height: 150px; border: 2px solid #22c55e; border-radius: 6px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.55); pointer-events: none; }
     .scan-guide-box-rect::after {
       content: "ĐẶT MẶT TRƯỚC HOẶC MÃ QR VÀO KHUNG";
-      position: absolute; bottom: -22px; left: -20px; right: -20px;
-      color: #22c55e; font-size: 9px; font-weight: 800; text-align: center;
+      position: absolute; bottom: -20px; left: -20px; right: -20px;
+      color: #22c55e; font-size: 8.5px; font-weight: 800; text-align: center;
     }
 
-    #lockScreen { position: fixed; inset: 0; background: #0f172a; z-index: 999999; display: flex; justify-content: center; align-items: center; padding: 12px; }
-    .lock-box { background: white; border-radius: 14px; max-width: 380px; width: 100%; padding: 22px 16px; text-align: center; box-shadow: 0 16px 36px rgba(0,0,0,0.5); }
-
-    @media (max-width: 600px) {
-      body { padding: 6px 8px 78px; }
-      .room-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; }
-      .compact-toolbar input#mainSearch { width: 100%; flex: auto; }
-      .compact-toolbar select { flex: 1; }
-      header { flex-direction: column; align-items: stretch; gap: 6px; }
-      .header-actions { justify-content: space-between; }
-    }
+    #lockScreen { position: fixed; inset: 0; background: #0f172a; z-index: 999999; display: flex; justify-content: center; align-items: center; padding: 10px; }
+    .lock-box { background: white; border-radius: 12px; max-width: 360px; width: 100%; padding: 20px 14px; text-align: center; box-shadow: 0 14px 30px rgba(0,0,0,0.5); }
   </style>
 </head>
 <body>
@@ -234,12 +218,12 @@
   <!-- MÀN HÌNH XÁC THỰC THIẾT BỊ -->
   <div id="lockScreen" style="display: flex;">
     <div class="lock-box">
-      <div style="font-size: 2.5rem; margin-bottom: 4px;">🔒</div>
+      <div style="font-size: 2.3rem; margin-bottom: 4px;">🔒</div>
       <h3 style="color: var(--navy); margin-bottom: 4px;">XÁC THỰC THIẾT BỊ</h3>
-      <p style="font-size: 0.78rem; color: #64748b; margin-bottom: 10px;">Cung cấp mã dưới đây cho Quản trị viên để nhận mã phê duyệt:</p>
-      <div style="background: #f1f5f9; border: 1.5px dashed #94a3b8; border-radius: 8px; padding: 8px; font-size: 1.15rem; font-weight: 900; letter-spacing: 2px; color: var(--primary); margin-bottom: 10px;" id="dispDeviceId">...</div>
-      <input type="text" id="txtLicenseKey" placeholder="Nhập mã 6 chữ số" style="width: 100%; padding: 9px; font-size: 1rem; text-align: center; font-weight: bold; border: 1.5px solid var(--border); border-radius: 8px; margin-bottom: 8px;">
-      <button onclick="verifyDeviceLicense()" class="btn btn-scan" style="width: 100%; padding: 11px; font-size: 0.88rem;">Kích Hoạt</button>
+      <p style="font-size: 0.76rem; color: #64748b; margin-bottom: 8px;">Cung cấp mã dưới đây cho Quản trị viên để nhận mã phê duyệt:</p>
+      <div style="background: #f1f5f9; border: 1.5px dashed #94a3b8; border-radius: 6px; padding: 8px; font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; color: var(--primary); margin-bottom: 8px;" id="dispDeviceId">...</div>
+      <input type="text" id="txtLicenseKey" placeholder="Nhập mã 6 chữ số" style="width: 100%; padding: 8px; font-size: 0.95rem; text-align: center; font-weight: bold; border: 1.5px solid var(--border); border-radius: 6px; margin-bottom: 8px;">
+      <button onclick="verifyDeviceLicense()" class="btn btn-scan" style="width: 100%; padding: 10px; font-size: 0.85rem;">Kích Hoạt</button>
     </div>
   </div>
 
@@ -256,10 +240,10 @@
     <button class="retired" onclick="openRetiredModal()">📋 Nghỉ Việc</button>
   </div>
 
-  <!-- BANNER THỜI TIẾT DỰ BÁO DỊU NHẸ (CHẠM VÀO ĐỂ ĐỔI THỜI TIẾT) -->
+  <!-- BANNER THỜI TIẾT DỰ BÁO NHỎ GỌN -->
   <div class="welcome-banner" id="welcomeBanner">
-    <div class="weather-widget-box" id="weatherBox" onclick="cycleWeatherMode()" title="Chạm để chuyển: Nắng đẹp / Nắng dịu mây / Mưa">
-      <!-- SVG Thời tiết được render tự động qua JS -->
+    <div class="weather-widget-box" id="weatherBox" onclick="cycleWeatherMode()" title="Chạm để chuyển kiểu thời tiết">
+      <!-- SVG Thời tiết -->
     </div>
     <div>
       <div class="greeting">Xin chào Tuấn Tuấn, chúc một ngày tốt lành! ✨</div>
@@ -267,22 +251,22 @@
     </div>
   </div>
 
-  <!-- HEADER -->
+  <!-- HEADER VÀ CÁC NÚT TRÊN CÙNG 1 HÀNG NGANG GỌN GÀNG -->
   <header>
     <div class="brand-title">
       <span>🏕️ LÁN TRẠI NỘI BỘ</span>
     </div>
-    <div class="header-actions">
-      <button class="btn btn-cloud" onclick="openCloudModal()">☁️ Lưu Online</button>
+    <div class="header-actions-row">
+      <button class="btn btn-drive" onclick="openGoogleDriveModal()">☁️ Lưu Drive</button>
       <button class="btn btn-journal" onclick="openJournalModal()">📖 Nhật Ký</button>
-      <button class="btn" style="background:#0f766e; color:white;" onclick="openRenameRowModal()">✏️ Đổi Dãy</button>
-      <button class="btn" style="background:#475569; color:white;" onclick="backupJsonDatabase()">💾 Sao Lưu</button>
-      <button class="btn" style="background:#d97706; color:white;" onclick="document.getElementById('fileRestoreDb').click()">📂 Phục Hồi</button>
+      <button class="btn btn-row" onclick="openRenameRowModal()">✏️ Đổi Dãy</button>
+      <button class="btn btn-backup" onclick="backupJsonDatabase()">💾 Sao Lưu</button>
+      <button class="btn btn-restore" onclick="document.getElementById('fileRestoreDb').click()">📂 Phục Hồi</button>
       <button class="btn btn-danger" onclick="resetAllData()">🗑 Xóa</button>
     </div>
   </header>
 
-  <!-- DASHBOARD -->
+  <!-- DASHBOARD NHỎ GỌN -->
   <div class="dashboard-container">
     <div class="kpi-chip"><div class="lbl">Hiệu Suất</div><div class="val" id="statOcc">0%</div></div>
     <div class="kpi-chip"><div class="lbl">Tổng Quân Số</div><div class="val" id="statTotal">0/600</div></div>
@@ -306,10 +290,10 @@
 
   <div id="absenceAlertBar">
     <b>⚠️ CẢNH BÁO QUÂN SỐ VẮNG MẶT TỪ 3 LẦN TRỞ LÊN:</b>
-    <div id="absenceAlertContent" style="margin-top:3px;"></div>
+    <div id="absenceAlertContent" style="margin-top:2px;"></div>
   </div>
 
-  <!-- TOOLBAR -->
+  <!-- TOOLBAR TÌM KIẾM -->
   <div class="compact-toolbar">
     <input type="text" id="mainSearch" placeholder="🔍 Tìm tên, CCCD, Mã NV, SĐT..." oninput="handleSearch(this.value)">
     <select id="selDayFilter" onchange="renderRooms()" style="font-weight:bold;">
@@ -330,75 +314,72 @@
   <!-- LƯỚI DANH SÁCH PHÒNG -->
   <div class="room-grid" id="roomGrid"></div>
 
-  <!-- MODAL ĐỒNG BỘ ONLINE (CLOUD SYNC) -->
-  <div class="modal" id="cloudModal">
+  <!-- MODAL GOOGLE DRIVE ONLINE -->
+  <div class="modal" id="googleDriveModal">
     <div class="modal-content" style="max-width:440px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:5px;">
-        <h3 style="color:#0284c7; font-size:1rem;">☁️ Lưu & Phục Hồi Dữ Liệu Online</h3>
-        <button onclick="closeModal('cloudModal')" class="btn" style="padding:2px 5px;">✕</button>
+        <h3 style="color:#0284c7; font-size:0.95rem;">☁️ Lưu Vào Google Drive Riêng</h3>
+        <button onclick="closeModal('googleDriveModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
-      <p style="font-size:0.75rem; color:#64748b; margin-bottom:10px;">Lưu trực tuyến an toàn để không bao giờ mất dữ liệu khi đổi điện thoại hoặc xóa trình duyệt.</p>
-      
+      <div style="font-size:0.75rem; color:#475569; margin-bottom:8px; line-height:1.4;">
+        Thư mục chỉ định: <b style="color:var(--primary); word-break:break-all;">16zQTMhyaldxHSNzdjICBp0MubozbHRQg</b>
+      </div>
       <div class="form-row">
         <div class="col">
-          <label>Mã Đám Mây Cá Nhân (Cloud Key):</label>
-          <input type="text" id="txtCloudKey" placeholder="Ví dụ: LANTRAI_TUANTUAN_2026" style="font-weight:bold; color:var(--primary); font-size:0.85rem;">
+          <label>URL Webhook Google Apps Script của bạn:</label>
+          <input type="text" id="txtGoogleScriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
         </div>
       </div>
-
-      <div style="display:flex; gap:6px; margin-top:10px;">
-        <button onclick="saveDataToCloudOnline()" class="btn btn-cloud" style="flex:1; padding:10px;">☁️ Tải Lên Đám Mây</button>
-        <button onclick="loadDataFromCloudOnline()" class="btn btn-scan" style="flex:1; padding:10px;">📥 Tải Về Máy Này</button>
-      </div>
-      <div id="cloudStatusMsg" style="margin-top:10px; font-size:0.75rem; color:#475569; text-align:center;"></div>
+      <button onclick="syncToGoogleDriveFolder()" class="btn btn-drive" style="width:100%; padding:10px; margin-top:6px;">☁️ Tải Lên Thư Mục Google Drive</button>
+      <div id="driveStatusMsg" style="margin-top:8px; font-size:0.75rem; text-align:center;"></div>
     </div>
   </div>
 
   <!-- MODAL NHẬT KÝ NGÀY -->
   <div class="modal" id="dailyJournalModal">
     <div class="modal-content journal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid var(--journal-border); padding-bottom:6px; margin-bottom:10px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid var(--journal-border); padding-bottom:5px; margin-bottom:8px;">
         <h3 class="journal-title">📖 NHẬT KÝ CÔNG VIỆC THEO NGÀY</h3>
-        <button onclick="closeModal('dailyJournalModal')" class="btn" style="background:#fef08a; color:#713f12; padding:3px 7px;">✕ Đóng</button>
+        <button onclick="closeModal('dailyJournalModal')" class="btn" style="background:#fef08a; color:#713f12; padding:2px 6px;">✕ Đóng</button>
       </div>
 
-      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; background:#fff; padding:8px 10px; border-radius:8px; border:1px solid var(--journal-border); margin-bottom:10px;">
-        <label style="font-weight:bold; font-size:0.78rem; color:var(--journal-title);">📅 Chọn ngày:</label>
-        <input type="date" id="journalDateInput" onchange="loadJournalBySelectedDate()" style="padding:5px 8px; border:1.5px solid #eab308; border-radius:6px; font-weight:bold; font-size:0.82rem;">
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:5px; background:#fff; padding:6px 8px; border-radius:6px; border:1px solid var(--journal-border); margin-bottom:8px;">
+        <label style="font-weight:bold; font-size:0.74rem; color:var(--journal-title);">📅 Chọn ngày:</label>
+        <input type="date" id="journalDateInput" onchange="loadJournalBySelectedDate()" style="padding:4px 6px; border:1.5px solid #eab308; border-radius:5px; font-weight:bold; font-size:0.78rem;">
         <button onclick="loadJournalBySelectedDate()" class="btn" style="background:#eab308; color:#713f12;">🔎 Tìm Kiếm</button>
         <button onclick="printJournalNote()" class="btn" style="background:#475569; color:#fff; margin-left:auto;">🖨 In Nhật Ký</button>
       </div>
 
-      <div style="background:#fff; border:1px solid var(--journal-border); border-radius:8px; padding:8px; margin-bottom:10px; font-size:0.78rem;" id="journalDaySummary">
+      <div style="background:#fff; border:1px solid var(--journal-border); border-radius:6px; padding:6px; margin-bottom:8px; font-size:0.75rem;" id="journalDaySummary">
         Đang nạp dữ liệu...
       </div>
 
       <div class="form-row">
         <div class="col">
-          <label style="color:var(--journal-title); font-size:0.78rem; font-weight:bold;">✍️ Nội dung công việc / Phát sinh trong ngày:</label>
-          <textarea id="journalContentText" rows="6" placeholder="Ghi chép công việc hôm nay..." style="padding:8px; border:1.5px solid #eab308; border-radius:8px; line-height:1.4; font-size:0.82rem; width:100%;"></textarea>
+          <label style="color:var(--journal-title); font-size:0.75rem; font-weight:bold;">✍️ Nội dung công việc / Phát sinh trong ngày:</label>
+          <textarea id="journalContentText" rows="6" placeholder="Ghi chép công việc hôm nay..." style="padding:6px; border:1.5px solid #eab308; border-radius:6px; line-height:1.4; font-size:0.78rem; width:100%;"></textarea>
         </div>
       </div>
 
-      <div style="display:flex; gap:6px; margin-top:6px;">
-        <button onclick="saveDailyJournal()" class="btn" style="background:#ca8a04; color:white; flex:2; padding:9px; font-size:0.82rem;">💾 Lưu Nhật Ký</button>
-        <button onclick="clearDailyJournal()" class="btn" style="background:#ef4444; color:white; flex:1; padding:9px;">🗑 Xóa</button>
+      <div style="display:flex; gap:5px; margin-top:5px;">
+        <button onclick="saveDailyJournal()" class="btn" style="background:#ca8a04; color:white; flex:2; padding:8px;">💾 Lưu Nhật Ký</button>
+        <button onclick="clearDailyJournal()" class="btn" style="background:#ef4444; color:white; flex:1; padding:8px;">🗑 Xóa</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL ĐỔI TÊN DÃY -->
   <div class="modal" id="renameRowModal">
-    <div class="modal-content" style="max-width:360px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">
-        <h3 style="color:#0f766e; font-size:0.95rem;">✏️ Tùy Chỉnh Tên Dãy</h3>
+    <div class="modal-content" style="max-width:350px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid #e2e8f0; padding-bottom:4px;">
+        <h3 style="color:#0f766e; font-size:0.9rem;">✏️ Tùy Chỉnh Tên Dãy</h3>
         <button onclick="closeModal('renameRowModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
       <div class="form-row"><div class="col"><label>Tên Dãy 1:</label><input type="text" id="txtCustomRow1" placeholder="Dãy 1, Dãy A..."></div></div>
-      <div class="form-row" style="margin-top:4px;"><div class="col"><label>Tên Dãy 2:</label><input type="text" id="txtCustomRow2" placeholder="Dãy 2, Dãy B..."></div></div>
-      <div style="display:flex; gap:5px; margin-top:10px;">
-        <button onclick="saveCustomRowNames()" class="btn btn-scan" style="flex:2; padding:8px;">💾 Lưu Tên</button>
-        <button onclick="resetCustomRowNames()" class="btn" style="background:#64748b; color:white; flex:1; padding:8px;">Mặc Định</button>
+      <div class="form-row" style="margin-top:3px;"><div class="col"><label>Tên Dãy 2:</label><input type="text" id="txtCustomRow2" placeholder="Dãy 2, Dãy B..."></div></div>
+      <div style="display:flex; gap:5px; margin-top:8px;">
+        <button onclick="saveCustomRowNames()" class="btn btn-scan" style="flex:2; padding:7px;">💾 Lưu Tên</button>
+        <button onclick="resetCustomRowNames()" class="btn" style="background:#64748b; color:white; flex:1; padding:7px;">Mặc Định</button>
       </div>
     </div>
   </div>
@@ -406,41 +387,41 @@
   <!-- MODAL CHI TIẾT PHÒNG -->
   <div class="modal" id="roomModal">
     <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">
-        <h3 id="roomModalTitle" style="color:var(--navy); font-size:1rem;">Chi Tiết Phòng</h3>
-        <button onclick="closeModal('roomModal')" class="btn" style="background:#e2e8f0; color:#334155; padding:3px 8px;">✕ Đóng</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid #e2e8f0; padding-bottom:4px;">
+        <h3 id="roomModalTitle" style="color:var(--navy); font-size:0.95rem;">Chi Tiết Phòng</h3>
+        <button onclick="closeModal('roomModal')" class="btn" style="background:#e2e8f0; color:#334155; padding:2px 6px;">✕ Đóng</button>
       </div>
 
-      <div style="display:flex; gap:5px; margin-bottom:8px; flex-wrap:wrap;">
-        <button id="btnLock" onclick="toggleLockRoom()" class="btn" style="background:#475569; color:white; font-size:0.72rem;"></button>
-        <button onclick="batchAttendance(true)" class="btn" style="background:var(--green); color:white; font-size:0.72rem;">ĐỦ Cả Phòng</button>
-        <button onclick="batchAttendance(false)" class="btn" style="background:var(--red); color:white; font-size:0.72rem;">VẮNG Cả Phòng</button>
-        <button onclick="batchAttendance(null)" class="btn" style="background:#94a3b8; color:white; font-size:0.72rem;">Đặt Về Trống (-)</button>
-        <button onclick="triggerPrintRoomList()" class="btn" style="background:#0284c7; color:white; font-size:0.72rem;">🖨 In Danh Sách</button>
+      <div style="display:flex; gap:4px; margin-bottom:6px; flex-wrap:wrap;">
+        <button id="btnLock" onclick="toggleLockRoom()" class="btn" style="background:#475569; color:white; font-size:0.7rem;"></button>
+        <button onclick="batchAttendance(true)" class="btn" style="background:var(--green); color:white; font-size:0.7rem;">ĐỦ Cả Phòng</button>
+        <button onclick="batchAttendance(false)" class="btn" style="background:var(--red); color:white; font-size:0.7rem;">VẮNG Cả Phòng</button>
+        <button onclick="batchAttendance(null)" class="btn" style="background:#94a3b8; color:white; font-size:0.7rem;">Đặt Về Trống (-)</button>
+        <button onclick="triggerPrintRoomList()" class="btn" style="background:#0284c7; color:white; font-size:0.7rem;">🖨 In Danh Sách</button>
       </div>
 
-      <div style="background:#fffbeb; border:1px solid #fef3c7; padding:7px; border-radius:6px; margin-bottom:8px;">
-        <div style="font-size:0.7rem; font-weight:bold; color:#b45309; margin-bottom:3px;">BÁO HỎNG CSVC & VỆ SINH:</div>
-        <div style="display:flex; flex-wrap:wrap; gap:4px;" id="damageTagsBox"></div>
+      <div style="background:#fffbeb; border:1px solid #fef3c7; padding:6px; border-radius:5px; margin-bottom:6px;">
+        <div style="font-size:0.68rem; font-weight:bold; color:#b45309; margin-bottom:3px;">BÁO HỎNG CSVC & VỆ SINH:</div>
+        <div style="display:flex; flex-wrap:wrap; gap:3px;" id="damageTagsBox"></div>
       </div>
 
-      <div style="background:#f1f5f9; padding:5px 8px; border-radius:6px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
-        <div style="display:flex; align-items:center; gap:5px;">
-          <span style="font-size:0.75rem; font-weight:bold; color:var(--navy);">Ngày điểm danh:</span>
-          <input type="date" id="attDateInput" onchange="renderWorkersInRoom()" style="padding:3px 6px; font-size:0.75rem; border:1.5px solid var(--primary); border-radius:4px;">
+      <div style="background:#f1f5f9; padding:4px 6px; border-radius:5px; margin-bottom:6px; display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:4px;">
+          <span style="font-size:0.72rem; font-weight:bold; color:var(--navy);">Ngày điểm danh:</span>
+          <input type="date" id="attDateInput" onchange="renderWorkersInRoom()" style="padding:2px 5px; font-size:0.72rem; border:1px solid var(--primary); border-radius:4px;">
         </div>
       </div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; margin:6px 0;">
-        <strong style="color:var(--primary); font-size:0.82rem;">📋 Danh sách công nhân (<span id="curRoomCount">0</span>/20):</strong>
-        <button onclick="toggleWorkerForm()" class="btn" style="background:#334155; color:white; font-size:0.7rem; padding:4px 8px;">➕ Thêm Trực Tiếp</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin:4px 0;">
+        <strong style="color:var(--primary); font-size:0.78rem;">📋 Danh sách công nhân (<span id="curRoomCount">0</span>/20):</strong>
+        <button onclick="toggleWorkerForm()" class="btn" style="background:#334155; color:white; font-size:0.68rem; padding:3px 6px;">➕ Thêm Trực Tiếp</button>
       </div>
 
-      <div id="addWorkerBox" style="display:none; background:#f8fafc; border:1px solid var(--border); padding:8px; border-radius:8px; margin-bottom:8px;">
+      <div id="addWorkerBox" style="display:none; background:#f8fafc; border:1px solid var(--border); padding:6px; border-radius:6px; margin-bottom:6px;">
         <div class="form-row">
           <div class="col"><label>Mã NV</label><input type="text" id="wEmpId"></div>
           <div class="col"><label>Họ và Tên *</label><input type="text" id="wName"></div>
-          <div class="col" style="max-width:75px;"><label>Giới Tính</label><select id="wGender"><option>Nam</option><option>Nữ</option></select></div>
+          <div class="col" style="max-width:70px;"><label>Giới Tính</label><select id="wGender"><option>Nam</option><option>Nữ</option></select></div>
         </div>
         <div class="form-row">
           <div class="col"><label>Số CCCD *</label><input type="text" id="wIdCard"></div>
@@ -451,21 +432,21 @@
           <div class="col"><label>Địa Chỉ / Quê Quán</label><input type="text" id="wAddress"></div>
           <div class="col"><label>Ghi chú</label><input type="text" id="wNote"></div>
         </div>
-        <button onclick="addWorkerDirect()" class="btn" style="background:var(--primary); color:white; width:100%; margin-top:4px; padding:7px;">Lưu Vào Phòng</button>
+        <button onclick="addWorkerDirect()" class="btn" style="background:var(--primary); color:white; width:100%; margin-top:3px; padding:6px;">Lưu Vào Phòng</button>
       </div>
 
       <div class="table-container">
         <table class="data-table">
           <thead>
             <tr>
-              <th style="width:50px;">Mã NV</th>
+              <th style="width:45px;">Mã NV</th>
               <th>Họ Tên</th>
-              <th style="width:85px;">CCCD</th>
+              <th style="width:80px;">CCCD</th>
               <th>Địa Chỉ</th>
-              <th style="width:75px; text-align:center;">Điểm Danh</th>
+              <th style="width:70px; text-align:center;">Điểm Danh</th>
               <th>Ghi Chú</th>
-              <th style="width:40px; text-align:center;">Chuyển</th>
-              <th style="width:85px; text-align:center;">Thao Tác</th>
+              <th style="width:35px; text-align:center;">Chuyển</th>
+              <th style="width:75px; text-align:center;">Thao Tác</th>
             </tr>
           </thead>
           <tbody id="workerTableBody"></tbody>
@@ -476,16 +457,16 @@
 
   <!-- MODAL CHỈNH SỬA THÔNG TIN CÔNG NHÂN -->
   <div class="modal" id="editWorkerModal">
-    <div class="modal-content" style="max-width:440px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:5px;">
-        <h3 style="color:var(--primary); font-size:0.95rem;">✏️ Sửa Thông Tin Công Nhân</h3>
+    <div class="modal-content" style="max-width:420px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
+        <h3 style="color:var(--primary); font-size:0.9rem;">✏️ Sửa Thông Tin Công Nhân</h3>
         <button onclick="closeModal('editWorkerModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
       <input type="hidden" id="editWorkerIndex">
       <div class="form-row">
         <div class="col"><label>Mã NV</label><input type="text" id="editEmpId"></div>
         <div class="col"><label>Họ và Tên *</label><input type="text" id="editName"></div>
-        <div class="col" style="max-width:80px;"><label>Giới Tính</label><select id="editGender"><option>Nam</option><option>Nữ</option></select></div>
+        <div class="col" style="max-width:75px;"><label>Giới Tính</label><select id="editGender"><option>Nam</option><option>Nữ</option></select></div>
       </div>
       <div class="form-row">
         <div class="col"><label>Số CCCD *</label><input type="text" id="editIdCard"></div>
@@ -498,54 +479,54 @@
       <div class="form-row">
         <div class="col"><label>Ghi Chú</label><input type="text" id="editNote"></div>
       </div>
-      <div style="display:flex; gap:6px; margin-top:10px;">
-        <button onclick="saveEditedWorker()" class="btn btn-scan" style="flex:2; padding:9px;">💾 Cập Nhật</button>
-        <button onclick="closeModal('editWorkerModal')" class="btn" style="background:#64748b; color:white; flex:1; padding:9px;">Hủy</button>
+      <div style="display:flex; gap:5px; margin-top:8px;">
+        <button onclick="saveEditedWorker()" class="btn btn-scan" style="flex:2; padding:8px;">💾 Cập Nhật</button>
+        <button onclick="closeModal('editWorkerModal')" class="btn" style="background:#64748b; color:white; flex:1; padding:8px;">Hủy</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL ĐIỀU CHUYỂN PHÒNG -->
   <div class="modal" id="transferModal">
-    <div class="modal-content" style="max-width:380px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:5px;">
-        <h3 style="color:var(--primary); font-size:0.95rem;">🔄 Điều Chuyển Phòng</h3>
+    <div class="modal-content" style="max-width:360px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
+        <h3 style="color:var(--primary); font-size:0.9rem;">🔄 Điều Chuyển Phòng</h3>
         <button onclick="closeModal('transferModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
-      <div style="background:#f1f5f9; padding:7px 9px; border-radius:6px; margin-bottom:6px; font-size:0.8rem;">
+      <div style="background:#f1f5f9; padding:6px 8px; border-radius:5px; margin-bottom:5px; font-size:0.76rem;">
         Công nhân: <b id="transferWorkerName" style="color:var(--navy);">...</b>
       </div>
       <div class="form-row">
         <div class="col">
           <label>Chọn Phòng Đích (Còn Chỗ):</label>
-          <select id="transferTargetSelect" style="padding:7px; font-weight:bold; color:var(--primary);"></select>
+          <select id="transferTargetSelect" style="padding:6px; font-weight:bold; color:var(--primary);"></select>
         </div>
       </div>
-      <button onclick="confirmTransferWorker()" class="btn btn-scan" style="width:100%; padding:9px; margin-top:6px;">✓ Xác Nhận Chuyển</button>
+      <button onclick="confirmTransferWorker()" class="btn btn-scan" style="width:100%; padding:8px; margin-top:5px;">✓ Xác Nhận Chuyển</button>
     </div>
   </div>
 
   <!-- MODAL GHI CHÚ NHANH CHO PHÒNG -->
   <div class="modal" id="roomNoteModal">
-    <div class="modal-content" style="max-width:360px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:5px;">
-        <h3 style="color:var(--navy); font-size:0.95rem;">📌 Ghi Chú Phòng</h3>
+    <div class="modal-content" style="max-width:350px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
+        <h3 style="color:var(--navy); font-size:0.9rem;">📌 Ghi Chú Phòng</h3>
         <button onclick="closeModal('roomNoteModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
       <input type="hidden" id="roomNoteKey">
-      <div style="margin-bottom:6px; font-size:0.8rem; color:#475569;">
+      <div style="margin-bottom:5px; font-size:0.76rem; color:#475569;">
         Phòng: <b id="lblRoomNoteTitle" style="color:var(--primary);">...</b>
       </div>
       <div class="form-row">
         <div class="col">
           <label>Nội dung ghi chú ngoài thẻ phòng:</label>
-          <input type="text" id="txtRoomQuickNote" placeholder="Ví dụ: Đội sắt, Chờ nhận phòng..." style="padding:7px;">
+          <input type="text" id="txtRoomQuickNote" placeholder="Ví dụ: Đội sắt, Chờ nhận phòng..." style="padding:6px;">
         </div>
       </div>
-      <div style="display:flex; gap:5px; margin-top:8px;">
-        <button onclick="saveRoomQuickNote()" class="btn btn-scan" style="flex:2; padding:8px;">💾 Lưu Ghi Chú</button>
-        <button onclick="clearRoomQuickNote()" class="btn" style="background:#dc2626; color:white; flex:1; padding:8px;">Xóa</button>
-        <button onclick="closeModal('roomNoteModal')" class="btn" style="background:#64748b; color:white; flex:1; padding:8px;">Hủy</button>
+      <div style="display:flex; gap:4px; margin-top:6px;">
+        <button onclick="saveRoomQuickNote()" class="btn btn-scan" style="flex:2; padding:7px;">💾 Lưu Ghi Chú</button>
+        <button onclick="clearRoomQuickNote()" class="btn" style="background:#dc2626; color:white; flex:1; padding:7px;">Xóa</button>
+        <button onclick="closeModal('roomNoteModal')" class="btn" style="background:#64748b; color:white; flex:1; padding:7px;">Hủy</button>
       </div>
     </div>
   </div>
@@ -553,9 +534,9 @@
   <!-- MODAL QUÉT CCCD -->
   <div class="modal" id="globalScanModal">
     <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:5px;">
-        <h3 style="color:var(--navy); font-size:0.95rem;">📷 Quét QR + OCR Thẻ CCCD</h3>
-        <button onclick="closeGlobalScanner()" class="btn" style="background:#e2e8f0; color:#334155; padding:3px 7px;">✕ Đóng</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:4px;">
+        <h3 style="color:var(--navy); font-size:0.9rem;">📷 Quét QR + OCR Thẻ CCCD</h3>
+        <button onclick="closeGlobalScanner()" class="btn" style="background:#e2e8f0; color:#334155; padding:2px 5px;">✕ Đóng</button>
       </div>
 
       <div class="camera-wrapper">
@@ -563,26 +544,26 @@
         <div class="scan-guide-box-rect"></div>
       </div>
       <canvas id="qrCanvas" style="display:none;"></canvas>
-      <div id="camStatusMsg" style="text-align:center; font-size:0.72rem; color:var(--primary); font-weight:bold; margin:3px 0;">
+      <div id="camStatusMsg" style="text-align:center; font-size:0.7rem; color:var(--primary); font-weight:bold; margin:2px 0;">
         Đang khởi động camera đọc QR...
       </div>
       <canvas id="ocrCanvas" style="display:none;"></canvas>
 
-      <div style="display:flex; gap:5px; margin-bottom:6px;">
-        <button onclick="triggerDirectFrameCapture()" class="btn" style="background:#16a34a; color:white; flex:1.3; padding:8px;">📸 Chụp ảnh gốc</button>
-        <button id="btnToggleFlash" onclick="toggleFlashlight()" class="btn" style="background:#d97706; color:white; width:40px; padding:8px;">🔦</button>
-        <button onclick="document.getElementById('fileFallbackGallery').click()" class="btn" style="background:#475569; color:white; flex:1; padding:8px;">🖼 Tải ảnh</button>
-        <button onclick="runOcrFromCurrentImage()" class="btn" style="background:#7c3aed; color:white; flex:1; padding:8px;">🔎 Đọc OCR</button>
+      <div style="display:flex; gap:4px; margin-bottom:5px;">
+        <button onclick="triggerDirectFrameCapture()" class="btn" style="background:#16a34a; color:white; flex:1.3; padding:7px;">📸 Chụp ảnh gốc</button>
+        <button id="btnToggleFlash" onclick="toggleFlashlight()" class="btn" style="background:#d97706; color:white; width:36px; padding:7px;">🔦</button>
+        <button onclick="document.getElementById('fileFallbackGallery').click()" class="btn" style="background:#475569; color:white; flex:1; padding:7px;">🖼 Tải ảnh</button>
+        <button onclick="runOcrFromCurrentImage()" class="btn" style="background:#7c3aed; color:white; flex:1; padding:7px;">🔎 Đọc OCR</button>
       </div>
 
-      <div style="background:#f8fafc; border:1px solid var(--border); padding:8px; border-radius:8px;">
+      <div style="background:#f8fafc; border:1px solid var(--border); padding:6px; border-radius:6px;">
         <div class="form-row">
           <div class="col"><label>Phòng Chỉ Định *</label><select id="gTargetRoom"></select></div>
           <div class="col"><label>Mã NV</label><input type="text" id="gEmpId" placeholder="Ví dụ: NV01"></div>
         </div>
         <div class="form-row">
           <div class="col"><label>Họ và Tên *</label><input type="text" id="gName" placeholder="Tự động nhận diện khi đọc được thẻ"></div>
-          <div class="col" style="max-width:80px;"><label>Giới Tính</label><select id="gGender"><option>Nam</option><option>Nữ</option></select></div>
+          <div class="col" style="max-width:75px;"><label>Giới Tính</label><select id="gGender"><option>Nam</option><option>Nữ</option></select></div>
         </div>
         <div class="form-row">
           <div class="col"><label>Số CCCD *</label><input type="text" id="gIdCard" placeholder="12 chữ số định danh"></div>
@@ -595,37 +576,37 @@
         <div class="form-row">
           <div class="col"><label>Ghi Chú</label><input type="text" id="gNote"></div>
         </div>
-        <button onclick="saveQuickScanWorker()" class="btn btn-scan" style="width:100%; padding:9px; margin-top:5px;">✓ Xác Nhận Lưu Vào Phòng</button>
+        <button onclick="saveQuickScanWorker()" class="btn btn-scan" style="width:100%; padding:8px; margin-top:4px;">✓ Xác Nhận Lưu Vào Phòng</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL NHẬP FILE EXCEL -->
   <div class="modal" id="importModal">
-    <div class="modal-content" style="max-width:400px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:5px;">
-        <h3 style="color:var(--navy); font-size:0.95rem;">📥 Nhập Excel Công Nhân</h3>
+    <div class="modal-content" style="max-width:380px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:4px;">
+        <h3 style="color:var(--navy); font-size:0.9rem;">📥 Nhập Excel Công Nhân</h3>
         <button onclick="closeModal('importModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
-      <p style="font-size:0.72rem; color:#64748b; margin-bottom:8px;">Hệ thống tự động xếp lần lượt vào các phòng còn trống.</p>
+      <p style="font-size:0.7rem; color:#64748b; margin-bottom:6px;">Hệ thống tự động xếp lần lượt vào các phòng còn trống.</p>
       <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none;" onchange="handleExcelUpload(event)">
-      <button onclick="document.getElementById('excelFileInput').click()" class="btn btn-import" style="width:100%; padding:10px; margin-bottom:5px;">📂 Chọn File Excel Từ Máy</button>
-      <button onclick="downloadExcelTemplate()" class="btn" style="width:100%; background:#0f766e; color:white; padding:8px;">📋 Tải File Mẫu Excel</button>
+      <button onclick="document.getElementById('excelFileInput').click()" class="btn btn-import" style="width:100%; padding:9px; margin-bottom:4px;">📂 Chọn File Excel Từ Máy</button>
+      <button onclick="downloadExcelTemplate()" class="btn" style="width:100%; background:#0f766e; color:white; padding:7px;">📋 Tải File Mẫu Excel</button>
     </div>
   </div>
 
   <!-- MODAL NGHỈ VIỆC -->
   <div class="modal" id="retiredModal">
-    <div class="modal-content" style="max-width:580px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:5px;">
-        <h3 style="color:#b45309; font-size:0.95rem;">📋 Danh Sách Nghỉ Việc</h3>
+    <div class="modal-content" style="max-width:560px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:4px;">
+        <h3 style="color:#b45309; font-size:0.9rem;">📋 Danh Sách Nghỉ Việc</h3>
         <button onclick="closeModal('retiredModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
       <div class="table-container">
         <table class="data-table">
           <thead>
             <tr>
-              <th style="width:65px;">Mã NV</th>
+              <th style="width:60px;">Mã NV</th>
               <th>Họ Tên</th>
               <th>CCCD</th>
               <th>Phòng Cũ</th>
@@ -697,7 +678,7 @@
     }
 
     /* ==========================================================================
-       2. WIDGET DỰ BÁO THỜI TIẾT DỊU MẮT & BANNER
+       2. WIDGET DỰ BÁO THỜI TIẾT DỊU NHẸ
        ========================================================================== */
     const WEATHER_MODES = ['sunny', 'clear', 'rainy'];
     let currentWeatherIndex = 0;
@@ -710,20 +691,19 @@
       let svgHtml = '';
 
       if (mode === 'sunny') {
-        // NẮNG ĐẸP: Mặt trời dịu dàng với tia nắng thanh mảnh xoay tròn
         svgHtml = `
-          <svg viewBox="0 0 48 48" width="44" height="44">
+          <svg viewBox="0 0 48 48" width="36" height="36">
             <g class="sun-rays" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round">
-              <line x1="24" y1="4" x2="24" y2="9" />
-              <line x1="24" y1="39" x2="24" y2="44" />
-              <line x1="4" y1="24" x2="9" y2="24" />
-              <line x1="39" y1="24" x2="44" y2="24" />
-              <line x1="9.8" y1="9.8" x2="13.4" y2="13.4" />
-              <line x1="34.6" y1="34.6" x2="38.2" y2="38.2" />
-              <line x1="9.8" y1="38.2" x2="13.4" y2="34.6" />
-              <line x1="34.6" y1="13.4" x2="38.2" y2="9.8" />
+              <line x1="24" y1="5" x2="24" y2="9" />
+              <line x1="24" y1="39" x2="24" y2="43" />
+              <line x1="5" y1="24" x2="9" y2="24" />
+              <line x1="39" y1="24" x2="43" y2="24" />
+              <line x1="10.5" y1="10.5" x2="13.5" y2="13.5" />
+              <line x1="34.5" y1="34.5" x2="37.5" y2="37.5" />
+              <line x1="10.5" y1="37.5" x2="13.5" y2="34.5" />
+              <line x1="34.5" y1="13.5" x2="37.5" y2="10.5" />
             </g>
-            <circle cx="24" cy="24" r="10" fill="url(#sunGradSoft)" />
+            <circle cx="24" cy="24" r="9" fill="url(#sunGradSoft)" />
             <defs>
               <linearGradient id="sunGradSoft" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stop-color="#fde047" />
@@ -733,10 +713,9 @@
           </svg>
         `;
       } else if (mode === 'clear') {
-        // NẮNG DỊU MÂY TRỜI XANH
         svgHtml = `
-          <svg viewBox="0 0 48 48" width="44" height="44">
-            <circle cx="19" cy="18" r="8" fill="#fbbf24" />
+          <svg viewBox="0 0 48 48" width="36" height="36">
+            <circle cx="18" cy="18" r="7.5" fill="#fbbf24" />
             <g class="cloud-float">
               <path d="M14 34 h22 a7 7 0 0 0 0 -14 a6 6 0 0 0 -10.5 -2.5 a7 7 0 0 0 -11.5 6.5 a5.5 5.5 0 0 0 0 10 z" fill="#bae6fd" />
               <path d="M15 33 h19 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9 -2 a6 6 0 0 0 -10 5.5 a4.5 4.5 0 0 0 0 8.5 z" fill="#ffffff" />
@@ -744,14 +723,12 @@
           </svg>
         `;
       } else {
-        // MÂY MƯA RƠI DỊU NHẸ
         svgHtml = `
-          <svg viewBox="0 0 48 48" width="44" height="44">
+          <svg viewBox="0 0 48 48" width="36" height="36">
             <path d="M12 26 h24 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9.5 -2.2 a6 6 0 0 0 -10.5 5.2 a5 5 0 0 0 -4 9 z" fill="#94a3b8" />
             <g stroke="#38bdf8" stroke-width="2" stroke-linecap="round">
-              <line class="rain-drop" x1="16" y1="30" x2="14" y2="36" />
-              <line class="rain-drop" x1="24" y1="30" x2="22" y2="36" />
-              <line class="rain-drop" x1="32" y1="30" x2="30" y2="36" />
+              <line class="rain-drop" x1="18" y1="30" x2="16" y2="36" />
+              <line class="rain-drop" x1="26" y1="30" x2="24" y2="36" />
             </g>
           </svg>
         `;
@@ -775,9 +752,7 @@
       const yyyy = d.getFullYear();
       
       const el = document.getElementById('bannerDateStr');
-      if (el) {
-        el.innerText = `Hôm nay ${dayName}, ngày ${dd}/${mm}/${yyyy}`;
-      }
+      if (el) el.innerText = `Hôm nay ${dayName}, ngày ${dd}/${mm}/${yyyy}`;
       
       const savedWeather = localStorage.getItem('CAMP_WEATHER_MODE');
       if (savedWeather !== null) currentWeatherIndex = parseInt(savedWeather, 10) || 0;
@@ -785,23 +760,24 @@
     }
 
     /* ==========================================================================
-       3. TÍCH HỢP LƯU TRỮ ONLINE (CLOUD SYNC TRỰC TUYẾN)
+       3. LƯU VÀO GOOGLE DRIVE RIÊNG CỦA BẠN
        ========================================================================== */
-    function openCloudModal() {
-      let key = localStorage.getItem('CAMP_CLOUD_SYNC_KEY');
-      if (!key) key = 'LT_' + generateHardwareUUID().replace(/[^a-zA-Z0-9]/g, '');
-      document.getElementById('txtCloudKey').value = key;
-      document.getElementById('cloudStatusMsg').innerText = 'Sẵn sàng sao lưu trực tuyến.';
-      openModal('cloudModal');
+    function openGoogleDriveModal() {
+      const savedUrl = localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') || '';
+      document.getElementById('txtGoogleScriptUrl').value = savedUrl;
+      document.getElementById('driveStatusMsg').innerHTML = '';
+      openModal('googleDriveModal');
     }
 
-    async function saveDataToCloudOnline() {
-      const cloudKey = document.getElementById('txtCloudKey').value.trim();
-      if (!cloudKey) return alert("Vui lòng nhập mã Đám mây!");
-      localStorage.setItem('CAMP_CLOUD_SYNC_KEY', cloudKey);
+    async function syncToGoogleDriveFolder() {
+      const scriptUrl = document.getElementById('txtGoogleScriptUrl').value.trim();
+      if (!scriptUrl) {
+        return alert("Vui lòng dán Webhook URL của Google Apps Script theo hướng dẫn phía trên!");
+      }
+      localStorage.setItem('CAMP_GOOGLE_SCRIPT_URL', scriptUrl);
 
-      const statusEl = document.getElementById('cloudStatusMsg');
-      statusEl.innerHTML = '⏳ Đang đồng bộ dữ liệu lên máy chủ Online...';
+      const statusEl = document.getElementById('driveStatusMsg');
+      statusEl.innerHTML = '<span style="color:var(--primary); font-weight:bold;">⏳ Đang truyền dữ liệu vào thư mục Google Drive của bạn...</span>';
 
       const payload = {
         updatedAt: new Date().toISOString(),
@@ -812,77 +788,27 @@
       };
 
       try {
-        // Lưu trữ thông qua KV storage online công cộng an toàn theo CloudKey
-        const res = await fetch(`https://api.restful-api.dev/objects`, {
+        const response = await fetch(scriptUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: `CAMP_BACKUP_${cloudKey}`,
-            data: { payloadStr: JSON.stringify(payload) }
-          })
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
         });
 
-        if (res.ok) {
-          const resData = await res.json();
-          localStorage.setItem('CAMP_ONLINE_OBJ_ID_' + cloudKey, resData.id);
-          statusEl.innerHTML = `<b style="color:var(--green);">✓ Đã lưu Online thành công!</b><br><small>Mã bảo vệ: ${cloudKey}</small>`;
-          alert("✓ Dữ liệu đã được bảo vệ trên đám mây Online an toàn!");
+        const result = await response.json();
+        if (result && result.status === 'success') {
+          statusEl.innerHTML = `<b style="color:var(--green);">✓ Đã lưu thành công vào Google Drive!</b><br><a href="${result.fileUrl}" target="_blank" style="color:var(--primary); text-decoration:underline;">Xem file trên Drive</a>`;
+          alert("✓ Sao lưu dữ liệu vào Google Drive thành công!");
         } else {
-          // Lưu fallback bằng localStorage & file
-          backupJsonDatabase();
-          statusEl.innerHTML = `<span style="color:var(--amber);">Đã tự động tải file sao lưu về máy để phòng ngừa.</span>`;
-        }
-      } catch (e) {
-        backupJsonDatabase();
-        statusEl.innerHTML = `<span style="color:var(--amber);">Không có mạng internet. Đã tự động sao lưu file về máy!</span>`;
-      }
-    }
-
-    async function loadDataFromCloudOnline() {
-      const cloudKey = document.getElementById('txtCloudKey').value.trim();
-      if (!cloudKey) return alert("Vui lòng nhập mã Đám mây để tìm dữ liệu!");
-      const statusEl = document.getElementById('cloudStatusMsg');
-      statusEl.innerHTML = '⏳ Đang tìm và tải dữ liệu từ máy chủ Online...';
-
-      const savedObjId = localStorage.getItem('CAMP_ONLINE_OBJ_ID_' + cloudKey);
-      if (!savedObjId) {
-        statusEl.innerHTML = `<b style="color:var(--red);">Chưa tìm thấy bản lưu online với mã này trên thiết bị này!</b>`;
-        return alert("Không tìm thấy bản lưu tương ứng. Hãy kiểm tra lại mã hoặc bấm Phục Hồi để chọn file!");
-      }
-
-      try {
-        const res = await fetch(`https://api.restful-api.dev/objects/${savedObjId}`);
-        if (!res.ok) throw new Error("Không thể kết nối đến máy chủ lưu trữ!");
-        const json = await res.json();
-        if (json && json.data && json.data.payloadStr) {
-          const parsed = JSON.parse(json.data.payloadStr);
-          if (parsed && parsed.db) {
-            db = parsed.db;
-            retiredList = parsed.retiredList || [];
-            if (parsed.rowNames) {
-              rowNames = parsed.rowNames;
-              localStorage.setItem('CAMP_CUSTOM_ROW_NAMES', JSON.stringify(rowNames));
-            }
-            if (parsed.journals) {
-              localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(parsed.journals));
-            }
-            saveOfflineData();
-            updateRowNamesUI();
-            renderRooms();
-            populateTargetRooms();
-            statusEl.innerHTML = `<b style="color:var(--green);">✓ Phục hồi thành công lúc ${new Date(parsed.updatedAt).toLocaleTimeString()}!</b>`;
-            alert("✓ Đã tải dữ liệu từ Online về máy thành công!");
-            closeModal('cloudModal');
-          }
+          throw new Error(result.message || "Lỗi phản hồi từ Google Script");
         }
       } catch (err) {
-        statusEl.innerHTML = `<span style="color:var(--red);">Lỗi: ${err.message}</span>`;
-        alert("Lỗi tải online: " + err.message);
+        statusEl.innerHTML = `<span style="color:var(--red);">⚠️ Chưa thể kết nối Webhook. Tự động sao lưu file về máy...</span>`;
+        backupJsonDatabase();
       }
     }
 
     /* ==========================================================================
-       4. TẢI FILE & CƠ SỞ DỮ LIỆU
+       4. CƠ SỞ DỮ LIỆU & TẢI FILE
        ========================================================================== */
     async function triggerMobileDownload(blob, filename) {
       try {
@@ -1303,13 +1229,13 @@
                title="Chạm để mở, giữ để ghi chú">
             <div>
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span class="room-title" style="font-size:0.92rem; font-weight:800;">${displayId}</span>
+                <span class="room-title" style="font-size:0.9rem; font-weight:800;">${displayId}</span>
                 <span class="badge-tag">${r.isLocked ? 'KHO' : `${count}/${CAPACITY}`}</span>
               </div>
               <div class="progress-bar-bg">
                 <div class="progress-bar-fill ${count >= CAPACITY ? 'full' : ''}" style="width: ${pct}%;"></div>
               </div>
-              <div style="font-size:0.68rem; color:#64748b;">${rowTitle} - P${r.no}</div>
+              <div style="font-size:0.66rem; color:#64748b;">${rowTitle} - P${r.no}</div>
             </div>
             <div>${absentWarnTag}${dirtyTag}${damageTag}${noteTag}</div>
           </div>
@@ -1403,7 +1329,7 @@
         const active = (r.damage || []).includes(t);
         const bg = active ? '#dc2626' : '#ffffff';
         const col = active ? '#ffffff' : '#334155';
-        return `<button onclick="toggleDamageTag('${t}')" style="background:${bg}; color:${col}; border:1.5px solid #cbd5e1; border-radius:4px; padding:3px 6px; font-size:0.7rem; cursor:pointer; font-weight:700;">${t}</button>`;
+        return `<button onclick="toggleDamageTag('${t}')" style="background:${bg}; color:${col}; border:1px solid #cbd5e1; border-radius:3px; padding:2px 5px; font-size:0.68rem; cursor:pointer; font-weight:700;">${t}</button>`;
       }).join('');
     }
 
@@ -1435,7 +1361,7 @@
       const tbody = document.getElementById('workerTableBody');
 
       if (!r.workers.length) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#94a3b8; padding:12px;">Phòng chưa có công nhân.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#94a3b8; padding:10px;">Phòng chưa có công nhân.</td></tr>`;
         return;
       }
 
@@ -1446,7 +1372,7 @@
         if (att === false) attText = '<b style="color:var(--red);">Vắng</b>';
 
         const absCount = countAbsentTimes(w);
-        const warnBadge = absCount >= 3 ? `<span style="background:#fee2e2; color:#dc2626; border:1px solid #f87171; font-size:0.62rem; padding:1px 3px; border-radius:3px; margin-left:3px; font-weight:bold;">⚠️ ${absCount}</span>` : '';
+        const warnBadge = absCount >= 3 ? `<span style="background:#fee2e2; color:#dc2626; border:1px solid #f87171; font-size:0.6rem; padding:1px 3px; border-radius:3px; margin-left:3px; font-weight:bold;">⚠️ ${absCount}</span>` : '';
 
         return `
           <tr>
@@ -1456,20 +1382,20 @@
               <small style="color:${w.gender === 'Nữ' ? 'var(--red)' : '#64748b'}">(${w.gender})</small>${warnBadge}
             </td>
             <td>${w.idCard || '-'}</td>
-            <td style="max-width:130px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${w.address || '-'}</td>
+            <td style="max-width:120px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${w.address || '-'}</td>
             <td style="text-align:center;">
               <div style="display:flex; align-items:center; justify-content:center; gap:2px;">
                 ${attText}
-                <button onclick="setWorkerAtt(${idx}, true)" class="btn" style="background:#dcfce7; color:#166534; padding:2px 4px; font-size:0.65rem;">+ Có</button>
-                <button onclick="setWorkerAtt(${idx}, false)" class="btn" style="background:#fee2e2; color:#991b1b; padding:2px 4px; font-size:0.65rem;">- Vắng</button>
+                <button onclick="setWorkerAtt(${idx}, true)" class="btn" style="background:#dcfce7; color:#166534; padding:2px 4px; font-size:0.62rem;">+ Có</button>
+                <button onclick="setWorkerAtt(${idx}, false)" class="btn" style="background:#fee2e2; color:#991b1b; padding:2px 4px; font-size:0.62rem;">- Vắng</button>
               </div>
             </td>
             <td>${w.note ? `📌 ${w.note}` : '-'}</td>
-            <td style="text-align:center;"><button onclick="openTransferDialog(${idx})" class="btn" style="background:#0284c7; color:white; padding:3px 6px; font-size:0.65rem;">Chuyển</button></td>
+            <td style="text-align:center;"><button onclick="openTransferDialog(${idx})" class="btn" style="background:#0284c7; color:white; padding:2px 5px; font-size:0.62rem;">Chuyển</button></td>
             <td style="text-align:center;">
-              <div style="display:flex; gap:3px; justify-content:center;">
-                <button onclick="openEditWorkerModal(${idx})" class="btn" style="background:#f59e0b; color:white; padding:3px 6px; font-size:0.65rem;">✏️ Sửa</button>
-                <button onclick="retireWorker(${idx})" class="btn btn-danger" style="padding:3px 6px; font-size:0.65rem;">Nghỉ</button>
+              <div style="display:flex; gap:2px; justify-content:center;">
+                <button onclick="openEditWorkerModal(${idx})" class="btn" style="background:#f59e0b; color:white; padding:2px 5px; font-size:0.62rem;">✏️ Sửa</button>
+                <button onclick="retireWorker(${idx})" class="btn btn-danger" style="padding:2px 5px; font-size:0.62rem;">Nghỉ</button>
               </div>
             </td>
           </tr>
