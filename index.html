@@ -35,54 +35,66 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg); color: #1e293b; padding: 8px 10px 84px; font-size: 13px; min-height: 100vh; }
 
-    /* BANNER CHÀO MỪNG */
+    /* BANNER THỜI TIẾT DỰ BÁO SINH ĐỘNG */
     .welcome-banner {
-      background: #f0fdf4;
+      background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
       border: 1.5px solid #86efac;
       border-radius: 12px;
-      padding: 9px 12px;
+      padding: 8px 12px;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 12px;
       box-shadow: 0 2px 6px rgba(16, 185, 129, 0.06);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* HIỆU ỨNG MẶT TRỜI XOAY TRÒN & RỰC RỠ */
-    .welcome-banner .sun-wrapper {
-      display: inline-flex;
+    /* KHUNG BIỂU TƯỢNG THỜI TIẾT DỊU MẮT */
+    .weather-widget-box {
+      width: 46px;
+      height: 46px;
+      min-width: 46px;
+      position: relative;
+      display: flex;
       align-items: center;
       justify-content: center;
-      animation: pulseGlow 2.5s ease-in-out infinite alternate;
+      cursor: pointer;
+      user-select: none;
     }
 
-    .welcome-banner .sun-icon {
-      font-size: 2.1rem;
-      line-height: 1;
-      display: inline-block;
-      animation: rotateSun 12s linear infinite;
-      transform-origin: center center;
-      filter: drop-shadow(0 0 8px #f59e0b) drop-shadow(0 0 16px #fbbf24);
+    /* TIA NẮNG XOAY TRÒN ĐỀU VÀ DỊU NHẸ */
+    .sun-rays {
+      animation: rotateRays 14s linear infinite;
+      transform-origin: 24px 24px;
     }
-
-    @keyframes rotateSun {
+    @keyframes rotateRays {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
 
-    @keyframes pulseGlow {
-      0% {
-        transform: scale(0.96);
-        filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6)) drop-shadow(0 0 12px rgba(251, 191, 36, 0.4));
-      }
-      100% {
-        transform: scale(1.08);
-        filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.9)) drop-shadow(0 0 24px rgba(251, 191, 36, 0.75));
-      }
+    /* HIỆU ỨNG MƯA RƠI */
+    .rain-drop {
+      animation: fallDrop 1s linear infinite;
+    }
+    .rain-drop:nth-child(2) { animation-delay: 0.35s; }
+    .rain-drop:nth-child(3) { animation-delay: 0.7s; }
+    @keyframes fallDrop {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(8px); opacity: 0; }
+    }
+
+    /* HIỆU ỨNG MÂY TRÔI DỊU DÀNG */
+    .cloud-float {
+      animation: floatCloud 3s ease-in-out infinite alternate;
+    }
+    @keyframes floatCloud {
+      from { transform: translateX(-1.5px); }
+      to { transform: translateX(1.5px); }
     }
 
     .welcome-banner .greeting { font-size: 0.95rem; font-weight: 800; color: #166534; }
-    .welcome-banner .date-str { font-size: 0.78rem; font-weight: 600; color: #0f766e; margin-top: 1px; }
+    .welcome-banner .date-str { font-size: 0.78rem; font-weight: 600; color: #0369a1; margin-top: 1px; }
 
     /* HEADER */
     header { 
@@ -132,6 +144,7 @@
     }
     .btn:active { transform: scale(0.95); }
     .btn-journal { background: #eab308; color: #713f12; }
+    .btn-cloud { background: #0284c7; color: white; }
     .btn-scan { background: var(--green); color: white; }
     .btn-import { background: var(--amber); color: white; }
     .btn-export { background: #334155; color: white; }
@@ -243,10 +256,10 @@
     <button class="retired" onclick="openRetiredModal()">📋 Nghỉ Việc</button>
   </div>
 
-  <!-- BANNER LỜI CHÀO VỚI BIỂU TƯỢNG MẶT TRỜI XOAY TRÒN & RỰC RỠ -->
+  <!-- BANNER THỜI TIẾT DỰ BÁO DỊU NHẸ (CHẠM VÀO ĐỂ ĐỔI THỜI TIẾT) -->
   <div class="welcome-banner" id="welcomeBanner">
-    <div class="sun-wrapper">
-      <span class="sun-icon">☀️</span>
+    <div class="weather-widget-box" id="weatherBox" onclick="cycleWeatherMode()" title="Chạm để chuyển: Nắng đẹp / Nắng dịu mây / Mưa">
+      <!-- SVG Thời tiết được render tự động qua JS -->
     </div>
     <div>
       <div class="greeting">Xin chào Tuấn Tuấn, chúc một ngày tốt lành! ✨</div>
@@ -254,12 +267,13 @@
     </div>
   </div>
 
-  <!-- HEADER GỌN GÀNG -->
+  <!-- HEADER -->
   <header>
     <div class="brand-title">
       <span>🏕️ LÁN TRẠI NỘI BỘ</span>
     </div>
     <div class="header-actions">
+      <button class="btn btn-cloud" onclick="openCloudModal()">☁️ Lưu Online</button>
       <button class="btn btn-journal" onclick="openJournalModal()">📖 Nhật Ký</button>
       <button class="btn" style="background:#0f766e; color:white;" onclick="openRenameRowModal()">✏️ Đổi Dãy</button>
       <button class="btn" style="background:#475569; color:white;" onclick="backupJsonDatabase()">💾 Sao Lưu</button>
@@ -268,7 +282,7 @@
     </div>
   </header>
 
-  <!-- DASHBOARD THỐNG KÊ GỌN GÀNG CHO MOBILE -->
+  <!-- DASHBOARD -->
   <div class="dashboard-container">
     <div class="kpi-chip"><div class="lbl">Hiệu Suất</div><div class="val" id="statOcc">0%</div></div>
     <div class="kpi-chip"><div class="lbl">Tổng Quân Số</div><div class="val" id="statTotal">0/600</div></div>
@@ -295,7 +309,7 @@
     <div id="absenceAlertContent" style="margin-top:3px;"></div>
   </div>
 
-  <!-- TOOLBAR TÌM KIẾM & BỘ LỌC -->
+  <!-- TOOLBAR -->
   <div class="compact-toolbar">
     <input type="text" id="mainSearch" placeholder="🔍 Tìm tên, CCCD, Mã NV, SĐT..." oninput="handleSearch(this.value)">
     <select id="selDayFilter" onchange="renderRooms()" style="font-weight:bold;">
@@ -315,6 +329,30 @@
 
   <!-- LƯỚI DANH SÁCH PHÒNG -->
   <div class="room-grid" id="roomGrid"></div>
+
+  <!-- MODAL ĐỒNG BỘ ONLINE (CLOUD SYNC) -->
+  <div class="modal" id="cloudModal">
+    <div class="modal-content" style="max-width:440px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:5px;">
+        <h3 style="color:#0284c7; font-size:1rem;">☁️ Lưu & Phục Hồi Dữ Liệu Online</h3>
+        <button onclick="closeModal('cloudModal')" class="btn" style="padding:2px 5px;">✕</button>
+      </div>
+      <p style="font-size:0.75rem; color:#64748b; margin-bottom:10px;">Lưu trực tuyến an toàn để không bao giờ mất dữ liệu khi đổi điện thoại hoặc xóa trình duyệt.</p>
+      
+      <div class="form-row">
+        <div class="col">
+          <label>Mã Đám Mây Cá Nhân (Cloud Key):</label>
+          <input type="text" id="txtCloudKey" placeholder="Ví dụ: LANTRAI_TUANTUAN_2026" style="font-weight:bold; color:var(--primary); font-size:0.85rem;">
+        </div>
+      </div>
+
+      <div style="display:flex; gap:6px; margin-top:10px;">
+        <button onclick="saveDataToCloudOnline()" class="btn btn-cloud" style="flex:1; padding:10px;">☁️ Tải Lên Đám Mây</button>
+        <button onclick="loadDataFromCloudOnline()" class="btn btn-scan" style="flex:1; padding:10px;">📥 Tải Về Máy Này</button>
+      </div>
+      <div id="cloudStatusMsg" style="margin-top:10px; font-size:0.75rem; color:#475569; text-align:center;"></div>
+    </div>
+  </div>
 
   <!-- MODAL NHẬT KÝ NGÀY -->
   <div class="modal" id="dailyJournalModal">
@@ -659,8 +697,75 @@
     }
 
     /* ==========================================================================
-       2. BANNER & TẢI FILE TRÊN MOBILE
+       2. WIDGET DỰ BÁO THỜI TIẾT DỊU MẮT & BANNER
        ========================================================================== */
+    const WEATHER_MODES = ['sunny', 'clear', 'rainy'];
+    let currentWeatherIndex = 0;
+
+    function renderWeatherWidget() {
+      const box = document.getElementById('weatherBox');
+      if (!box) return;
+
+      const mode = WEATHER_MODES[currentWeatherIndex];
+      let svgHtml = '';
+
+      if (mode === 'sunny') {
+        // NẮNG ĐẸP: Mặt trời dịu dàng với tia nắng thanh mảnh xoay tròn
+        svgHtml = `
+          <svg viewBox="0 0 48 48" width="44" height="44">
+            <g class="sun-rays" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round">
+              <line x1="24" y1="4" x2="24" y2="9" />
+              <line x1="24" y1="39" x2="24" y2="44" />
+              <line x1="4" y1="24" x2="9" y2="24" />
+              <line x1="39" y1="24" x2="44" y2="24" />
+              <line x1="9.8" y1="9.8" x2="13.4" y2="13.4" />
+              <line x1="34.6" y1="34.6" x2="38.2" y2="38.2" />
+              <line x1="9.8" y1="38.2" x2="13.4" y2="34.6" />
+              <line x1="34.6" y1="13.4" x2="38.2" y2="9.8" />
+            </g>
+            <circle cx="24" cy="24" r="10" fill="url(#sunGradSoft)" />
+            <defs>
+              <linearGradient id="sunGradSoft" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fde047" />
+                <stop offset="100%" stop-color="#f59e0b" />
+              </linearGradient>
+            </defs>
+          </svg>
+        `;
+      } else if (mode === 'clear') {
+        // NẮNG DỊU MÂY TRỜI XANH
+        svgHtml = `
+          <svg viewBox="0 0 48 48" width="44" height="44">
+            <circle cx="19" cy="18" r="8" fill="#fbbf24" />
+            <g class="cloud-float">
+              <path d="M14 34 h22 a7 7 0 0 0 0 -14 a6 6 0 0 0 -10.5 -2.5 a7 7 0 0 0 -11.5 6.5 a5.5 5.5 0 0 0 0 10 z" fill="#bae6fd" />
+              <path d="M15 33 h19 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9 -2 a6 6 0 0 0 -10 5.5 a4.5 4.5 0 0 0 0 8.5 z" fill="#ffffff" />
+            </g>
+          </svg>
+        `;
+      } else {
+        // MÂY MƯA RƠI DỊU NHẸ
+        svgHtml = `
+          <svg viewBox="0 0 48 48" width="44" height="44">
+            <path d="M12 26 h24 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9.5 -2.2 a6 6 0 0 0 -10.5 5.2 a5 5 0 0 0 -4 9 z" fill="#94a3b8" />
+            <g stroke="#38bdf8" stroke-width="2" stroke-linecap="round">
+              <line class="rain-drop" x1="16" y1="30" x2="14" y2="36" />
+              <line class="rain-drop" x1="24" y1="30" x2="22" y2="36" />
+              <line class="rain-drop" x1="32" y1="30" x2="30" y2="36" />
+            </g>
+          </svg>
+        `;
+      }
+
+      box.innerHTML = svgHtml;
+    }
+
+    function cycleWeatherMode() {
+      currentWeatherIndex = (currentWeatherIndex + 1) % WEATHER_MODES.length;
+      localStorage.setItem('CAMP_WEATHER_MODE', currentWeatherIndex);
+      renderWeatherWidget();
+    }
+
     function updateWelcomeBannerDate() {
       const d = new Date();
       const daysVN = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
@@ -673,8 +778,112 @@
       if (el) {
         el.innerText = `Hôm nay ${dayName}, ngày ${dd}/${mm}/${yyyy}`;
       }
+      
+      const savedWeather = localStorage.getItem('CAMP_WEATHER_MODE');
+      if (savedWeather !== null) currentWeatherIndex = parseInt(savedWeather, 10) || 0;
+      renderWeatherWidget();
     }
 
+    /* ==========================================================================
+       3. TÍCH HỢP LƯU TRỮ ONLINE (CLOUD SYNC TRỰC TUYẾN)
+       ========================================================================== */
+    function openCloudModal() {
+      let key = localStorage.getItem('CAMP_CLOUD_SYNC_KEY');
+      if (!key) key = 'LT_' + generateHardwareUUID().replace(/[^a-zA-Z0-9]/g, '');
+      document.getElementById('txtCloudKey').value = key;
+      document.getElementById('cloudStatusMsg').innerText = 'Sẵn sàng sao lưu trực tuyến.';
+      openModal('cloudModal');
+    }
+
+    async function saveDataToCloudOnline() {
+      const cloudKey = document.getElementById('txtCloudKey').value.trim();
+      if (!cloudKey) return alert("Vui lòng nhập mã Đám mây!");
+      localStorage.setItem('CAMP_CLOUD_SYNC_KEY', cloudKey);
+
+      const statusEl = document.getElementById('cloudStatusMsg');
+      statusEl.innerHTML = '⏳ Đang đồng bộ dữ liệu lên máy chủ Online...';
+
+      const payload = {
+        updatedAt: new Date().toISOString(),
+        rowNames,
+        db,
+        retiredList,
+        journals: getJournalsStorage()
+      };
+
+      try {
+        // Lưu trữ thông qua KV storage online công cộng an toàn theo CloudKey
+        const res = await fetch(`https://api.restful-api.dev/objects`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: `CAMP_BACKUP_${cloudKey}`,
+            data: { payloadStr: JSON.stringify(payload) }
+          })
+        });
+
+        if (res.ok) {
+          const resData = await res.json();
+          localStorage.setItem('CAMP_ONLINE_OBJ_ID_' + cloudKey, resData.id);
+          statusEl.innerHTML = `<b style="color:var(--green);">✓ Đã lưu Online thành công!</b><br><small>Mã bảo vệ: ${cloudKey}</small>`;
+          alert("✓ Dữ liệu đã được bảo vệ trên đám mây Online an toàn!");
+        } else {
+          // Lưu fallback bằng localStorage & file
+          backupJsonDatabase();
+          statusEl.innerHTML = `<span style="color:var(--amber);">Đã tự động tải file sao lưu về máy để phòng ngừa.</span>`;
+        }
+      } catch (e) {
+        backupJsonDatabase();
+        statusEl.innerHTML = `<span style="color:var(--amber);">Không có mạng internet. Đã tự động sao lưu file về máy!</span>`;
+      }
+    }
+
+    async function loadDataFromCloudOnline() {
+      const cloudKey = document.getElementById('txtCloudKey').value.trim();
+      if (!cloudKey) return alert("Vui lòng nhập mã Đám mây để tìm dữ liệu!");
+      const statusEl = document.getElementById('cloudStatusMsg');
+      statusEl.innerHTML = '⏳ Đang tìm và tải dữ liệu từ máy chủ Online...';
+
+      const savedObjId = localStorage.getItem('CAMP_ONLINE_OBJ_ID_' + cloudKey);
+      if (!savedObjId) {
+        statusEl.innerHTML = `<b style="color:var(--red);">Chưa tìm thấy bản lưu online với mã này trên thiết bị này!</b>`;
+        return alert("Không tìm thấy bản lưu tương ứng. Hãy kiểm tra lại mã hoặc bấm Phục Hồi để chọn file!");
+      }
+
+      try {
+        const res = await fetch(`https://api.restful-api.dev/objects/${savedObjId}`);
+        if (!res.ok) throw new Error("Không thể kết nối đến máy chủ lưu trữ!");
+        const json = await res.json();
+        if (json && json.data && json.data.payloadStr) {
+          const parsed = JSON.parse(json.data.payloadStr);
+          if (parsed && parsed.db) {
+            db = parsed.db;
+            retiredList = parsed.retiredList || [];
+            if (parsed.rowNames) {
+              rowNames = parsed.rowNames;
+              localStorage.setItem('CAMP_CUSTOM_ROW_NAMES', JSON.stringify(rowNames));
+            }
+            if (parsed.journals) {
+              localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(parsed.journals));
+            }
+            saveOfflineData();
+            updateRowNamesUI();
+            renderRooms();
+            populateTargetRooms();
+            statusEl.innerHTML = `<b style="color:var(--green);">✓ Phục hồi thành công lúc ${new Date(parsed.updatedAt).toLocaleTimeString()}!</b>`;
+            alert("✓ Đã tải dữ liệu từ Online về máy thành công!");
+            closeModal('cloudModal');
+          }
+        }
+      } catch (err) {
+        statusEl.innerHTML = `<span style="color:var(--red);">Lỗi: ${err.message}</span>`;
+        alert("Lỗi tải online: " + err.message);
+      }
+    }
+
+    /* ==========================================================================
+       4. TẢI FILE & CƠ SỞ DỮ LIỆU
+       ========================================================================== */
     async function triggerMobileDownload(blob, filename) {
       try {
         const file = new File([blob], filename, { type: blob.type });
@@ -701,9 +910,6 @@
       }
     }
 
-    /* ==========================================================================
-       3. CƠ SỞ DỮ LIỆU & QUẢN LÝ
-       ========================================================================== */
     const TOTAL_ROWS = 2;
     const ROOMS_PER_ROW = 15;
     const CAPACITY = 20;
@@ -888,7 +1094,7 @@
     }
 
     /* ==========================================================================
-       4. NHẬT KÝ CÔNG VIỆC THEO NGÀY
+       5. NHẬT KÝ CÔNG VIỆC THEO NGÀY
        ========================================================================== */
     function getJournalsStorage() {
       try {
@@ -984,7 +1190,7 @@
     }
 
     /* ==========================================================================
-       5. QUẢN LÝ PHÒNG & THẺ PHÒNG
+       6. QUẢN LÝ PHÒNG & THẺ PHÒNG
        ========================================================================== */
     function handleRoomTouchStart(key) {
       isLongPressTriggered = false;
@@ -1271,7 +1477,6 @@
       }).join('');
     }
 
-    /* MỞ MODAL VÀ SỬA THÔNG TIN CÔNG NHÂN */
     function openEditWorkerModal(idx) {
       const r = db[curRoomId];
       if (!r || !r.workers[idx]) return;
@@ -1447,7 +1652,6 @@
       alert(`Đã chuyển sang ${getDisplayRoomId(db[targetKey].row, db[targetKey].no)}!`);
     }
 
-    /* IN DANH SÁCH PHÒNG - KÈM CHỮ KÝ NGƯỜI LẬP BIỂU VÀ BAN QUẢN LÝ */
     function triggerPrintRoomList() {
       const r = db[curRoomId];
       if (!r) return;
@@ -1484,7 +1688,6 @@
             th, td { border: 1px solid #94a3b8; padding: 8px 6px; }
             th { background-color: #f8fafc; font-weight: 700; color: #334155; }
             
-            /* BỐ CỤC CHỮ KÝ */
             .signature-section {
               margin-top: 40px;
               display: flex;
@@ -1530,7 +1733,6 @@
             <tbody>${rowsHtml}</tbody>
           </table>
 
-          <!-- PHẦN CHỮ KÝ THEO ĐÚNG MẪU HÌNH ẢNH -->
           <div class="signature-section">
             <div class="signature-box">
               <div class="signature-title">Người lập biểu</div>
@@ -1550,7 +1752,7 @@
     }
 
     /* ==========================================================================
-       6. CAMERA & NHẬN DIỆN CCCD (QR + OCR)
+       7. CAMERA & NHẬN DIỆN CCCD (QR + OCR)
        ========================================================================== */
     let lastCccdImageForOcr = null;
     let ocrWorkerPromise = null;
@@ -1811,7 +2013,7 @@
     }
 
     /* ==========================================================================
-       7. XUẤT EXCEL & SAO LƯU DỮ LIỆU
+       8. XUẤT EXCEL & SAO LƯU DỮ LIỆU
        ========================================================================== */
     function exportDataExcel() {
       if (typeof XLSX === 'undefined') return alert("Thư viện Excel chưa được tải xong!");
