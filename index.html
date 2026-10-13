@@ -9,6 +9,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
+  <!-- LIÊN KẾT PWA MANIFEST -->
+  <link rel="manifest" href="./manifest.json">
+
   <!-- THƯ VIỆN BÊN NGOÀI -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
@@ -35,7 +38,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg); color: #1e293b; padding: 6px 8px 76px; font-size: 12.5px; min-height: 100vh; }
 
-    /* BANNER THỜI TIẾT DỊU NHẸ */
+    /* BANNER THỜI TIẾT DỰ BÁO */
     .welcome-banner {
       background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
       border: 1px solid #86efac;
@@ -45,19 +48,41 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      transition: background 0.3s;
     }
+    .welcome-banner.night-mode {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-color: #334155;
+    }
+    .welcome-banner.night-mode .greeting { color: #38bdf8; }
+    .welcome-banner.night-mode .date-str { color: #94a3b8; }
+
     .weather-widget-box {
-      width: 36px; height: 36px; min-width: 36px;
+      width: 40px; height: 40px; min-width: 40px;
       display: flex; align-items: center; justify-content: center; cursor: pointer;
+      user-select: none;
     }
+
+    /* HIỆU ỨNG THỜI TIẾT ĐỘNG */
     .sun-rays { animation: rotateRays 14s linear infinite; transform-origin: 24px 24px; }
     @keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
     .cloud-float { animation: floatCloud 3s ease-in-out infinite alternate; }
-    @keyframes floatCloud { from { transform: translateX(-1.5px); } to { transform: translateX(1.5px); } }
+    @keyframes floatCloud { from { transform: translateX(-2px); } to { transform: translateX(2px); } }
+
+    .rain-drop { animation: fallDrop 0.8s linear infinite; }
+    .rain-drop:nth-child(2) { animation-delay: 0.25s; }
+    .rain-drop:nth-child(3) { animation-delay: 0.5s; }
+    @keyframes fallDrop { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(9px); opacity: 0; } }
+
+    .star-twinkle { animation: twinkle 1.8s ease-in-out infinite alternate; }
+    .star-twinkle:nth-child(2) { animation-delay: 0.7s; }
+    @keyframes twinkle { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.15); } }
+
     .welcome-banner .greeting { font-size: 0.88rem; font-weight: 800; color: #166534; }
     .welcome-banner .date-str { font-size: 0.72rem; font-weight: 600; color: #0369a1; margin-top: 1px; }
 
-    /* HEADER & CÁC NÚT TRÊN 1 HÀNG */
+    /* HEADER & NÚT BẤM */
     header { 
       background: var(--card-bg); padding: 7px 9px; border-radius: var(--radius);
       box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 6px;
@@ -173,7 +198,7 @@
     .mobile-quickbar .export { background: #334155; }
     .mobile-quickbar .retired { background: #7c3aed; }
 
-    /* CAMERA & SCANNER TINH GỌN */
+    /* CAMERA & SCANNER */
     .camera-wrapper { 
       position: relative; width: 100%; height: 260px; background: #000; 
       border-radius: 8px; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-bottom: 6px; 
@@ -222,16 +247,16 @@
     <button class="retired" onclick="openRetiredModal()">📋 Nghỉ Việc</button>
   </div>
 
-  <!-- BANNER LỜI CHÀO & THỜI TIẾT DỊU NHẸ -->
+  <!-- BANNER LỜI CHÀO & THỜI TIẾT DỰ BÁO THÔNG MINH -->
   <div class="welcome-banner" id="welcomeBanner">
-    <div class="weather-widget-box" id="weatherBox" onclick="cycleWeatherMode()" title="Chạm để chuyển kiểu thời tiết"></div>
+    <div class="weather-widget-box" id="weatherBox" onclick="cycleWeatherMode()" title="Chạm để chuyển: Nắng gắt / Mây / Mưa / Ban đêm"></div>
     <div>
-      <div class="greeting">Xin chào Tuấn Tuấn, chúc một ngày tốt lành! ✨</div>
+      <div class="greeting" id="bannerGreetingText">Xin chào Tuấn Tuấn, chúc một ngày tốt lành! ✨</div>
       <div class="date-str" id="bannerDateStr">Hôm nay Thứ Ba, ngày 13/10/2026</div>
     </div>
   </div>
 
-  <!-- HEADER VÀ CÁC NÚT TRÊN CÙNG 1 HÀNG NGANG GỌN GÀNG -->
+  <!-- HEADER VÀ CÁC NÚT TRÊN CÙNG 1 HÀNG NGANG -->
   <header>
     <div class="brand-title">
       <span>🏕️ LÁN TRẠI NỘI BỘ</span>
@@ -310,10 +335,9 @@
       <canvas id="ocrCanvas" style="display:none;"></canvas>
 
       <div id="camStatusMsg" style="text-align:center; font-size:0.75rem; color:var(--primary); font-weight:bold; margin:3px 0;">
-        Đưa mã QR (hoặc mặt sau thẻ mới) vào khung quét...
+        Đưa mã QR hoặc dải mã vạch mặt sau vào khung...
       </div>
 
-      <!-- CHỈ GIỮ LẠI ĐÚNG 2 NÚT CHỨC NĂNG HIỆU QUẢ CAO -->
       <div style="display:flex; gap:6px; margin-bottom:8px;">
         <button onclick="document.getElementById('fileDirectHdCamera').click()" class="btn" style="background:#16a34a; color:white; flex:1; padding:9px; font-size:0.8rem;">
           📸 Chụp đọc CCCD
@@ -570,7 +594,7 @@
 
   <script>
     /* ==========================================================================
-       1. BẢO MẬT & THỜI TIẾT
+       1. BẢO MẬT THIẾT BỊ
        ========================================================================== */
     const APP_VERSION = "V2_SECURE_2026_10";
     const LICENSE_SALT = "CAMP_SECURE_2026";
@@ -619,27 +643,140 @@
       } else alert("❌ Mã phê duyệt không chính xác!");
     }
 
-    const WEATHER_MODES = ['sunny', 'clear', 'rainy'];
+    /* ==========================================================================
+       2. THỜI TIẾT ĐỘNG THÔNG MINH (OPEN-METEO API & TỰ ĐỘNG THEO GIỜ)
+       ========================================================================== */
+    const WEATHER_MODES = ['sunny', 'cloudy', 'rainy', 'night'];
     let currentWeatherIndex = 0;
 
     function renderWeatherWidget() {
       const box = document.getElementById('weatherBox');
-      if (!box) return;
+      const banner = document.getElementById('welcomeBanner');
+      if (!box || !banner) return;
+
       const mode = WEATHER_MODES[currentWeatherIndex];
       let svgHtml = '';
+
       if (mode === 'sunny') {
-        svgHtml = `<svg viewBox="0 0 48 48" width="36" height="36"><g class="sun-rays" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="5" x2="24" y2="9" /><line x1="24" y1="39" x2="24" y2="43" /><line x1="5" y1="24" x2="9" y2="24" /><line x1="39" y1="24" x2="43" y2="24" /><line x1="10.5" y1="10.5" x2="13.5" y2="13.5" /><line x1="34.5" y1="34.5" x2="37.5" y2="37.5" /><line x1="10.5" y1="37.5" x2="13.5" y2="34.5" /><line x1="34.5" y1="13.5" x2="37.5" y2="10.5" /></g><circle cx="24" cy="24" r="9" fill="url(#sunGradSoft)" /><defs><linearGradient id="sunGradSoft" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fde047" /><stop offset="100%" stop-color="#f59e0b" /></linearGradient></defs></svg>`;
-      } else if (mode === 'clear') {
-        svgHtml = `<svg viewBox="0 0 48 48" width="36" height="36"><circle cx="18" cy="18" r="7.5" fill="#fbbf24" /><g class="cloud-float"><path d="M14 34 h22 a7 7 0 0 0 0 -14 a6 6 0 0 0 -10.5 -2.5 a7 7 0 0 0 -11.5 6.5 a5.5 5.5 0 0 0 0 10 z" fill="#bae6fd" /><path d="M15 33 h19 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9 -2 a6 6 0 0 0 -10 5.5 a4.5 4.5 0 0 0 0 8.5 z" fill="#ffffff" /></g></svg>`;
+        banner.classList.remove('night-mode');
+        // NẮNG GẮT: Mặt trời xoay nhẹ và tỏa tia nắng rực rỡ
+        svgHtml = `
+          <svg viewBox="0 0 48 48" width="38" height="38">
+            <g class="sun-rays" stroke="#f59e0b" stroke-width="2.6" stroke-linecap="round">
+              <line x1="24" y1="4" x2="24" y2="8.5" />
+              <line x1="24" y1="39.5" x2="24" y2="44" />
+              <line x1="4" y1="24" x2="8.5" y2="24" />
+              <line x1="39.5" y1="24" x2="44" y2="24" />
+              <line x1="9.8" y1="9.8" x2="13" y2="13" />
+              <line x1="35" y1="35" x2="38.2" y2="38.2" />
+              <line x1="9.8" y1="38.2" x2="13" y2="35" />
+              <line x1="35" y1="13" x2="38.2" y2="9.8" />
+            </g>
+            <circle cx="24" cy="24" r="9.5" fill="url(#sunGradHot)" />
+            <defs>
+              <linearGradient id="sunGradHot" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fef08a" />
+                <stop offset="50%" stop-color="#f59e0b" />
+                <stop offset="100%" stop-color="#ea580c" />
+              </linearGradient>
+            </defs>
+          </svg>
+        `;
+      } else if (mode === 'cloudy') {
+        banner.classList.remove('night-mode');
+        // NẮNG ĐẸP NHIỀU MÂY: Mặt trời bồng bềnh sau đám mây trôi
+        svgHtml = `
+          <svg viewBox="0 0 48 48" width="38" height="38">
+            <circle cx="18" cy="18" r="8" fill="#fbbf24" />
+            <g class="cloud-float">
+              <path d="M14 34 h22 a7 7 0 0 0 0 -14 a6 6 0 0 0 -10.5 -2.5 a7 7 0 0 0 -11.5 6.5 a5.5 5.5 0 0 0 0 10 z" fill="#bae6fd" opacity="0.6" />
+              <path d="M15 33 h19 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9 -2 a6 6 0 0 0 -10 5.5 a4.5 4.5 0 0 0 0 8.5 z" fill="#ffffff" />
+            </g>
+          </svg>
+        `;
+      } else if (mode === 'rainy') {
+        banner.classList.remove('night-mode');
+        // TRỜI MƯA: Mây xám + hạt mưa rơi chuyển động sinh động
+        svgHtml = `
+          <svg viewBox="0 0 48 48" width="38" height="38">
+            <path d="M12 24 h24 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9.5 -2.2 a6 6 0 0 0 -10.5 5.2 a5 5 0 0 0 -4 9 z" fill="#64748b" />
+            <g stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round">
+              <line class="rain-drop" x1="16" y1="28" x2="14" y2="35" />
+              <line class="rain-drop" x1="24" y1="28" x2="22" y2="35" />
+              <line class="rain-drop" x1="32" y1="28" x2="30" y2="35" />
+            </g>
+          </svg>
+        `;
       } else {
-        svgHtml = `<svg viewBox="0 0 48 48" width="36" height="36"><path d="M12 26 h24 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9.5 -2.2 a6 6 0 0 0 -10.5 5.2 a5 5 0 0 0 -4 9 z" fill="#94a3b8" /><g stroke="#38bdf8" stroke-width="2" stroke-linecap="round"><line x1="18" y1="30" x2="16" y2="36" /><line x1="26" y1="30" x2="24" y2="36" /></g></svg>`;
+        banner.classList.add('night-mode');
+        // BAN ĐÊM: Trăng sao nhấp nháy
+        svgHtml = `
+          <svg viewBox="0 0 48 48" width="38" height="38">
+            <path d="M30 11 A12 12 0 1 1 16 32 A13 13 0 0 0 30 11 Z" fill="#fde047" />
+            <polygon class="star-twinkle" points="36,12 37.5,15 41,15.5 38.5,18 39,21.5 36,19.5 33,21.5 33.5,18 31,15.5 34.5,15" fill="#ffffff" />
+            <polygon class="star-twinkle" points="26,6 27,8 29,8.5 27.5,10 28,12 26,11 24,12 24.5,10 23,8.5 25,8" fill="#38bdf8" />
+          </svg>
+        `;
       }
+
       box.innerHTML = svgHtml;
     }
 
+    // NÚT CHẠM ĐỔI NHANH 4 TRẠNG THÁI THỜI TIẾT
     function cycleWeatherMode() {
       currentWeatherIndex = (currentWeatherIndex + 1) % WEATHER_MODES.length;
-      localStorage.setItem('CAMP_WEATHER_MODE', currentWeatherIndex);
+      localStorage.setItem('CAMP_WEATHER_MANUAL_MODE', currentWeatherIndex);
+      renderWeatherWidget();
+    }
+
+    // TỰ ĐỘNG PHÁT HIỆN THỜI TIẾT THỰC TẾ (OPEN-METEO API & GPS)
+    async function detectSmartLiveWeather() {
+      const hour = new Date().getHours();
+      const isNight = (hour >= 18 || hour < 6);
+
+      // Bước 1: Ưu tiên lấy tọa độ GPS thực tế
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            try {
+              const lat = pos.coords.latitude;
+              const lon = pos.coords.longitude;
+              const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=weather_code,is_day`);
+              if (res.ok) {
+                const data = await res.json();
+                const code = data.current.weather_code;
+                const isDay = data.current.is_day === 1;
+
+                if (!isDay) {
+                  currentWeatherIndex = 3; // night
+                } else if ([51,53,55,61,63,65,80,81,82,95].includes(code)) {
+                  currentWeatherIndex = 2; // rainy
+                } else if ([1,2,3,45,48].includes(code)) {
+                  currentWeatherIndex = 1; // cloudy
+                } else {
+                  currentWeatherIndex = 0; // sunny
+                }
+                renderWeatherWidget();
+                return;
+              }
+            } catch (e) {}
+            fallbackTimeWeather(isNight);
+          },
+          () => { fallbackTimeWeather(isNight); },
+          { timeout: 5000 }
+        );
+      } else {
+        fallbackTimeWeather(isNight);
+      }
+    }
+
+    function fallbackTimeWeather(isNight) {
+      const savedManual = localStorage.getItem('CAMP_WEATHER_MANUAL_MODE');
+      if (savedManual !== null) {
+        currentWeatherIndex = parseInt(savedManual, 10);
+      } else {
+        currentWeatherIndex = isNight ? 3 : 0;
+      }
       renderWeatherWidget();
     }
 
@@ -652,13 +789,12 @@
       const yyyy = d.getFullYear();
       const el = document.getElementById('bannerDateStr');
       if (el) el.innerText = `Hôm nay ${dayName}, ngày ${dd}/${mm}/${yyyy}`;
-      const savedWeather = localStorage.getItem('CAMP_WEATHER_MODE');
-      if (savedWeather !== null) currentWeatherIndex = parseInt(savedWeather, 10) || 0;
-      renderWeatherWidget();
+
+      detectSmartLiveWeather();
     }
 
     /* ==========================================================================
-       2. GOOGLE DRIVE SYNC
+       3. GOOGLE DRIVE SYNC
        ========================================================================== */
     function openGoogleDriveModal() {
       const savedUrl = localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') || '';
@@ -693,7 +829,7 @@
     }
 
     /* ==========================================================================
-       3. CƠ SỞ DỮ LIỆU & QUẢN LÝ PHÒNG
+       4. CƠ SỞ DỮ LIỆU & QUẢN LÝ PHÒNG
        ========================================================================== */
     async function triggerMobileDownload(blob, filename) {
       try {
@@ -1171,7 +1307,7 @@
     }
 
     /* ==========================================================================
-       4. BỘ GIẢI MÃ NÂNG CAO CHO CĂN CƯỚC MẪU MỚI (QR MẬT ĐỘ CAO + MRZ)
+       5. BỘ GIẢI MÃ NÂNG CAO CHO CĂN CƯỚC MẪU MỚI (QR MẬT ĐỘ CAO + MRZ)
        ========================================================================== */
     function parseMrzBackOfNewId(text) {
       if (!text) return null;
@@ -1382,7 +1518,7 @@
     }
 
     /* ==========================================================================
-       5. XUẤT EXCEL & SAO LƯU DỰ PHÒNG
+       6. XUẤT EXCEL & SAO LƯU DỰ PHÒNG
        ========================================================================== */
     function exportDataExcel() {
       if (typeof XLSX === 'undefined') return alert("Thư viện Excel chưa được tải xong!");
@@ -1536,7 +1672,15 @@
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { if (id === 'globalScanModal') closeCameraStream(); document.getElementById(id).style.display = 'none'; }
 
-    // KHỞI ĐỘNG HỆ THỐNG
+    /* ==========================================================================
+       7. ĐĂNG KÝ PWA SERVICE WORKER & KHỞI ĐỘNG
+       ========================================================================== */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
       updateWelcomeBannerDate();
       if (checkDeviceActivation()) {
