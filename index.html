@@ -32,10 +32,10 @@
       --radius: 8px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg); color: #1e293b; padding: 6px 8px 76px; font-size: 12.5px; min-height: 100vh; }
 
-    /* BANNER THỜI TIẾT DỰ BÁO NHỎ GỌN */
+    /* BANNER THỜI TIẾT DỊU NHẸ */
     .welcome-banner {
       background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
       border: 1px solid #86efac;
@@ -45,40 +45,19 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 1px 4px rgba(16, 185, 129, 0.05);
     }
     .weather-widget-box {
-      width: 36px;
-      height: 36px;
-      min-width: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
+      width: 36px; height: 36px; min-width: 36px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
     }
-    .sun-rays {
-      animation: rotateRays 14s linear infinite;
-      transform-origin: 24px 24px;
-    }
-    @keyframes rotateRays {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .rain-drop { animation: fallDrop 1s linear infinite; }
-    .rain-drop:nth-child(2) { animation-delay: 0.35s; }
-    @keyframes fallDrop {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(8px); opacity: 0; }
-    }
+    .sun-rays { animation: rotateRays 14s linear infinite; transform-origin: 24px 24px; }
+    @keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     .cloud-float { animation: floatCloud 3s ease-in-out infinite alternate; }
-    @keyframes floatCloud {
-      from { transform: translateX(-1.5px); }
-      to { transform: translateX(1.5px); }
-    }
+    @keyframes floatCloud { from { transform: translateX(-1.5px); } to { transform: translateX(1.5px); } }
     .welcome-banner .greeting { font-size: 0.88rem; font-weight: 800; color: #166534; }
     .welcome-banner .date-str { font-size: 0.72rem; font-weight: 600; color: #0369a1; margin-top: 1px; }
 
-    /* HEADER & HÀNG NÚT BẤM TRÊN CÙNG 1 DÒNG */
+    /* HEADER & CÁC NÚT TRÊN 1 HÀNG */
     header { 
       background: var(--card-bg); padding: 7px 9px; border-radius: var(--radius);
       box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 6px;
@@ -86,14 +65,8 @@
     .brand-title { display: flex; align-items: center; gap: 5px; font-size: 0.96rem; font-weight: 800; color: #1e3a8a; margin-bottom: 6px; }
 
     .header-actions-row {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      overflow-x: auto;
-      white-space: nowrap;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 2px;
+      display: flex; align-items: center; gap: 4px; overflow-x: auto;
+      white-space: nowrap; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-bottom: 2px;
     }
     .header-actions-row::-webkit-scrollbar { display: none; }
 
@@ -111,7 +84,7 @@
     .btn-danger { background: var(--red); color: white; }
     .btn-scan { background: var(--green); color: white; }
 
-    /* DASHBOARD NHỎ GỌN */
+    /* DASHBOARD */
     .dashboard-container { 
       display: flex; gap: 5px; margin-bottom: 6px; overflow-x: auto; 
       -webkit-overflow-scrolling: touch; padding-bottom: 3px; scrollbar-width: none;
@@ -122,7 +95,7 @@
       border: 1px solid var(--border); box-shadow: var(--shadow); text-align: center; 
       white-space: nowrap; min-width: 76px; flex: 1; flex-shrink: 0;
     }
-    .kpi-chip .lbl { font-size: 0.58rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.2px; }
+    .kpi-chip .lbl { font-size: 0.58rem; color: #64748b; text-transform: uppercase; font-weight: 700; }
     .kpi-chip .val { font-size: 0.88rem; font-weight: 800; margin-top: 1px; color: var(--navy); }
 
     #absenceAlertBar {
@@ -130,7 +103,7 @@
       padding: 6px 8px; margin-bottom: 6px; font-size: 0.72rem; color: #991b1b;
     }
 
-    /* TOOLBAR TÌM KIẾM */
+    /* TOOLBAR */
     .compact-toolbar { 
       display: flex; flex-wrap: wrap; gap: 4px; align-items: center; 
       background: var(--card-bg); padding: 5px 7px; border-radius: var(--radius); 
@@ -171,7 +144,7 @@
 
     /* MODAL */
     .modal { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); z-index: 9999; justify-content: center; align-items: center; padding: 6px; }
-    .modal-content { background: white; border-radius: 10px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.2); }
+    .modal-content { background: white; border-radius: 10px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 12px; }
     
     .form-row { display: flex; gap: 5px; margin-bottom: 5px; }
     .form-row .col { flex: 1; }
@@ -200,17 +173,25 @@
     .mobile-quickbar .export { background: #334155; }
     .mobile-quickbar .retired { background: #7c3aed; }
 
-    .camera-wrapper { position: relative; width: 100%; height: 240px; background: #000; border-radius: 8px; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-bottom: 5px; }
+    /* CAMERA & SCANNER TINH GỌN */
+    .camera-wrapper { 
+      position: relative; width: 100%; height: 260px; background: #000; 
+      border-radius: 8px; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-bottom: 6px; 
+    }
     #camVideo { width: 100%; height: 100%; object-fit: cover; }
-    .scan-guide-box-rect { position: absolute; width: 250px; height: 150px; border: 2px solid #22c55e; border-radius: 6px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.55); pointer-events: none; }
+    .scan-guide-box-rect { 
+      position: absolute; width: 270px; height: 170px; border: 2.5px solid #22c55e; 
+      border-radius: 8px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.52); pointer-events: none; 
+    }
     .scan-guide-box-rect::after {
-      content: "ĐẶT MẶT TRƯỚC HOẶC MÃ QR VÀO KHUNG";
-      position: absolute; bottom: -20px; left: -20px; right: -20px;
+      content: "ĐẶT MÃ QR HOẶC 3 DÒNG MÃ VẠCH VÀO KHUNG";
+      position: absolute; bottom: -20px; left: -30px; right: -30px;
       color: #22c55e; font-size: 8.5px; font-weight: 800; text-align: center;
     }
 
+    /* MÀN HÌNH KHÓA XÁC THỰC */
     #lockScreen { position: fixed; inset: 0; background: #0f172a; z-index: 999999; display: flex; justify-content: center; align-items: center; padding: 10px; }
-    .lock-box { background: white; border-radius: 12px; max-width: 360px; width: 100%; padding: 20px 14px; text-align: center; box-shadow: 0 14px 30px rgba(0,0,0,0.5); }
+    .lock-box { background: white; border-radius: 12px; max-width: 360px; width: 100%; padding: 22px 16px; text-align: center; box-shadow: 0 14px 30px rgba(0,0,0,0.5); }
   </style>
 </head>
 <body>
@@ -221,14 +202,15 @@
       <div style="font-size: 2.3rem; margin-bottom: 4px;">🔒</div>
       <h3 style="color: var(--navy); margin-bottom: 4px;">XÁC THỰC THIẾT BỊ</h3>
       <p style="font-size: 0.76rem; color: #64748b; margin-bottom: 8px;">Cung cấp mã dưới đây cho Quản trị viên để nhận mã phê duyệt:</p>
-      <div style="background: #f1f5f9; border: 1.5px dashed #94a3b8; border-radius: 6px; padding: 8px; font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; color: var(--primary); margin-bottom: 8px;" id="dispDeviceId">...</div>
-      <input type="text" id="txtLicenseKey" placeholder="Nhập mã 6 chữ số" style="width: 100%; padding: 8px; font-size: 0.95rem; text-align: center; font-weight: bold; border: 1.5px solid var(--border); border-radius: 6px; margin-bottom: 8px;">
-      <button onclick="verifyDeviceLicense()" class="btn btn-scan" style="width: 100%; padding: 10px; font-size: 0.85rem;">Kích Hoạt</button>
+      <div style="background: #f1f5f9; border: 1.5px dashed #94a3b8; border-radius: 6px; padding: 8px; font-size: 1.15rem; font-weight: 900; letter-spacing: 2px; color: var(--primary); margin-bottom: 10px;" id="dispDeviceId">...</div>
+      <input type="text" id="txtLicenseKey" placeholder="Nhập mã 6 chữ số" style="width: 100%; padding: 9px; font-size: 1rem; text-align: center; font-weight: bold; border: 1.5px solid var(--border); border-radius: 6px; margin-bottom: 8px;">
+      <button onclick="verifyDeviceLicense()" class="btn btn-scan" style="width: 100%; padding: 10px; font-size: 0.88rem;">Kích Hoạt</button>
     </div>
   </div>
 
-  <input type="file" id="fileFallbackCamera" accept="image/*" capture="camera" onchange="handleProcessImage(this)" style="display:none;">
-  <input type="file" id="fileFallbackGallery" accept="image/*" onchange="handleProcessImage(this)" style="display:none;">
+  <!-- INPUT FILE CHỤP & TẢI ẢNH ĐỘ NÉT CAO -->
+  <input type="file" id="fileDirectHdCamera" accept="image/*" capture="camera" onchange="handleProcessHighDefImage(this)" style="display:none;">
+  <input type="file" id="fileFallbackGallery" accept="image/*" onchange="handleProcessHighDefImage(this)" style="display:none;">
   <input type="file" id="fileRestoreDb" accept=".json" onchange="restoreJsonDatabase(event)" style="display:none;">
 
   <!-- THANH ĐIỀU HƯỚNG NHANH CHO DI ĐỘNG -->
@@ -240,11 +222,9 @@
     <button class="retired" onclick="openRetiredModal()">📋 Nghỉ Việc</button>
   </div>
 
-  <!-- BANNER THỜI TIẾT DỰ BÁO NHỎ GỌN -->
+  <!-- BANNER LỜI CHÀO & THỜI TIẾT DỊU NHẸ -->
   <div class="welcome-banner" id="welcomeBanner">
-    <div class="weather-widget-box" id="weatherBox" onclick="cycleWeatherMode()" title="Chạm để chuyển kiểu thời tiết">
-      <!-- SVG Thời tiết -->
-    </div>
+    <div class="weather-widget-box" id="weatherBox" onclick="cycleWeatherMode()" title="Chạm để chuyển kiểu thời tiết"></div>
     <div>
       <div class="greeting">Xin chào Tuấn Tuấn, chúc một ngày tốt lành! ✨</div>
       <div class="date-str" id="bannerDateStr">Hôm nay Thứ Ba, ngày 13/10/2026</div>
@@ -314,7 +294,61 @@
   <!-- LƯỚI DANH SÁCH PHÒNG -->
   <div class="room-grid" id="roomGrid"></div>
 
-  <!-- MODAL GOOGLE DRIVE ONLINE -->
+  <!-- MODAL QUÉT CCCD TINH GỌN ĐÚNG 2 NÚT NÂNG CAO -->
+  <div class="modal" id="globalScanModal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
+        <h3 style="color:var(--navy); font-size:0.92rem;">📷 Quét Căn Cước Công Dân (Cũ & Mới)</h3>
+        <button onclick="closeGlobalScanner()" class="btn" style="background:#e2e8f0; color:#334155; padding:2px 6px;">✕ Đóng</button>
+      </div>
+
+      <div class="camera-wrapper">
+        <video id="camVideo" playsinline autoplay muted></video>
+        <div class="scan-guide-box-rect"></div>
+      </div>
+      <canvas id="qrCanvas" style="display:none;"></canvas>
+      <canvas id="ocrCanvas" style="display:none;"></canvas>
+
+      <div id="camStatusMsg" style="text-align:center; font-size:0.75rem; color:var(--primary); font-weight:bold; margin:3px 0;">
+        Đưa mã QR (hoặc mặt sau thẻ mới) vào khung quét...
+      </div>
+
+      <!-- CHỈ GIỮ LẠI ĐÚNG 2 NÚT CHỨC NĂNG HIỆU QUẢ CAO -->
+      <div style="display:flex; gap:6px; margin-bottom:8px;">
+        <button onclick="document.getElementById('fileDirectHdCamera').click()" class="btn" style="background:#16a34a; color:white; flex:1; padding:9px; font-size:0.8rem;">
+          📸 Chụp đọc CCCD
+        </button>
+        <button onclick="document.getElementById('fileFallbackGallery').click()" class="btn" style="background:#0284c7; color:white; flex:1; padding:9px; font-size:0.8rem;">
+          🖼️ Tải ảnh từ file
+        </button>
+      </div>
+
+      <div style="background:#f8fafc; border:1px solid var(--border); padding:6px; border-radius:6px;">
+        <div class="form-row">
+          <div class="col"><label>Phòng Chỉ Định *</label><select id="gTargetRoom"></select></div>
+          <div class="col"><label>Mã NV</label><input type="text" id="gEmpId" placeholder="Ví dụ: NV01"></div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Họ và Tên *</label><input type="text" id="gName" placeholder="Tự động nhận diện..."></div>
+          <div class="col" style="max-width:75px;"><label>Giới Tính</label><select id="gGender"><option>Nam</option><option>Nữ</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Số CCCD *</label><input type="text" id="gIdCard" placeholder="12 chữ số định danh"></div>
+          <div class="col"><label>Ngày Sinh</label><input type="text" id="gDob" placeholder="dd/mm/yyyy"></div>
+          <div class="col"><label>Số ĐT</label><input type="text" id="gPhone"></div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Địa Chỉ / Quê Quán</label><input type="text" id="gAddress"></div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Ghi Chú</label><input type="text" id="gNote"></div>
+        </div>
+        <button onclick="saveQuickScanWorker()" class="btn btn-scan" style="width:100%; padding:8px; margin-top:4px;">✓ Xác Nhận Lưu Vào Phòng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL GOOGLE DRIVE -->
   <div class="modal" id="googleDriveModal">
     <div class="modal-content" style="max-width:440px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:5px;">
@@ -322,7 +356,7 @@
         <button onclick="closeModal('googleDriveModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
       <div style="font-size:0.75rem; color:#475569; margin-bottom:8px; line-height:1.4;">
-        Thư mục chỉ định: <b style="color:var(--primary); word-break:break-all;">16zQTMhyaldxHSNzdjICBp0MubozbHRQg</b>
+        Thư mục Google Drive: <b style="color:var(--primary); word-break:break-all;">16zQTMhyaldxHSNzdjICBp0MubozbHRQg</b>
       </div>
       <div class="form-row">
         <div class="col">
@@ -342,25 +376,19 @@
         <h3 class="journal-title">📖 NHẬT KÝ CÔNG VIỆC THEO NGÀY</h3>
         <button onclick="closeModal('dailyJournalModal')" class="btn" style="background:#fef08a; color:#713f12; padding:2px 6px;">✕ Đóng</button>
       </div>
-
       <div style="display:flex; flex-wrap:wrap; align-items:center; gap:5px; background:#fff; padding:6px 8px; border-radius:6px; border:1px solid var(--journal-border); margin-bottom:8px;">
         <label style="font-weight:bold; font-size:0.74rem; color:var(--journal-title);">📅 Chọn ngày:</label>
         <input type="date" id="journalDateInput" onchange="loadJournalBySelectedDate()" style="padding:4px 6px; border:1.5px solid #eab308; border-radius:5px; font-weight:bold; font-size:0.78rem;">
         <button onclick="loadJournalBySelectedDate()" class="btn" style="background:#eab308; color:#713f12;">🔎 Tìm Kiếm</button>
         <button onclick="printJournalNote()" class="btn" style="background:#475569; color:#fff; margin-left:auto;">🖨 In Nhật Ký</button>
       </div>
-
-      <div style="background:#fff; border:1px solid var(--journal-border); border-radius:6px; padding:6px; margin-bottom:8px; font-size:0.75rem;" id="journalDaySummary">
-        Đang nạp dữ liệu...
-      </div>
-
+      <div style="background:#fff; border:1px solid var(--journal-border); border-radius:6px; padding:6px; margin-bottom:8px; font-size:0.75rem;" id="journalDaySummary">Đang nạp dữ liệu...</div>
       <div class="form-row">
         <div class="col">
-          <label style="color:var(--journal-title); font-size:0.75rem; font-weight:bold;">✍️ Nội dung công việc / Phát sinh trong ngày:</label>
-          <textarea id="journalContentText" rows="6" placeholder="Ghi chép công việc hôm nay..." style="padding:6px; border:1.5px solid #eab308; border-radius:6px; line-height:1.4; font-size:0.78rem; width:100%;"></textarea>
+          <label style="color:var(--journal-title); font-size:0.75rem; font-weight:bold;">✍️ Nội dung công việc:</label>
+          <textarea id="journalContentText" rows="6" placeholder="Ghi chép công việc..." style="padding:6px; border:1.5px solid #eab308; border-radius:6px; line-height:1.4; font-size:0.78rem; width:100%;"></textarea>
         </div>
       </div>
-
       <div style="display:flex; gap:5px; margin-top:5px;">
         <button onclick="saveDailyJournal()" class="btn" style="background:#ca8a04; color:white; flex:2; padding:8px;">💾 Lưu Nhật Ký</button>
         <button onclick="clearDailyJournal()" class="btn" style="background:#ef4444; color:white; flex:1; padding:8px;">🗑 Xóa</button>
@@ -375,8 +403,8 @@
         <h3 style="color:#0f766e; font-size:0.9rem;">✏️ Tùy Chỉnh Tên Dãy</h3>
         <button onclick="closeModal('renameRowModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
-      <div class="form-row"><div class="col"><label>Tên Dãy 1:</label><input type="text" id="txtCustomRow1" placeholder="Dãy 1, Dãy A..."></div></div>
-      <div class="form-row" style="margin-top:3px;"><div class="col"><label>Tên Dãy 2:</label><input type="text" id="txtCustomRow2" placeholder="Dãy 2, Dãy B..."></div></div>
+      <div class="form-row"><div class="col"><label>Tên Dãy 1:</label><input type="text" id="txtCustomRow1"></div></div>
+      <div class="form-row" style="margin-top:3px;"><div class="col"><label>Tên Dãy 2:</label><input type="text" id="txtCustomRow2"></div></div>
       <div style="display:flex; gap:5px; margin-top:8px;">
         <button onclick="saveCustomRowNames()" class="btn btn-scan" style="flex:2; padding:7px;">💾 Lưu Tên</button>
         <button onclick="resetCustomRowNames()" class="btn" style="background:#64748b; color:white; flex:1; padding:7px;">Mặc Định</button>
@@ -391,7 +419,6 @@
         <h3 id="roomModalTitle" style="color:var(--navy); font-size:0.95rem;">Chi Tiết Phòng</h3>
         <button onclick="closeModal('roomModal')" class="btn" style="background:#e2e8f0; color:#334155; padding:2px 6px;">✕ Đóng</button>
       </div>
-
       <div style="display:flex; gap:4px; margin-bottom:6px; flex-wrap:wrap;">
         <button id="btnLock" onclick="toggleLockRoom()" class="btn" style="background:#475569; color:white; font-size:0.7rem;"></button>
         <button onclick="batchAttendance(true)" class="btn" style="background:var(--green); color:white; font-size:0.7rem;">ĐỦ Cả Phòng</button>
@@ -399,24 +426,20 @@
         <button onclick="batchAttendance(null)" class="btn" style="background:#94a3b8; color:white; font-size:0.7rem;">Đặt Về Trống (-)</button>
         <button onclick="triggerPrintRoomList()" class="btn" style="background:#0284c7; color:white; font-size:0.7rem;">🖨 In Danh Sách</button>
       </div>
-
       <div style="background:#fffbeb; border:1px solid #fef3c7; padding:6px; border-radius:5px; margin-bottom:6px;">
         <div style="font-size:0.68rem; font-weight:bold; color:#b45309; margin-bottom:3px;">BÁO HỎNG CSVC & VỆ SINH:</div>
         <div style="display:flex; flex-wrap:wrap; gap:3px;" id="damageTagsBox"></div>
       </div>
-
       <div style="background:#f1f5f9; padding:4px 6px; border-radius:5px; margin-bottom:6px; display:flex; align-items:center; justify-content:space-between;">
         <div style="display:flex; align-items:center; gap:4px;">
           <span style="font-size:0.72rem; font-weight:bold; color:var(--navy);">Ngày điểm danh:</span>
           <input type="date" id="attDateInput" onchange="renderWorkersInRoom()" style="padding:2px 5px; font-size:0.72rem; border:1px solid var(--primary); border-radius:4px;">
         </div>
       </div>
-
       <div style="display:flex; justify-content:space-between; align-items:center; margin:4px 0;">
         <strong style="color:var(--primary); font-size:0.78rem;">📋 Danh sách công nhân (<span id="curRoomCount">0</span>/20):</strong>
         <button onclick="toggleWorkerForm()" class="btn" style="background:#334155; color:white; font-size:0.68rem; padding:3px 6px;">➕ Thêm Trực Tiếp</button>
       </div>
-
       <div id="addWorkerBox" style="display:none; background:#f8fafc; border:1px solid var(--border); padding:6px; border-radius:6px; margin-bottom:6px;">
         <div class="form-row">
           <div class="col"><label>Mã NV</label><input type="text" id="wEmpId"></div>
@@ -434,7 +457,6 @@
         </div>
         <button onclick="addWorkerDirect()" class="btn" style="background:var(--primary); color:white; width:100%; margin-top:3px; padding:6px;">Lưu Vào Phòng</button>
       </div>
-
       <div class="table-container">
         <table class="data-table">
           <thead>
@@ -455,7 +477,7 @@
     </div>
   </div>
 
-  <!-- MODAL CHỈNH SỬA THÔNG TIN CÔNG NHÂN -->
+  <!-- MODAL SỬA CÔNG NHÂN -->
   <div class="modal" id="editWorkerModal">
     <div class="modal-content" style="max-width:420px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
@@ -473,12 +495,8 @@
         <div class="col"><label>Ngày Sinh</label><input type="text" id="editDob" placeholder="dd/mm/yyyy"></div>
         <div class="col"><label>Số ĐT</label><input type="text" id="editPhone"></div>
       </div>
-      <div class="form-row">
-        <div class="col"><label>Địa Chỉ / Quê Quán</label><input type="text" id="editAddress"></div>
-      </div>
-      <div class="form-row">
-        <div class="col"><label>Ghi Chú</label><input type="text" id="editNote"></div>
-      </div>
+      <div class="form-row"><div class="col"><label>Địa Chỉ / Quê Quán</label><input type="text" id="editAddress"></div></div>
+      <div class="form-row"><div class="col"><label>Ghi Chú</label><input type="text" id="editNote"></div></div>
       <div style="display:flex; gap:5px; margin-top:8px;">
         <button onclick="saveEditedWorker()" class="btn btn-scan" style="flex:2; padding:8px;">💾 Cập Nhật</button>
         <button onclick="closeModal('editWorkerModal')" class="btn" style="background:#64748b; color:white; flex:1; padding:8px;">Hủy</button>
@@ -486,7 +504,7 @@
     </div>
   </div>
 
-  <!-- MODAL ĐIỀU CHUYỂN PHÒNG -->
+  <!-- MODAL ĐIỀU CHUYỂN -->
   <div class="modal" id="transferModal">
     <div class="modal-content" style="max-width:360px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
@@ -497,16 +515,13 @@
         Công nhân: <b id="transferWorkerName" style="color:var(--navy);">...</b>
       </div>
       <div class="form-row">
-        <div class="col">
-          <label>Chọn Phòng Đích (Còn Chỗ):</label>
-          <select id="transferTargetSelect" style="padding:6px; font-weight:bold; color:var(--primary);"></select>
-        </div>
+        <div class="col"><label>Chọn Phòng Đích:</label><select id="transferTargetSelect" style="padding:6px; font-weight:bold; color:var(--primary);"></select></div>
       </div>
       <button onclick="confirmTransferWorker()" class="btn btn-scan" style="width:100%; padding:8px; margin-top:5px;">✓ Xác Nhận Chuyển</button>
     </div>
   </div>
 
-  <!-- MODAL GHI CHÚ NHANH CHO PHÒNG -->
+  <!-- MODAL GHI CHÚ PHÒNG -->
   <div class="modal" id="roomNoteModal">
     <div class="modal-content" style="max-width:350px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
@@ -514,15 +529,8 @@
         <button onclick="closeModal('roomNoteModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
       <input type="hidden" id="roomNoteKey">
-      <div style="margin-bottom:5px; font-size:0.76rem; color:#475569;">
-        Phòng: <b id="lblRoomNoteTitle" style="color:var(--primary);">...</b>
-      </div>
-      <div class="form-row">
-        <div class="col">
-          <label>Nội dung ghi chú ngoài thẻ phòng:</label>
-          <input type="text" id="txtRoomQuickNote" placeholder="Ví dụ: Đội sắt, Chờ nhận phòng..." style="padding:6px;">
-        </div>
-      </div>
+      <div style="margin-bottom:5px; font-size:0.76rem; color:#475569;">Phòng: <b id="lblRoomNoteTitle" style="color:var(--primary);">...</b></div>
+      <div class="form-row"><div class="col"><label>Nội dung ghi chú:</label><input type="text" id="txtRoomQuickNote" style="padding:6px;"></div></div>
       <div style="display:flex; gap:4px; margin-top:6px;">
         <button onclick="saveRoomQuickNote()" class="btn btn-scan" style="flex:2; padding:7px;">💾 Lưu Ghi Chú</button>
         <button onclick="clearRoomQuickNote()" class="btn" style="background:#dc2626; color:white; flex:1; padding:7px;">Xóa</button>
@@ -531,64 +539,13 @@
     </div>
   </div>
 
-  <!-- MODAL QUÉT CCCD -->
-  <div class="modal" id="globalScanModal">
-    <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:4px;">
-        <h3 style="color:var(--navy); font-size:0.9rem;">📷 Quét QR + OCR Thẻ CCCD</h3>
-        <button onclick="closeGlobalScanner()" class="btn" style="background:#e2e8f0; color:#334155; padding:2px 5px;">✕ Đóng</button>
-      </div>
-
-      <div class="camera-wrapper">
-        <video id="camVideo" playsinline autoplay muted></video>
-        <div class="scan-guide-box-rect"></div>
-      </div>
-      <canvas id="qrCanvas" style="display:none;"></canvas>
-      <div id="camStatusMsg" style="text-align:center; font-size:0.7rem; color:var(--primary); font-weight:bold; margin:2px 0;">
-        Đang khởi động camera đọc QR...
-      </div>
-      <canvas id="ocrCanvas" style="display:none;"></canvas>
-
-      <div style="display:flex; gap:4px; margin-bottom:5px;">
-        <button onclick="triggerDirectFrameCapture()" class="btn" style="background:#16a34a; color:white; flex:1.3; padding:7px;">📸 Chụp ảnh gốc</button>
-        <button id="btnToggleFlash" onclick="toggleFlashlight()" class="btn" style="background:#d97706; color:white; width:36px; padding:7px;">🔦</button>
-        <button onclick="document.getElementById('fileFallbackGallery').click()" class="btn" style="background:#475569; color:white; flex:1; padding:7px;">🖼 Tải ảnh</button>
-        <button onclick="runOcrFromCurrentImage()" class="btn" style="background:#7c3aed; color:white; flex:1; padding:7px;">🔎 Đọc OCR</button>
-      </div>
-
-      <div style="background:#f8fafc; border:1px solid var(--border); padding:6px; border-radius:6px;">
-        <div class="form-row">
-          <div class="col"><label>Phòng Chỉ Định *</label><select id="gTargetRoom"></select></div>
-          <div class="col"><label>Mã NV</label><input type="text" id="gEmpId" placeholder="Ví dụ: NV01"></div>
-        </div>
-        <div class="form-row">
-          <div class="col"><label>Họ và Tên *</label><input type="text" id="gName" placeholder="Tự động nhận diện khi đọc được thẻ"></div>
-          <div class="col" style="max-width:75px;"><label>Giới Tính</label><select id="gGender"><option>Nam</option><option>Nữ</option></select></div>
-        </div>
-        <div class="form-row">
-          <div class="col"><label>Số CCCD *</label><input type="text" id="gIdCard" placeholder="12 chữ số định danh"></div>
-          <div class="col"><label>Ngày Sinh</label><input type="text" id="gDob" placeholder="dd/mm/yyyy"></div>
-          <div class="col"><label>Số ĐT</label><input type="text" id="gPhone"></div>
-        </div>
-        <div class="form-row">
-          <div class="col"><label>Địa Chỉ / Quê Quán</label><input type="text" id="gAddress"></div>
-        </div>
-        <div class="form-row">
-          <div class="col"><label>Ghi Chú</label><input type="text" id="gNote"></div>
-        </div>
-        <button onclick="saveQuickScanWorker()" class="btn btn-scan" style="width:100%; padding:8px; margin-top:4px;">✓ Xác Nhận Lưu Vào Phòng</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL NHẬP FILE EXCEL -->
+  <!-- MODAL NHẬP EXCEL -->
   <div class="modal" id="importModal">
     <div class="modal-content" style="max-width:380px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:4px;">
         <h3 style="color:var(--navy); font-size:0.9rem;">📥 Nhập Excel Công Nhân</h3>
         <button onclick="closeModal('importModal')" class="btn" style="padding:2px 5px;">✕</button>
       </div>
-      <p style="font-size:0.7rem; color:#64748b; margin-bottom:6px;">Hệ thống tự động xếp lần lượt vào các phòng còn trống.</p>
       <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display:none;" onchange="handleExcelUpload(event)">
       <button onclick="document.getElementById('excelFileInput').click()" class="btn btn-import" style="width:100%; padding:9px; margin-bottom:4px;">📂 Chọn File Excel Từ Máy</button>
       <button onclick="downloadExcelTemplate()" class="btn" style="width:100%; background:#0f766e; color:white; padding:7px;">📋 Tải File Mẫu Excel</button>
@@ -604,15 +561,7 @@
       </div>
       <div class="table-container">
         <table class="data-table">
-          <thead>
-            <tr>
-              <th style="width:60px;">Mã NV</th>
-              <th>Họ Tên</th>
-              <th>CCCD</th>
-              <th>Phòng Cũ</th>
-              <th>Ngày Nghỉ</th>
-            </tr>
-          </thead>
+          <thead><tr><th style="width:60px;">Mã NV</th><th>Họ Tên</th><th>CCCD</th><th>Phòng Cũ</th><th>Ngày Nghỉ</th></tr></thead>
           <tbody id="retiredTableBody"></tbody>
         </table>
       </div>
@@ -621,7 +570,7 @@
 
   <script>
     /* ==========================================================================
-       1. BẢO MẬT & KÍCH HOẠT THIẾT BỊ
+       1. BẢO MẬT & THỜI TIẾT
        ========================================================================== */
     const APP_VERSION = "V2_SECURE_2026_10";
     const LICENSE_SALT = "CAMP_SECURE_2026";
@@ -636,12 +585,8 @@
     }
 
     function calculatePasscode(deviceId) {
-      let hash = 0;
-      const str = deviceId + LICENSE_SALT;
-      for (let i = 0; i < str.length; i++) {
-        hash = (hash << 5) - hash + str.charCodeAt(i);
-        hash |= 0;
-      }
+      let hash = 0; const str = deviceId + LICENSE_SALT;
+      for (let i = 0; i < str.length; i++) { hash = (hash << 5) - hash + str.charCodeAt(i); hash |= 0; }
       return String(Math.abs(hash) % 900000 + 100000);
     }
 
@@ -650,7 +595,7 @@
       const devId = generateHardwareUUID();
       const lockBox = document.getElementById('lockScreen');
       const dispId = document.getElementById('dispDeviceId');
-
+      
       if (dispId) dispId.innerText = devId;
 
       if (isApproved === 'TRUE') {
@@ -666,74 +611,29 @@
       const devId = generateHardwareUUID();
       const enteredCode = document.getElementById('txtLicenseKey').value.trim();
       const expectedCode = calculatePasscode(devId);
-
       if (enteredCode === expectedCode || enteredCode === "998877") {
         localStorage.setItem('CAMP_DEVICE_ACTIVATED_' + APP_VERSION, 'TRUE');
         alert("✓ Đã kích hoạt thiết bị thành công!");
         document.getElementById('lockScreen').style.display = 'none';
         loadOfflineData();
-      } else {
-        alert("❌ Mã phê duyệt không chính xác!");
-      }
+      } else alert("❌ Mã phê duyệt không chính xác!");
     }
 
-    /* ==========================================================================
-       2. WIDGET DỰ BÁO THỜI TIẾT DỊU NHẸ
-       ========================================================================== */
     const WEATHER_MODES = ['sunny', 'clear', 'rainy'];
     let currentWeatherIndex = 0;
 
     function renderWeatherWidget() {
       const box = document.getElementById('weatherBox');
       if (!box) return;
-
       const mode = WEATHER_MODES[currentWeatherIndex];
       let svgHtml = '';
-
       if (mode === 'sunny') {
-        svgHtml = `
-          <svg viewBox="0 0 48 48" width="36" height="36">
-            <g class="sun-rays" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round">
-              <line x1="24" y1="5" x2="24" y2="9" />
-              <line x1="24" y1="39" x2="24" y2="43" />
-              <line x1="5" y1="24" x2="9" y2="24" />
-              <line x1="39" y1="24" x2="43" y2="24" />
-              <line x1="10.5" y1="10.5" x2="13.5" y2="13.5" />
-              <line x1="34.5" y1="34.5" x2="37.5" y2="37.5" />
-              <line x1="10.5" y1="37.5" x2="13.5" y2="34.5" />
-              <line x1="34.5" y1="13.5" x2="37.5" y2="10.5" />
-            </g>
-            <circle cx="24" cy="24" r="9" fill="url(#sunGradSoft)" />
-            <defs>
-              <linearGradient id="sunGradSoft" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#fde047" />
-                <stop offset="100%" stop-color="#f59e0b" />
-              </linearGradient>
-            </defs>
-          </svg>
-        `;
+        svgHtml = `<svg viewBox="0 0 48 48" width="36" height="36"><g class="sun-rays" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="5" x2="24" y2="9" /><line x1="24" y1="39" x2="24" y2="43" /><line x1="5" y1="24" x2="9" y2="24" /><line x1="39" y1="24" x2="43" y2="24" /><line x1="10.5" y1="10.5" x2="13.5" y2="13.5" /><line x1="34.5" y1="34.5" x2="37.5" y2="37.5" /><line x1="10.5" y1="37.5" x2="13.5" y2="34.5" /><line x1="34.5" y1="13.5" x2="37.5" y2="10.5" /></g><circle cx="24" cy="24" r="9" fill="url(#sunGradSoft)" /><defs><linearGradient id="sunGradSoft" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fde047" /><stop offset="100%" stop-color="#f59e0b" /></linearGradient></defs></svg>`;
       } else if (mode === 'clear') {
-        svgHtml = `
-          <svg viewBox="0 0 48 48" width="36" height="36">
-            <circle cx="18" cy="18" r="7.5" fill="#fbbf24" />
-            <g class="cloud-float">
-              <path d="M14 34 h22 a7 7 0 0 0 0 -14 a6 6 0 0 0 -10.5 -2.5 a7 7 0 0 0 -11.5 6.5 a5.5 5.5 0 0 0 0 10 z" fill="#bae6fd" />
-              <path d="M15 33 h19 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9 -2 a6 6 0 0 0 -10 5.5 a4.5 4.5 0 0 0 0 8.5 z" fill="#ffffff" />
-            </g>
-          </svg>
-        `;
+        svgHtml = `<svg viewBox="0 0 48 48" width="36" height="36"><circle cx="18" cy="18" r="7.5" fill="#fbbf24" /><g class="cloud-float"><path d="M14 34 h22 a7 7 0 0 0 0 -14 a6 6 0 0 0 -10.5 -2.5 a7 7 0 0 0 -11.5 6.5 a5.5 5.5 0 0 0 0 10 z" fill="#bae6fd" /><path d="M15 33 h19 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9 -2 a6 6 0 0 0 -10 5.5 a4.5 4.5 0 0 0 0 8.5 z" fill="#ffffff" /></g></svg>`;
       } else {
-        svgHtml = `
-          <svg viewBox="0 0 48 48" width="36" height="36">
-            <path d="M12 26 h24 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9.5 -2.2 a6 6 0 0 0 -10.5 5.2 a5 5 0 0 0 -4 9 z" fill="#94a3b8" />
-            <g stroke="#38bdf8" stroke-width="2" stroke-linecap="round">
-              <line class="rain-drop" x1="18" y1="30" x2="16" y2="36" />
-              <line class="rain-drop" x1="26" y1="30" x2="24" y2="36" />
-            </g>
-          </svg>
-        `;
+        svgHtml = `<svg viewBox="0 0 48 48" width="36" height="36"><path d="M12 26 h24 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9.5 -2.2 a6 6 0 0 0 -10.5 5.2 a5 5 0 0 0 -4 9 z" fill="#94a3b8" /><g stroke="#38bdf8" stroke-width="2" stroke-linecap="round"><line x1="18" y1="30" x2="16" y2="36" /><line x1="26" y1="30" x2="24" y2="36" /></g></svg>`;
       }
-
       box.innerHTML = svgHtml;
     }
 
@@ -750,17 +650,15 @@
       const dd = String(d.getDate()).padStart(2, '0');
       const mm = String(d.getMonth() + 1).padStart(2, '0');
       const yyyy = d.getFullYear();
-      
       const el = document.getElementById('bannerDateStr');
       if (el) el.innerText = `Hôm nay ${dayName}, ngày ${dd}/${mm}/${yyyy}`;
-      
       const savedWeather = localStorage.getItem('CAMP_WEATHER_MODE');
       if (savedWeather !== null) currentWeatherIndex = parseInt(savedWeather, 10) || 0;
       renderWeatherWidget();
     }
 
     /* ==========================================================================
-       3. LƯU VÀO GOOGLE DRIVE RIÊNG CỦA BẠN
+       2. GOOGLE DRIVE SYNC
        ========================================================================== */
     function openGoogleDriveModal() {
       const savedUrl = localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') || '';
@@ -771,44 +669,31 @@
 
     async function syncToGoogleDriveFolder() {
       const scriptUrl = document.getElementById('txtGoogleScriptUrl').value.trim();
-      if (!scriptUrl) {
-        return alert("Vui lòng dán Webhook URL của Google Apps Script theo hướng dẫn phía trên!");
-      }
+      if (!scriptUrl) return alert("Vui lòng dán Webhook URL của Google Apps Script!");
       localStorage.setItem('CAMP_GOOGLE_SCRIPT_URL', scriptUrl);
-
       const statusEl = document.getElementById('driveStatusMsg');
-      statusEl.innerHTML = '<span style="color:var(--primary); font-weight:bold;">⏳ Đang truyền dữ liệu vào thư mục Google Drive của bạn...</span>';
+      statusEl.innerHTML = '<span style="color:var(--primary); font-weight:bold;">⏳ Đang truyền dữ liệu vào thư mục Google Drive...</span>';
 
-      const payload = {
-        updatedAt: new Date().toISOString(),
-        rowNames,
-        db,
-        retiredList,
-        journals: getJournalsStorage()
-      };
-
+      const payload = { updatedAt: new Date().toISOString(), rowNames, db, retiredList, journals: getJournalsStorage() };
       try {
         const response = await fetch(scriptUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
-
         const result = await response.json();
         if (result && result.status === 'success') {
           statusEl.innerHTML = `<b style="color:var(--green);">✓ Đã lưu thành công vào Google Drive!</b><br><a href="${result.fileUrl}" target="_blank" style="color:var(--primary); text-decoration:underline;">Xem file trên Drive</a>`;
           alert("✓ Sao lưu dữ liệu vào Google Drive thành công!");
-        } else {
-          throw new Error(result.message || "Lỗi phản hồi từ Google Script");
-        }
+        } else throw new Error(result.message || "Lỗi phản hồi");
       } catch (err) {
-        statusEl.innerHTML = `<span style="color:var(--red);">⚠️ Chưa thể kết nối Webhook. Tự động sao lưu file về máy...</span>`;
+        statusEl.innerHTML = `<span style="color:var(--red);">⚠️ Đã tự động sao lưu file về máy...</span>`;
         backupJsonDatabase();
       }
     }
 
     /* ==========================================================================
-       4. CƠ SỞ DỮ LIỆU & TẢI FILE
+       3. CƠ SỞ DỮ LIỆU & QUẢN LÝ PHÒNG
        ========================================================================== */
     async function triggerMobileDownload(blob, filename) {
       try {
@@ -818,27 +703,15 @@
           return;
         }
       } catch (e) {}
-
       try {
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => {
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        }, 2000);
-      } catch (err) {
-        alert("Không thể lưu file: " + err.message);
-      }
+        const a = document.createElement('a'); a.style.display = 'none';
+        a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+        setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url); }, 2000);
+      } catch (err) { alert("Không thể lưu file: " + err.message); }
     }
 
-    const TOTAL_ROWS = 2;
-    const ROOMS_PER_ROW = 15;
-    const CAPACITY = 20;
+    const TOTAL_ROWS = 2; const ROOMS_PER_ROW = 15; const CAPACITY = 20;
     let rowNames = { 1: "Dãy 1", 2: "Dãy 2" };
 
     function buildDefault30Rooms() {
@@ -852,70 +725,41 @@
       return initial;
     }
 
-    let db = buildDefault30Rooms();
-    let retiredList = [];
-    let curRoomId = null;
-    let transferringWorkerIdx = null;
-
-    let localStream = null;
-    let isScanning = false;
-    let lastScanTime = 0;
-    let flashOn = false;
-
-    let pressTimer = null;
-    let isLongPressTriggered = false;
-
+    let db = buildDefault30Rooms(); let retiredList = []; let curRoomId = null; let transferringWorkerIdx = null;
+    let localStream = null; let isScanning = false; let lastScanTime = 0; let pressTimer = null; let isLongPressTriggered = false;
     const DAMAGE_TAGS = ['Phòng bẩn / Chưa dọn', 'Hỏng Quạt', 'Hỏng Điện', 'Hỏng Điều Hòa', 'Hỏng Ổ Cắm'];
 
     function cleanId(val) { return String(val || '').trim().replace(/\D/g, ''); }
     function cleanEmp(val) { return String(val || '').trim().toLowerCase(); }
-    
     function countAbsentTimes(w) {
       if (!w || !w.attendance || typeof w.attendance !== 'object') return 0;
       return Object.values(w.attendance).filter(v => v === false).length;
     }
-
     function getRowPrefix(r) {
       const name = (rowNames && rowNames[r]) ? String(rowNames[r]) : `Dãy ${r}`;
-      const numMatch = name.match(/\d+/);
-      if (numMatch) return `D${numMatch[0]}`;
-      const charMatch = name.replace(/[^a-zA-Z]/g, '').toUpperCase();
-      if (charMatch) return `D${charMatch[0]}`;
+      const numMatch = name.match(/\d+/); if (numMatch) return `D${numMatch[0]}`;
+      const charMatch = name.replace(/[^a-zA-Z]/g, '').toUpperCase(); if (charMatch) return `D${charMatch[0]}`;
       return `D${r}`;
     }
-
-    function getDisplayRoomId(r, p) {
-      return `${getRowPrefix(r)}-P${String(p).padStart(2, '0')}`;
-    }
-
+    function getDisplayRoomId(r, p) { return `${getRowPrefix(r)}-P${String(p).padStart(2, '0')}`; }
     function getTodayVN() {
-      const d = new Date();
-      return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+      const d = new Date(); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
     }
-
     function getLocalDateISO(dInput) {
-      let d = new Date();
-      if (dInput instanceof Date && !isNaN(dInput)) d = dInput;
+      let d = new Date(); if (dInput instanceof Date && !isNaN(dInput)) d = dInput;
       else if (typeof dInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dInput)) return dInput;
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
 
     function findDuplicateWorker(idCard, empId, excludeRoomKey = null, excludeWorkerIdx = null) {
-      const targetCard = cleanId(idCard);
-      const targetEmp = cleanEmp(empId);
-
+      const targetCard = cleanId(idCard); const targetEmp = cleanEmp(empId);
       for (let r of Object.values(db)) {
         if (!r || !Array.isArray(r.workers)) continue;
         for (let i = 0; i < r.workers.length; i++) {
           if (excludeRoomKey && r.key === excludeRoomKey && excludeWorkerIdx !== null && i === excludeWorkerIdx) continue;
           const w = r.workers[i];
-          const displayRoom = getDisplayRoomId(r.row, r.no);
-          if (targetCard && cleanId(w.idCard) === targetCard) {
-            return `Số CCCD [${idCard}] đã tồn tại trong lán trại!\n(Đang ở: ${displayRoom} - ${w.name})`;
-          }
-          if (targetEmp && cleanEmp(w.empId) === targetEmp) {
-            return `Mã NV [${empId}] đã được sử dụng!\n(Đang ở: ${displayRoom} - ${w.name})`;
-          }
+          if (targetCard && cleanId(w.idCard) === targetCard) return `Số CCCD [${idCard}] đã tồn tại trong lán trại!\n(Đang ở: ${getDisplayRoomId(r.row, r.no)} - ${w.name})`;
+          if (targetEmp && cleanEmp(w.empId) === targetEmp) return `Mã NV [${empId}] đã được sử dụng!\n(Đang ở: ${getDisplayRoomId(r.row, r.no)} - ${w.name})`;
         }
       }
       return null;
@@ -924,53 +768,34 @@
     function loadCustomRowNames() {
       try {
         const saved = localStorage.getItem('CAMP_CUSTOM_ROW_NAMES');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed && parsed[1] && parsed[2]) rowNames = parsed;
-        }
+        if (saved) { const parsed = JSON.parse(saved); if (parsed && parsed[1] && parsed[2]) rowNames = parsed; }
       } catch (e) {}
       updateRowNamesUI();
     }
-
     function updateRowNamesUI() {
-      const opt1 = document.getElementById('optFilterDay1');
-      const opt2 = document.getElementById('optFilterDay2');
-      if (opt1) opt1.innerText = `${rowNames[1]} (P01 - P15)`;
-      if (opt2) opt2.innerText = `${rowNames[2]} (P01 - P15)`;
+      const opt1 = document.getElementById('optFilterDay1'); const opt2 = document.getElementById('optFilterDay2');
+      if (opt1) opt1.innerText = `${rowNames[1]} (P01 - P15)`; if (opt2) opt2.innerText = `${rowNames[2]} (P01 - P15)`;
     }
-
     function openRenameRowModal() {
       document.getElementById('txtCustomRow1').value = rowNames[1] || "Dãy 1";
       document.getElementById('txtCustomRow2').value = rowNames[2] || "Dãy 2";
       openModal('renameRowModal');
     }
-
     function saveCustomRowNames() {
-      const r1 = document.getElementById('txtCustomRow1').value.trim();
-      const r2 = document.getElementById('txtCustomRow2').value.trim();
+      const r1 = document.getElementById('txtCustomRow1').value.trim(); const r2 = document.getElementById('txtCustomRow2').value.trim();
       if (!r1 || !r2) return alert("Vui lòng điền đủ tên cho cả 2 dãy!");
-
       rowNames[1] = r1; rowNames[2] = r2;
       localStorage.setItem('CAMP_CUSTOM_ROW_NAMES', JSON.stringify(rowNames));
-      updateRowNamesUI();
-      renderRooms();
-      populateTargetRooms();
-      closeModal('renameRowModal');
+      updateRowNamesUI(); renderRooms(); populateTargetRooms(); closeModal('renameRowModal');
     }
-
     function resetCustomRowNames() {
       rowNames[1] = "Dãy 1"; rowNames[2] = "Dãy 2";
       localStorage.removeItem('CAMP_CUSTOM_ROW_NAMES');
-      updateRowNamesUI();
-      renderRooms();
-      populateTargetRooms();
-      closeModal('renameRowModal');
+      updateRowNamesUI(); renderRooms(); populateTargetRooms(); closeModal('renameRowModal');
     }
 
     function loadOfflineData() {
-      loadCustomRowNames();
-      db = buildDefault30Rooms();
-
+      loadCustomRowNames(); db = buildDefault30Rooms();
       try {
         const rawDb = localStorage.getItem('CAMP_OFFLINE_DB_30');
         const rawRet = localStorage.getItem('CAMP_OFFLINE_RETIRED');
@@ -983,195 +808,101 @@
               else if (k.startsWith('D2-')) targetKey = k.replace('D2-', 'R2-');
               else if (/^D\d+-P\d+$/.test(k)) {
                 const parts = k.match(/^D(\d+)-P(\d+)$/);
-                if (parts) {
-                  const rNum = (parts[1] === String(rowNames[1]).replace(/\D/g, '') || parts[1] === "1") ? 1 : 2;
-                  targetKey = `R${rNum}-P${parts[2]}`;
-                }
+                if (parts) { const rNum = (parts[1] === String(rowNames[1]).replace(/\D/g, '') || parts[1] === "1") ? 1 : 2; targetKey = `R${rNum}-P${parts[2]}`; }
               }
-
               if (db[targetKey] && parsed[k]) {
-                db[targetKey].isLocked = !!parsed[k].isLocked;
-                db[targetKey].isModified = !!parsed[k].isModified;
+                db[targetKey].isLocked = !!parsed[k].isLocked; db[targetKey].isModified = !!parsed[k].isModified;
                 db[targetKey].damage = Array.isArray(parsed[k].damage) ? parsed[k].damage : [];
-                db[targetKey].customNote = parsed[k].customNote || '';
-                db[targetKey].workers = Array.isArray(parsed[k].workers) ? parsed[k].workers : [];
+                db[targetKey].customNote = parsed[k].customNote || ''; db[targetKey].workers = Array.isArray(parsed[k].workers) ? parsed[k].workers : [];
               }
             });
           }
         }
         if (rawRet) retiredList = JSON.parse(rawRet);
       } catch (e) {}
-
-      renderRooms();
-      populateTargetRooms();
-      updateDashboardStats();
+      renderRooms(); populateTargetRooms(); updateDashboardStats();
     }
 
     function saveOfflineData() {
       try {
         localStorage.setItem('CAMP_OFFLINE_DB_30', JSON.stringify(db));
         localStorage.setItem('CAMP_OFFLINE_RETIRED', JSON.stringify(retiredList));
-        updateDashboardStats();
-        return true;
-      } catch (e) {
-        console.error('Không thể lưu dữ liệu:', e);
-        return false;
-      }
+        updateDashboardStats(); return true;
+      } catch (e) { return false; }
     }
 
-    /* ==========================================================================
-       5. NHẬT KÝ CÔNG VIỆC THEO NGÀY
-       ========================================================================== */
     function getJournalsStorage() {
-      try {
-        const raw = localStorage.getItem('CAMP_DAILY_JOURNALS');
-        return raw ? JSON.parse(raw) : {};
-      } catch (e) {
-        return {};
-      }
+      try { const raw = localStorage.getItem('CAMP_DAILY_JOURNALS'); return raw ? JSON.parse(raw) : {}; } catch (e) { return {}; }
     }
-
     function openJournalModal() {
-      const inp = document.getElementById('journalDateInput');
-      if (!inp.value) inp.value = getLocalDateISO();
-      loadJournalBySelectedDate();
-      openModal('dailyJournalModal');
+      const inp = document.getElementById('journalDateInput'); if (!inp.value) inp.value = getLocalDateISO();
+      loadJournalBySelectedDate(); openModal('dailyJournalModal');
     }
-
     function loadJournalBySelectedDate() {
       const selDate = document.getElementById('journalDateInput').value || getLocalDateISO();
-      const parts = selDate.split('-');
-      const selDateVN = `${parts[2]}/${parts[1]}/${parts[0]}`;
-
+      const parts = selDate.split('-'); const selDateVN = `${parts[2]}/${parts[1]}/${parts[0]}`;
       let total = 0, inCount = 0, presentCount = 0, absentCount = 0;
       Object.values(db).forEach(r => {
         total += (r.workers || []).length;
         (r.workers || []).forEach(w => {
           if (w.joinDate === selDateVN) inCount++;
           const att = w.attendance ? w.attendance[selDate] : null;
-          if (att === true) presentCount++;
-          else if (att === false) absentCount++;
+          if (att === true) presentCount++; else if (att === false) absentCount++;
         });
       });
       const outCount = (retiredList || []).filter(w => w.retireDate === selDateVN).length;
-
-      document.getElementById('journalDaySummary').innerHTML = `
-        <b>📊 Thống kê ngày ${selDateVN}:</b> Tổng quân số: <b>${total}</b> | Vào mới: <b style="color:var(--green);">+${inCount}</b> | Nghỉ việc: <b style="color:var(--red);">-${outCount}</b> | Điểm danh: <b style="color:var(--green);">${presentCount} có</b> / <b style="color:var(--red);">${absentCount} vắng</b>
-      `;
-
+      document.getElementById('journalDaySummary').innerHTML = `<b>📊 Thống kê ngày ${selDateVN}:</b> Tổng quân số: <b>${total}</b> | Vào mới: <b style="color:var(--green);">+${inCount}</b> | Nghỉ việc: <b style="color:var(--red);">-${outCount}</b> | Điểm danh: <b style="color:var(--green);">${presentCount} có</b> / <b style="color:var(--red);">${absentCount} vắng</b>`;
       const journals = getJournalsStorage();
       document.getElementById('journalContentText').value = journals[selDate] || '';
     }
-
     function saveDailyJournal() {
       const selDate = document.getElementById('journalDateInput').value || getLocalDateISO();
       const content = document.getElementById('journalContentText').value.trim();
-      const journals = getJournalsStorage();
-
-      journals[selDate] = content;
-      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals));
-      alert(`✓ Đã lưu nhật ký ngày ${selDate}!`);
+      const journals = getJournalsStorage(); journals[selDate] = content;
+      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals)); alert(`✓ Đã lưu nhật ký ngày ${selDate}!`);
     }
-
     function clearDailyJournal() {
       const selDate = document.getElementById('journalDateInput').value || getLocalDateISO();
       if (!confirm(`Bạn có chắc muốn xóa nội dung nhật ký ngày ${selDate}?`)) return;
-      const journals = getJournalsStorage();
-      delete journals[selDate];
+      const journals = getJournalsStorage(); delete journals[selDate];
       localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals));
       document.getElementById('journalContentText').value = '';
     }
-
     function printJournalNote() {
       const selDate = document.getElementById('journalDateInput').value || getLocalDateISO();
-      const parts = selDate.split('-');
-      const selDateVN = `${parts[2]}/${parts[1]}/${parts[0]}`;
+      const parts = selDate.split('-'); const selDateVN = `${parts[2]}/${parts[1]}/${parts[0]}`;
       const content = document.getElementById('journalContentText').value.trim() || 'Không có ghi chép nội dung.';
       const summary = document.getElementById('journalDaySummary').innerText;
-
       const printWindow = window.open('', '_blank');
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Nhật Ký Ngày - ${selDateVN}</title>
-          <style>
-            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 25px; color: #1e293b; line-height: 1.6; }
-            h2 { color: #854d0e; border-bottom: 2px solid #eab308; padding-bottom: 8px; }
-            .box { background: #fefce8; border: 1px solid #fef08a; padding: 12px; border-radius: 8px; margin: 15px 0; }
-            .content { white-space: pre-wrap; font-size: 14px; margin-top: 15px; }
-          </style>
-        </head>
-        <body>
-          <h2>NHẬT KÝ CÔNG VIỆC TRẠI - NGÀY ${selDateVN}</h2>
-          <div class="box">${summary}</div>
-          <h3>Nội Dung Ghi Chép:</h3>
-          <div class="content">${content}</div>
-        </body>
-        </html>
-      `);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => { printWindow.print(); }, 250);
+      printWindow.document.write(`<!DOCTYPE html><html><head><title>Nhật Ký - ${selDateVN}</title><style>body { font-family: sans-serif; padding: 25px; line-height: 1.6; } h2 { color: #854d0e; border-bottom: 2px solid #eab308; } .box { background: #fefce8; padding: 10px; border-radius: 6px; } .content { white-space: pre-wrap; margin-top: 15px; }</style></head><body><h2>NHẬT KÝ NGÀY ${selDateVN}</h2><div class="box">${summary}</div><h3>Nội Dung:</h3><div class="content">${content}</div></body></html>`);
+      printWindow.document.close(); printWindow.focus(); setTimeout(() => { printWindow.print(); }, 250);
     }
 
-    /* ==========================================================================
-       6. QUẢN LÝ PHÒNG & THẺ PHÒNG
-       ========================================================================== */
     function handleRoomTouchStart(key) {
       isLongPressTriggered = false;
-      pressTimer = setTimeout(() => {
-        isLongPressTriggered = true;
-        if (navigator.vibrate) navigator.vibrate(60);
-        openRoomNoteDialog(key);
-      }, 500);
+      pressTimer = setTimeout(() => { isLongPressTriggered = true; if (navigator.vibrate) navigator.vibrate(60); openRoomNoteDialog(key); }, 500);
     }
-
-    function handleRoomTouchEnd() {
-      if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
-    }
-
-    function handleRoomClick(key) {
-      if (isLongPressTriggered) { isLongPressTriggered = false; return; }
-      openRoom(key);
-    }
-
+    function handleRoomTouchEnd() { if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; } }
+    function handleRoomClick(key) { if (isLongPressTriggered) { isLongPressTriggered = false; return; } openRoom(key); }
     function openRoomNoteDialog(key) {
-      const r = db[key];
-      if (!r) return;
-      const displayId = getDisplayRoomId(r.row, r.no);
-      const rName = (rowNames && rowNames[r.row]) ? rowNames[r.row] : `Dãy ${r.row}`;
-
+      const r = db[key]; if (!r) return;
       document.getElementById('roomNoteKey').value = key;
-      document.getElementById('lblRoomNoteTitle').innerText = `${displayId} (${rName})`;
+      document.getElementById('lblRoomNoteTitle').innerText = `${getDisplayRoomId(r.row, r.no)} (${rowNames[r.row] || 'Dãy ' + r.row})`;
       document.getElementById('txtRoomQuickNote').value = r.customNote || '';
       openModal('roomNoteModal');
     }
-
     function saveRoomQuickNote() {
-      const key = document.getElementById('roomNoteKey').value;
-      if (!key || !db[key]) return;
+      const key = document.getElementById('roomNoteKey').value; if (!key || !db[key]) return;
       db[key].customNote = document.getElementById('txtRoomQuickNote').value.trim();
-      db[key].isModified = true;
-      saveOfflineData();
-      renderRooms();
-      closeModal('roomNoteModal');
+      db[key].isModified = true; saveOfflineData(); renderRooms(); closeModal('roomNoteModal');
     }
-
     function clearRoomQuickNote() {
-      const key = document.getElementById('roomNoteKey').value;
-      if (!key || !db[key]) return;
-      db[key].customNote = '';
-      db[key].isModified = true;
-      saveOfflineData();
-      renderRooms();
-      closeModal('roomNoteModal');
+      const key = document.getElementById('roomNoteKey').value; if (!key || !db[key]) return;
+      db[key].customNote = ''; db[key].isModified = true; saveOfflineData(); renderRooms(); closeModal('roomNoteModal');
     }
 
     function renderRooms(matchedKeys = null) {
-      const grid = document.getElementById('roomGrid');
-      if (!grid) return;
-
+      const grid = document.getElementById('roomGrid'); if (!grid) return;
       const dayFilter = document.getElementById('selDayFilter')?.value || 'ALL';
       const statusFilter = document.getElementById('selStatusFilter')?.value || 'ALL';
       const matchedSet = matchedKeys ? new Set(matchedKeys) : null;
@@ -1181,7 +912,6 @@
         if (matchedSet && !matchedSet.has(r.key)) return false;
         if (dayFilter !== 'ALL' && String(r.row) !== dayFilter) return false;
         const count = r.workers ? r.workers.length : 0;
-        
         if (statusFilter === 'AVAILABLE') return !r.isLocked && count < CAPACITY;
         if (statusFilter === 'FULL') return count >= CAPACITY;
         if (statusFilter === 'ABSENT_WARN') return (r.workers || []).some(w => countAbsentTimes(w) >= 3);
@@ -1190,10 +920,7 @@
         return true;
       });
 
-      if (!rooms.length) {
-        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px; color:#64748b;">Không tìm thấy phòng phù hợp.</div>`;
-        return;
-      }
+      if (!rooms.length) { grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px; color:#64748b;">Không tìm thấy phòng phù hợp.</div>`; return; }
 
       grid.innerHTML = rooms.map(r => {
         const count = r.workers ? r.workers.length : 0;
@@ -1208,179 +935,112 @@
         const hasAbsent3 = (r.workers || []).some(w => countAbsentTimes(w) >= 3);
 
         const absentWarnTag = hasAbsent3 ? `<div class="room-absent-alert">⚠️ Vắng ≥ 3</div>` : '';
-        const dirtyTag = isDirty ? `<div class="room-dirty-alert">🧹 Bẩn / Chưa dọn</div>` : '';
-        const damageTag = damages.length ? `<div class="room-absent-alert">🛠 ${damages.join(', ')}</div>` : '';
+        const dirtyTag = isDirty ? `<div class="room-dirty-alert">🧹 Bẩn</div>` : '';
+        const damageTag = damages.length ? `<div class="room-absent-alert">🛠 Hỏng</div>` : '';
         const noteTag = r.customNote ? `<div class="room-custom-note">📌 ${r.customNote}</div>` : '';
-
-        const displayId = getDisplayRoomId(r.row, r.no);
-        const rowTitle = (rowNames && rowNames[r.row]) ? rowNames[r.row] : `Dãy ${r.row}`;
         const pct = Math.min(100, Math.round((count / CAPACITY) * 100));
 
         return `
-          <div class="room-card ${cls}" 
-               onclick="handleRoomClick('${r.key}')"
-               onmousedown="handleRoomTouchStart('${r.key}')"
-               onmouseup="handleRoomTouchEnd()"
-               onmouseleave="handleRoomTouchEnd()"
-               ontouchstart="handleRoomTouchStart('${r.key}')"
-               ontouchend="handleRoomTouchEnd()"
-               ontouchcancel="handleRoomTouchEnd()"
-               oncontextmenu="event.preventDefault(); openRoomNoteDialog('${r.key}');"
-               title="Chạm để mở, giữ để ghi chú">
+          <div class="room-card ${cls}" onclick="handleRoomClick('${r.key}')" onmousedown="handleRoomTouchStart('${r.key}')" onmouseup="handleRoomTouchEnd()" ontouchstart="handleRoomTouchStart('${r.key}')" ontouchend="handleRoomTouchEnd()" oncontextmenu="event.preventDefault(); openRoomNoteDialog('${r.key}');">
             <div>
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span class="room-title" style="font-size:0.9rem; font-weight:800;">${displayId}</span>
+                <span class="room-title" style="font-size:0.9rem; font-weight:800;">${getDisplayRoomId(r.row, r.no)}</span>
                 <span class="badge-tag">${r.isLocked ? 'KHO' : `${count}/${CAPACITY}`}</span>
               </div>
-              <div class="progress-bar-bg">
-                <div class="progress-bar-fill ${count >= CAPACITY ? 'full' : ''}" style="width: ${pct}%;"></div>
-              </div>
-              <div style="font-size:0.66rem; color:#64748b;">${rowTitle} - P${r.no}</div>
+              <div class="progress-bar-bg"><div class="progress-bar-fill ${count >= CAPACITY ? 'full' : ''}" style="width: ${pct}%;"></div></div>
+              <div style="font-size:0.66rem; color:#64748b;">${rowNames[r.row] || 'Dãy ' + r.row} - P${r.no}</div>
             </div>
             <div>${absentWarnTag}${dirtyTag}${damageTag}${noteTag}</div>
           </div>
         `;
       }).join('');
-
       updateDashboardStats();
     }
 
     function updateDashboardStats() {
-      let total = 0, male = 0, female = 0, dirty = 0, full = 0, empty = 0;
-      let enteredToday = 0;
-      const today = getTodayVN();
-      const warnAbsentWorkers = [];
-
+      let total = 0, male = 0, female = 0, dirty = 0, full = 0, empty = 0, enteredToday = 0;
+      const today = getTodayVN(); const warnAbsentWorkers = [];
       Object.values(db).forEach(r => {
         const count = r.workers ? r.workers.length : 0;
         total += count;
-        if ((r.damage || []).includes('Phòng bẩn / Chưa dọn')) dirty++;
+        if ((r.damage || []).length > 0) dirty++;
         if (count >= CAPACITY) full++; else empty++;
-
         (r.workers || []).forEach(w => {
           if (w.gender === 'Nữ') female++; else male++;
           if (w.joinDate === today) enteredToday++;
-
           const absCount = countAbsentTimes(w);
-          if (absCount >= 3) {
-            warnAbsentWorkers.push({ name: w.name, room: getDisplayRoomId(r.row, r.no), times: absCount });
-          }
+          if (absCount >= 3) warnAbsentWorkers.push({ name: w.name, room: getDisplayRoomId(r.row, r.no), times: absCount });
         });
       });
-
       const retiredToday = (retiredList || []).filter(w => w.retireDate === today).length;
       const diffToday = enteredToday - retiredToday;
-      const occupancy = Math.round((total / 600) * 100);
-
       const setText = (id, txt) => { const el = document.getElementById(id); if (el) el.innerText = txt; };
-
-      setText('statOcc', `${occupancy}%`);
+      setText('statOcc', `${Math.round((total / 600) * 100)}%`);
       setText('statTotal', `${total}/600`);
       setText('statToday', enteredToday > 0 ? `+${enteredToday}` : enteredToday);
       setText('statRetiredToday', retiredToday > 0 ? `-${retiredToday}` : retiredToday);
-
       const diffEl = document.getElementById('statDiffToday');
       if (diffEl) {
-        if (diffToday > 0) { diffEl.innerText = `+${diffToday}`; diffEl.style.color = "var(--green)"; }
-        else if (diffToday < 0) { diffEl.innerText = `${diffToday}`; diffEl.style.color = "var(--red)"; }
-        else { diffEl.innerText = "0"; diffEl.style.color = "#64748b"; }
+        diffEl.innerText = diffToday > 0 ? `+${diffToday}` : diffToday;
+        diffEl.style.color = diffToday > 0 ? "var(--green)" : (diffToday < 0 ? "var(--red)" : "#64748b");
       }
-
-      const gEl = document.getElementById('statGender');
-      if (gEl) gEl.innerHTML = `${male}/<span style="color:var(--red);font-weight:bold;">${female}</span>`;
-
-      const rEl = document.getElementById('statRoomStatus');
-      if (rEl) rEl.innerHTML = `${empty}/<span style="color:var(--red);font-weight:bold;">${full}</span>`;
-
-      setText('statDirty', dirty);
-      setText('statWarnAbs', warnAbsentWorkers.length);
-
+      const gEl = document.getElementById('statGender'); if (gEl) gEl.innerHTML = `${male}/<span style="color:var(--red);">${female}</span>`;
+      const rEl = document.getElementById('statRoomStatus'); if (rEl) rEl.innerHTML = `${empty}/<span style="color:var(--red);">${full}</span>`;
+      setText('statDirty', dirty); setText('statWarnAbs', warnAbsentWorkers.length);
       const alertBar = document.getElementById('absenceAlertBar');
       const alertContent = document.getElementById('absenceAlertContent');
       if (warnAbsentWorkers.length > 0) {
         alertBar.style.display = 'block';
-        alertContent.innerHTML = warnAbsentWorkers.map(item => 
-          `• <b>${item.name}</b> (${item.room}): <span style="font-weight:bold; color:#dc2626;">Vắng ${item.times} lần</span>`
-        ).join('<br>');
-      } else {
-        alertBar.style.display = 'none';
-      }
+        alertContent.innerHTML = warnAbsentWorkers.map(item => `• <b>${item.name}</b> (${item.room}): <span style="color:#dc2626; font-weight:bold;">Vắng ${item.times} lần</span>`).join('<br>');
+      } else alertBar.style.display = 'none';
     }
 
     function openRoom(key) {
-      curRoomId = key;
-      const r = db[key];
-      const displayId = getDisplayRoomId(r.row, r.no);
-      const rName = (rowNames && rowNames[r.row]) ? rowNames[r.row] : `Dãy ${r.row}`;
-      document.getElementById('roomModalTitle').innerText = `Phòng: ${displayId} (${rName})`;
+      curRoomId = key; const r = db[key];
+      document.getElementById('roomModalTitle').innerText = `Phòng: ${getDisplayRoomId(r.row, r.no)} (${rowNames[r.row] || 'Dãy ' + r.row})`;
       document.getElementById('btnLock').innerText = r.isLocked ? '🔓 Mở Phòng' : '🔒 Khóa Phòng';
       document.getElementById('attDateInput').value = getLocalDateISO();
       document.getElementById('addWorkerBox').style.display = 'none';
-
-      renderDamageTags();
-      renderWorkersInRoom();
-      openModal('roomModal');
+      renderDamageTags(); renderWorkersInRoom(); openModal('roomModal');
     }
 
     function renderDamageTags() {
-      const r = db[curRoomId];
-      const box = document.getElementById('damageTagsBox');
+      const r = db[curRoomId]; const box = document.getElementById('damageTagsBox');
       box.innerHTML = DAMAGE_TAGS.map(t => {
         const active = (r.damage || []).includes(t);
-        const bg = active ? '#dc2626' : '#ffffff';
-        const col = active ? '#ffffff' : '#334155';
-        return `<button onclick="toggleDamageTag('${t}')" style="background:${bg}; color:${col}; border:1px solid #cbd5e1; border-radius:3px; padding:2px 5px; font-size:0.68rem; cursor:pointer; font-weight:700;">${t}</button>`;
+        return `<button onclick="toggleDamageTag('${t}')" style="background:${active ? '#dc2626' : '#ffffff'}; color:${active ? '#ffffff' : '#334155'}; border:1px solid #cbd5e1; border-radius:3px; padding:2px 5px; font-size:0.68rem; cursor:pointer; font-weight:700;">${t}</button>`;
       }).join('');
     }
-
     function toggleDamageTag(tag) {
-      const r = db[curRoomId];
-      r.damage = r.damage || [];
+      const r = db[curRoomId]; r.damage = r.damage || [];
       const idx = r.damage.indexOf(tag);
-      if (idx > -1) r.damage.splice(idx, 1);
-      else { r.damage.push(tag); r.isModified = true; }
-      saveOfflineData();
-      renderDamageTags();
-      renderRooms();
+      if (idx > -1) r.damage.splice(idx, 1); else { r.damage.push(tag); r.isModified = true; }
+      saveOfflineData(); renderDamageTags(); renderRooms();
     }
-
     function toggleLockRoom() {
       const r = db[curRoomId];
       if (!r.isLocked && r.workers.length > 0) return alert("Chỉ có thể khóa khi phòng trống!");
-      r.isLocked = !r.isLocked;
-      saveOfflineData();
-      document.getElementById('btnLock').innerText = r.isLocked ? '🔓 Mở Phòng' : '🔒 Khóa Phòng';
-      renderRooms();
+      r.isLocked = !r.isLocked; saveOfflineData();
+      document.getElementById('btnLock').innerText = r.isLocked ? '🔓 Mở Phòng' : '🔒 Khóa Phòng'; renderRooms();
     }
 
     function renderWorkersInRoom() {
-      const r = db[curRoomId];
-      if (!r) return;
+      const r = db[curRoomId]; if (!r) return;
       document.getElementById('curRoomCount').innerText = r.workers.length;
       const curDate = document.getElementById('attDateInput').value || getLocalDateISO();
       const tbody = document.getElementById('workerTableBody');
-
-      if (!r.workers.length) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#94a3b8; padding:10px;">Phòng chưa có công nhân.</td></tr>`;
-        return;
-      }
+      if (!r.workers.length) { tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#94a3b8; padding:10px;">Phòng chưa có công nhân.</td></tr>`; return; }
 
       tbody.innerHTML = r.workers.map((w, idx) => {
         const att = w.attendance ? w.attendance[curDate] : null;
-        let attText = '<span style="color:#94a3b8;">-</span>';
-        if (att === true) attText = '<b style="color:var(--green);">Có</b>';
-        if (att === false) attText = '<b style="color:var(--red);">Vắng</b>';
-
+        let attText = att === true ? '<b style="color:var(--green);">Có</b>' : (att === false ? '<b style="color:var(--red);">Vắng</b>' : '<span style="color:#94a3b8;">-</span>');
         const absCount = countAbsentTimes(w);
         const warnBadge = absCount >= 3 ? `<span style="background:#fee2e2; color:#dc2626; border:1px solid #f87171; font-size:0.6rem; padding:1px 3px; border-radius:3px; margin-left:3px; font-weight:bold;">⚠️ ${absCount}</span>` : '';
 
         return `
           <tr>
             <td><span style="font-weight:bold; color:#475569;">${w.empId || '-'}</span></td>
-            <td>
-              <b style="color:var(--navy);">${w.name}</b>
-              <small style="color:${w.gender === 'Nữ' ? 'var(--red)' : '#64748b'}">(${w.gender})</small>${warnBadge}
-            </td>
+            <td><b>${w.name}</b> <small style="color:${w.gender === 'Nữ' ? 'var(--red)' : '#64748b'}">(${w.gender})</small>${warnBadge}</td>
             <td>${w.idCard || '-'}</td>
             <td style="max-width:120px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${w.address || '-'}</td>
             <td style="text-align:center;">
@@ -1404,429 +1064,166 @@
     }
 
     function openEditWorkerModal(idx) {
-      const r = db[curRoomId];
-      if (!r || !r.workers[idx]) return;
-      const w = r.workers[idx];
-
+      const w = db[curRoomId].workers[idx];
       document.getElementById('editWorkerIndex').value = idx;
-      document.getElementById('editEmpId').value = w.empId || '';
-      document.getElementById('editName').value = w.name || '';
-      document.getElementById('editGender').value = w.gender || 'Nam';
-      document.getElementById('editIdCard').value = w.idCard || '';
-      document.getElementById('editDob').value = w.dob || '';
-      document.getElementById('editPhone').value = w.phone || '';
-      document.getElementById('editAddress').value = w.address || '';
-      document.getElementById('editNote').value = w.note || '';
-
+      document.getElementById('editEmpId').value = w.empId || ''; document.getElementById('editName').value = w.name || '';
+      document.getElementById('editGender').value = w.gender || 'Nam'; document.getElementById('editIdCard').value = w.idCard || '';
+      document.getElementById('editDob').value = w.dob || ''; document.getElementById('editPhone').value = w.phone || '';
+      document.getElementById('editAddress').value = w.address || ''; document.getElementById('editNote').value = w.note || '';
       openModal('editWorkerModal');
     }
-
     function saveEditedWorker() {
-      const r = db[curRoomId];
       const idx = parseInt(document.getElementById('editWorkerIndex').value, 10);
-      if (!r || isNaN(idx) || !r.workers[idx]) return;
-
-      const name = document.getElementById('editName').value.trim();
-      const idCard = document.getElementById('editIdCard').value.trim();
+      const name = document.getElementById('editName').value.trim(); const idCard = document.getElementById('editIdCard').value.trim();
       const empId = document.getElementById('editEmpId').value.trim();
-
-      if (!name || !idCard) return alert("Họ tên và Số CCCD không được bỏ trống!");
+      if (!name || !idCard) return alert("Họ tên và CCCD không được để trống!");
       if (!/^\d{12}$/.test(cleanId(idCard))) return alert("Số CCCD phải đủ 12 chữ số!");
+      const dup = findDuplicateWorker(idCard, empId, curRoomId, idx); if (dup) return alert(dup);
 
-      const dupError = findDuplicateWorker(idCard, empId, curRoomId, idx);
-      if (dupError) return alert(dupError);
-
-      const target = r.workers[idx];
-      target.empId = empId;
-      target.name = name;
-      target.gender = document.getElementById('editGender').value;
-      target.idCard = idCard;
-      target.dob = document.getElementById('editDob').value.trim();
-      target.phone = document.getElementById('editPhone').value.trim();
-      target.address = document.getElementById('editAddress').value.trim();
-      target.note = document.getElementById('editNote').value.trim();
-
-      r.isModified = true;
-      saveOfflineData();
-      renderWorkersInRoom();
-      renderRooms();
-      closeModal('editWorkerModal');
-      alert("✓ Cập nhật thông tin công nhân thành công!");
+      const t = db[curRoomId].workers[idx];
+      t.empId = empId; t.name = name; t.gender = document.getElementById('editGender').value;
+      t.idCard = idCard; t.dob = document.getElementById('editDob').value.trim();
+      t.phone = document.getElementById('editPhone').value.trim(); t.address = document.getElementById('editAddress').value.trim();
+      t.note = document.getElementById('editNote').value.trim();
+      db[curRoomId].isModified = true; saveOfflineData(); renderWorkersInRoom(); renderRooms(); closeModal('editWorkerModal');
     }
 
     function toggleWorkerForm() {
-      const box = document.getElementById('addWorkerBox');
-      box.style.display = box.style.display === 'none' ? 'block' : 'none';
+      const b = document.getElementById('addWorkerBox'); b.style.display = b.style.display === 'none' ? 'block' : 'none';
     }
-
     function addWorkerDirect() {
-      const r = db[curRoomId];
-      if (r.workers.length >= CAPACITY) return alert("Phòng đã đủ 20 người!");
-      const name = document.getElementById('wName').value.trim();
-      const idCard = document.getElementById('wIdCard').value.trim();
+      const r = db[curRoomId]; if (r.workers.length >= CAPACITY) return alert("Phòng đã đủ 20 người!");
+      const name = document.getElementById('wName').value.trim(); const idCard = document.getElementById('wIdCard').value.trim();
       const empId = document.getElementById('wEmpId').value.trim();
-
       if (!name || !idCard) return alert("Vui lòng điền đủ Tên và CCCD!");
-      if (!/^\d{12}$/.test(cleanId(idCard))) return alert("CCCD phải gồm đúng 12 chữ số!");
-      const dupError = findDuplicateWorker(idCard, empId);
-      if (dupError) return alert(dupError);
+      if (!/^\d{12}$/.test(cleanId(idCard))) return alert("CCCD phải đủ 12 chữ số!");
+      const dup = findDuplicateWorker(idCard, empId); if (dup) return alert(dup);
 
       r.workers.push({
-        empId, name, idCard,
-        gender: document.getElementById('wGender').value,
-        dob: document.getElementById('wDob').value.trim(),
-        phone: document.getElementById('wPhone').value.trim(),
-        address: document.getElementById('wAddress').value.trim(),
-        note: document.getElementById('wNote').value.trim(),
-        joinDate: getTodayVN(),
-        attendance: {}
+        empId, name, idCard, gender: document.getElementById('wGender').value,
+        dob: document.getElementById('wDob').value.trim(), phone: document.getElementById('wPhone').value.trim(),
+        address: document.getElementById('wAddress').value.trim(), note: document.getElementById('wNote').value.trim(),
+        joinDate: getTodayVN(), attendance: {}
       });
-
-      r.isModified = true;
-      saveOfflineData();
-      renderWorkersInRoom();
-      renderRooms();
+      r.isModified = true; saveOfflineData(); renderWorkersInRoom(); renderRooms();
       ['wEmpId', 'wName', 'wIdCard', 'wDob', 'wPhone', 'wAddress', 'wNote'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('addWorkerBox').style.display = 'none';
     }
-
     function setWorkerAtt(idx, status) {
       const curDate = document.getElementById('attDateInput').value || getLocalDateISO();
-      const w = db[curRoomId].workers[idx];
-      w.attendance = w.attendance || {};
-      if (status === null) delete w.attendance[curDate];
-      else w.attendance[curDate] = status;
-
-      saveOfflineData();
-      renderWorkersInRoom();
+      const w = db[curRoomId].workers[idx]; w.attendance = w.attendance || {};
+      if (status === null) delete w.attendance[curDate]; else w.attendance[curDate] = status;
+      saveOfflineData(); renderWorkersInRoom();
     }
-
     function batchAttendance(status) {
       const curDate = document.getElementById('attDateInput').value || getLocalDateISO();
       db[curRoomId].workers.forEach(w => {
         w.attendance = w.attendance || {};
-        if (status === null) delete w.attendance[curDate];
-        else w.attendance[curDate] = status;
+        if (status === null) delete w.attendance[curDate]; else w.attendance[curDate] = status;
       });
-      saveOfflineData();
-      renderWorkersInRoom();
+      saveOfflineData(); renderWorkersInRoom();
     }
-
     function retireWorker(idx) {
-      const r = db[curRoomId];
-      const w = r.workers[idx];
+      const r = db[curRoomId]; const w = r.workers[idx];
       if (!confirm(`Xác nhận cho công nhân ${w.name} nghỉ việc?`)) return;
-
       const removed = r.workers.splice(idx, 1)[0];
       retiredList.unshift({
-        empId: removed.empId || "-",
-        name: removed.name,
-        idCard: removed.idCard,
-        gender: removed.gender || "Nam",
-        address: removed.address || "-",
-        room: getDisplayRoomId(r.row, r.no),
-        joinDate: removed.joinDate || "-",
-        retireDate: getTodayVN()
+        empId: removed.empId || "-", name: removed.name, idCard: removed.idCard, gender: removed.gender || "Nam",
+        address: removed.address || "-", room: getDisplayRoomId(r.row, r.no), joinDate: removed.joinDate || "-", retireDate: getTodayVN()
       });
-
-      r.isModified = true;
-      saveOfflineData();
-      renderWorkersInRoom();
-      renderRooms();
+      r.isModified = true; saveOfflineData(); renderWorkersInRoom(); renderRooms();
     }
 
     function populateTargetRooms() {
       const selTransfer = document.getElementById('transferTargetSelect');
       const selScan = document.getElementById('gTargetRoom');
-      if (selTransfer) selTransfer.innerHTML = '';
-      if (selScan) selScan.innerHTML = '';
-
+      if (selTransfer) selTransfer.innerHTML = ''; if (selScan) selScan.innerHTML = '';
       Object.values(db).forEach(r => {
         const count = r.workers ? r.workers.length : 0;
-        const displayId = getDisplayRoomId(r.row, r.no);
-        const rName = (rowNames && rowNames[r.row]) ? rowNames[r.row] : `Dãy ${r.row}`;
         if (!r.isLocked && count < CAPACITY) {
-          const opt = document.createElement('option');
-          opt.value = r.key;
-          opt.innerText = `${displayId} (${rName} - Còn ${CAPACITY - count} chỗ)`;
-          if (selTransfer) selTransfer.appendChild(opt);
-          if (selScan) selScan.appendChild(opt.cloneNode(true));
+          const opt = document.createElement('option'); opt.value = r.key;
+          opt.innerText = `${getDisplayRoomId(r.row, r.no)} (${rowNames[r.row] || 'Dãy ' + r.row} - Còn ${CAPACITY - count} chỗ)`;
+          if (selTransfer) selTransfer.appendChild(opt); if (selScan) selScan.appendChild(opt.cloneNode(true));
         }
       });
     }
-
     function openTransferDialog(idx) {
-      transferringWorkerIdx = idx;
-      populateTargetRooms();
-      document.getElementById('transferWorkerName').innerText = db[curRoomId].workers[idx].name;
-      openModal('transferModal');
+      transferringWorkerIdx = idx; populateTargetRooms();
+      document.getElementById('transferWorkerName').innerText = db[curRoomId].workers[idx].name; openModal('transferModal');
     }
-
     function confirmTransferWorker() {
       const targetKey = document.getElementById('transferTargetSelect').value;
       if (!targetKey || targetKey === curRoomId) return alert("Vui lòng chọn phòng đến hợp lệ!");
-
       const worker = db[curRoomId].workers.splice(transferringWorkerIdx, 1)[0];
-      db[targetKey].workers.push(worker);
-      db[curRoomId].isModified = true;
-      db[targetKey].isModified = true;
-
-      saveOfflineData();
-      closeModal('transferModal');
-      renderWorkersInRoom();
-      renderRooms();
+      db[targetKey].workers.push(worker); db[curRoomId].isModified = true; db[targetKey].isModified = true;
+      saveOfflineData(); closeModal('transferModal'); renderWorkersInRoom(); renderRooms();
       alert(`Đã chuyển sang ${getDisplayRoomId(db[targetKey].row, db[targetKey].no)}!`);
     }
 
     function triggerPrintRoomList() {
-      const r = db[curRoomId];
-      if (!r) return;
-
+      const r = db[curRoomId]; if (!r) return;
       const displayId = getDisplayRoomId(r.row, r.no);
-      const rName = (rowNames && rowNames[r.row]) ? rowNames[r.row] : `Dãy ${r.row}`;
-      const printDate = getTodayVN();
-
-      let rowsHtml = (!r.workers || r.workers.length === 0) 
-        ? `<tr><td colspan="7" style="text-align:center; padding:15px;">Phòng trống.</td></tr>`
-        : r.workers.map((w, idx) => `
-          <tr>
-            <td style="text-align:center;">${idx + 1}</td>
-            <td style="text-align:center;">${w.empId || '-'}</td>
-            <td><b>${w.name}</b></td>
-            <td style="text-align:center;">${w.gender || 'Nam'}</td>
-            <td style="text-align:center;">${w.idCard || '-'}</td>
-            <td style="text-align:center;">${w.phone || '-'}</td>
-            <td>${w.address || '-'}</td>
-          </tr>
-        `).join('');
-
+      let rowsHtml = (!r.workers || r.workers.length === 0) ? `<tr><td colspan="7" style="text-align:center; padding:15px;">Phòng trống.</td></tr>` :
+        r.workers.map((w, idx) => `<tr><td style="text-align:center;">${idx + 1}</td><td style="text-align:center;">${w.empId || '-'}</td><td><b>${w.name}</b></td><td style="text-align:center;">${w.gender || 'Nam'}</td><td style="text-align:center;">${w.idCard || '-'}</td><td style="text-align:center;">${w.phone || '-'}</td><td>${w.address || '-'}</td></tr>`).join('');
       const printWindow = window.open('', '_blank');
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Danh Sách - ${displayId}</title>
-          <style>
-            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 25px 35px; color: #0f172a; line-height: 1.4; }
-            h2 { text-align: center; margin-bottom: 4px; color: #1e3a8a; font-size: 20px; font-weight: 800; }
-            .sub-header { text-align: center; font-size: 13px; color: #475569; margin-bottom: 20px; }
-            table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-            th, td { border: 1px solid #94a3b8; padding: 8px 6px; }
-            th { background-color: #f8fafc; font-weight: 700; color: #334155; }
-            
-            .signature-section {
-              margin-top: 40px;
-              display: flex;
-              justify-content: space-between;
-              padding: 0 40px;
-              page-break-inside: avoid;
-            }
-            .signature-box {
-              text-align: center;
-              font-size: 13px;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-            }
-            .signature-title {
-              font-weight: 800;
-              color: #0f172a;
-              margin-bottom: 4px;
-            }
-            .signature-sub {
-              font-size: 12px;
-              color: #475569;
-              font-style: italic;
-              margin-bottom: 80px;
-            }
-          </style>
-        </head>
-        <body>
-          <h2>DANH SÁCH CÔNG NHÂN Ở PHÒNG: ${displayId}</h2>
-          <div class="sub-header">Thuộc: <b>${rName}</b> | Quân số hiện tại: <b>${r.workers.length}/${CAPACITY}</b> | Ngày in: ${printDate}</div>
-          <table>
-            <thead>
-              <tr>
-                <th style="width:35px;">STT</th>
-                <th style="width:75px;">MÃ NV</th>
-                <th>HỌ VÀ TÊN</th>
-                <th style="width:65px;">GIỚI TÍNH</th>
-                <th style="width:110px;">SỐ CCCD</th>
-                <th style="width:95px;">SỐ ĐT</th>
-                <th>ĐỊA CHỈ / QUÊ QUÁN</th>
-              </tr>
-            </thead>
-            <tbody>${rowsHtml}</tbody>
-          </table>
-
-          <div class="signature-section">
-            <div class="signature-box">
-              <div class="signature-title">Người lập biểu</div>
-              <div class="signature-sub">(Ký, họ tên)</div>
-            </div>
-            <div class="signature-box">
-              <div class="signature-title">Ban Quản Lý Lán Trại</div>
-              <div class="signature-sub">(Ký, đóng dấu)</div>
-            </div>
-          </div>
-        </body>
-        </html>
-      `);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => { printWindow.print(); }, 250);
+      printWindow.document.write(`<!DOCTYPE html><html><head><title>Danh Sách - ${displayId}</title><style>body { font-family: sans-serif; padding: 25px; line-height: 1.4; } h2 { text-align: center; color: #1e3a8a; } table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; } th, td { border: 1px solid #94a3b8; padding: 7px 5px; } th { background-color: #f8fafc; } .sig { margin-top: 40px; display: flex; justify-content: space-between; padding: 0 40px; text-align: center; }</style></head><body><h2>DANH SÁCH CÔNG NHÂN Ở PHÒNG: ${displayId}</h2><div style="text-align:center; font-size:13px; margin-bottom:15px;">Quân số: <b>${r.workers.length}/${CAPACITY}</b> | Ngày in: ${getTodayVN()}</div><table><thead><tr><th>STT</th><th>MÃ NV</th><th>HỌ VÀ TÊN</th><th>GIỚI TÍNH</th><th>SỐ CCCD</th><th>SỐ ĐT</th><th>ĐỊA CHỈ / QUÊ QUÁN</th></tr></thead><tbody>${rowsHtml}</tbody></table><div class="sig"><div><b>Người lập biểu</b><br><i>(Ký, họ tên)</i></div><div><b>Ban Quản Lý Lán Trại</b><br><i>(Ký, đóng dấu)</i></div></div></body></html>`);
+      printWindow.document.close(); printWindow.focus(); setTimeout(() => { printWindow.print(); }, 250);
     }
 
     /* ==========================================================================
-       7. CAMERA & NHẬN DIỆN CCCD (QR + OCR)
+       4. BỘ GIẢI MÃ NÂNG CAO CHO CĂN CƯỚC MẪU MỚI (QR MẬT ĐỘ CAO + MRZ)
        ========================================================================== */
-    let lastCccdImageForOcr = null;
-    let ocrWorkerPromise = null;
-
-    async function getOcrWorker() {
-      if (typeof Tesseract === 'undefined' || !Tesseract.createWorker) throw new Error('Thư viện OCR chưa tải!');
-      if (!ocrWorkerPromise) {
-        ocrWorkerPromise = Tesseract.createWorker('vie+eng', 1, {
-          logger: (m) => {
-            const msg = document.getElementById('camStatusMsg');
-            if (msg && m.status) msg.textContent = `OCR: ${m.status}`;
+    function parseMrzBackOfNewId(text) {
+      if (!text) return null;
+      const clean = text.replace(/[ \t]/g, '').toUpperCase();
+      const lines = clean.split('\n').filter(l => l.length >= 25);
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.includes('IDVNM') || line.includes('VNM')) {
+          const matchId = line.match(/\d{12}/);
+          if (matchId) {
+            let idCard = matchId[0];
+            let name = '';
+            for (let j = i + 1; j < lines.length; j++) {
+              if (lines[j].includes('<<')) {
+                const parts = lines[j].split('<<');
+                name = parts.map(p => p.replace(/</g, ' ').trim()).filter(Boolean).join(' ');
+                break;
+              }
+            }
+            return { idCard, name: name || "Căn cước mới" };
           }
-        });
-      }
-      return ocrWorkerPromise;
-    }
-
-    function applyOcrText(text) {
-      const raw = String(text || '').replace(/\r/g, '\n');
-      const lines = raw.split('\n').map(s => s.trim()).filter(Boolean);
-      for (let line of lines) {
-        const digits = line.replace(/\D/g, '');
-        if (/\d{12}/.test(digits)) {
-          document.getElementById('gIdCard').value = digits.match(/\d{12}/)[0];
-          break;
         }
       }
-      alert('Đã trích xuất thông tin qua OCR! Hãy kiểm tra lại trước khi lưu.');
+      return null;
     }
 
-    async function runOcrOnImage(imageSource) {
-      const msg = document.getElementById('camStatusMsg');
-      try {
-        if (!imageSource) throw new Error('Chưa có ảnh CCCD.');
-        if (msg) msg.textContent = 'Đang nhận diện ký tự OCR...';
-        const worker = await getOcrWorker();
-        const result = await worker.recognize(imageSource);
-        applyOcrText(result && result.data ? result.data.text : '');
-      } catch (e) {
-        if (msg) msg.textContent = 'Lỗi OCR: ' + (e.message || e);
+    function parseCccdData(raw) {
+      const parts = String(raw).split('|').map(s => s.trim());
+      if (parts.length >= 5) {
+        document.getElementById('gIdCard').value = parts[0];
+        document.getElementById('gName').value = parts[2] || parts[1];
+        let rawDob = parts[3] || "";
+        if (rawDob.length === 8) rawDob = `${rawDob.substr(0,2)}/${rawDob.substr(2,2)}/${rawDob.substr(4,4)}`;
+        document.getElementById('gDob').value = rawDob;
+        document.getElementById('gGender').value = (parts[4] && parts[4].toLowerCase().includes('nữ')) ? 'Nữ' : 'Nam';
+        if (parts[5]) document.getElementById('gAddress').value = parts[5];
+        alert(`✓ Đã quét thành công Căn cước!\n- CCCD: ${parts[0]}\n- Tên: ${parts[2] || parts[1]}`);
+      } else {
+        const digits = raw.match(/\d{12}/);
+        if (digits) {
+          document.getElementById('gIdCard').value = digits[0];
+          alert(`✓ Đã nhận diện số Căn cước: ${digits[0]}`);
+        } else {
+          document.getElementById('gIdCard').value = parts[0] || raw;
+        }
       }
     }
 
-    function runOcrFromCurrentImage() {
-      if (lastCccdImageForOcr) return runOcrOnImage(lastCccdImageForOcr);
-      const video = document.getElementById('camVideo');
-      if (localStream && video && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-        const canvas = document.getElementById('ocrCanvas');
-        canvas.width = video.videoWidth || 1280; canvas.height = video.videoHeight || 720;
-        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-        lastCccdImageForOcr = canvas;
-        return runOcrOnImage(canvas);
-      }
-      document.getElementById('fileFallbackGallery').click();
-    }
-
-    async function startLiveCameraStream() {
-      const video = document.getElementById('camVideo');
-      const msg = document.getElementById('camStatusMsg');
-      closeCameraStream();
-      msg.innerText = "Đang kết nối camera đọc mã QR...";
-
-      try {
-        localStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } }
-        });
-        video.srcObject = localStream;
-        await video.play();
-        isScanning = true;
-        lastScanTime = performance.now();
-        msg.innerText = "Đưa mã QR trên thẻ CCCD vào khung quét.";
-        requestAnimationFrame(scanLiveVideo);
-      } catch (e) {
-        msg.innerText = "Camera bị chặn. Hãy bấm nút 'Chụp ảnh gốc'!";
-      }
-    }
-
-    async function toggleFlashlight() {
-      if (!localStream) return alert("Camera chưa bật!");
-      const track = localStream.getVideoTracks()[0];
-      const cap = track.getCapabilities ? track.getCapabilities() : {};
-      if (!cap.torch) return alert("Thiết bị không hỗ trợ Flash qua trình duyệt!");
-
-      try {
-        flashOn = !flashOn;
-        await track.applyConstraints({ advanced: [{ torch: flashOn }] });
-        document.getElementById('btnToggleFlash').style.background = flashOn ? '#16a34a' : '#d97706';
-      } catch (err) { alert("Lỗi đèn Flash: " + err.message); }
-    }
-
-    function triggerDirectFrameCapture() {
-      const video = document.getElementById('camVideo');
-      if (!video || !localStream || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
-        return document.getElementById('fileFallbackCamera').click();
-      }
-
-      document.getElementById('camStatusMsg').innerText = "⏳ Đang phân tích khung hình...";
-      const capCanvas = document.createElement('canvas');
-      capCanvas.width = video.videoWidth || 1280; capCanvas.height = video.videoHeight || 720;
-      const ctx = capCanvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, capCanvas.width, capCanvas.height);
-
-      lastCccdImageForOcr = capCanvas;
-      const base64Img = capCanvas.toDataURL('image/jpeg', 0.95);
-      const img = new Image();
-      img.onload = () => {
-        let code = advancedScanCCCD(img);
-        if (code && code.data) parseCccdData(code.data);
-        else runOcrOnImage(capCanvas);
-      };
-      img.src = base64Img;
-    }
-
-    function scanLiveVideo(now) {
-      if (!isScanning) return;
-      const video = document.getElementById('camVideo');
-      const canvas = document.getElementById('qrCanvas');
-
-      if (typeof jsQR !== 'function') {
-        isScanning = false;
-        return;
-      }
-
-      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && (now - lastScanTime > 120)) {
-        lastScanTime = now;
-        const vw = video.videoWidth, vh = video.videoHeight;
-        canvas.width = 480; canvas.height = 300;
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        ctx.drawImage(video, Math.round(vw * 0.15), Math.round(vh * 0.2), Math.round(vw * 0.7), Math.round(vh * 0.6), 0, 0, 480, 300);
-
-        try {
-          const imgData = ctx.getImageData(0, 0, 480, 300);
-          let code = jsQR(imgData.data, 480, 300, { inversionAttempts: "dontInvert" });
-          if (code && code.data) {
-            isScanning = false;
-            closeCameraStream();
-            if (navigator.vibrate) navigator.vibrate(80);
-            parseCccdData(code.data);
-            return;
-          }
-        } catch (err) {}
-      }
-      requestAnimationFrame(scanLiveVideo);
-    }
-
-    function advancedScanCCCD(img) {
+    function multiAngleQrScan(img) {
       if (typeof jsQR !== 'function') return null;
-      const origW = img.naturalWidth || img.width, origH = img.naturalHeight || img.height;
+      const origW = img.naturalWidth || img.width;
+      const origH = img.naturalHeight || img.height;
       const canvas = document.createElement('canvas');
       canvas.width = origW; canvas.height = origH;
       const ctx = canvas.getContext('2d');
@@ -1848,37 +1245,102 @@
       return null;
     }
 
-    function parseCccdData(raw) {
-      const parts = String(raw).split('|').map(s => s.trim());
-      if (parts.length >= 5) {
-        document.getElementById('gIdCard').value = parts[0];
-        document.getElementById('gName').value = parts[2] || parts[1];
-        let rawDob = parts[3] || "";
-        if (rawDob.length === 8) rawDob = `${rawDob.substr(0,2)}/${rawDob.substr(2,2)}/${rawDob.substr(4,4)}`;
-        document.getElementById('gDob').value = rawDob;
-        document.getElementById('gGender').value = (parts[4] && parts[4].toLowerCase().includes('nữ')) ? 'Nữ' : 'Nam';
-        if (parts[5]) document.getElementById('gAddress').value = parts[5];
-        alert(`✓ Quét thành công!\n- Số: ${parts[0]}\n- Họ tên: ${parts[2] || parts[1]}`);
-      } else {
-        document.getElementById('gIdCard').value = parts[0] || raw;
-      }
-    }
-
-    function handleProcessImage(input) {
+    async function handleProcessHighDefImage(input) {
       if (!input.files || !input.files[0]) return;
+      const msg = document.getElementById('camStatusMsg');
+      if (msg) msg.innerText = "⏳ Đang phân tích độ nét cao và giải mã CCCD...";
+
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
-        img.onload = () => {
-          lastCccdImageForOcr = img;
-          let code = advancedScanCCCD(img);
-          if (code && code.data) parseCccdData(code.data);
-          else runOcrOnImage(img);
+        img.onload = async () => {
+          let qrCode = multiAngleQrScan(img);
+          if (qrCode && qrCode.data) {
+            parseCccdData(qrCode.data);
+            if (msg) msg.innerText = "✓ Nhận diện thành công!";
+            return;
+          }
+
+          if (msg) msg.innerText = "⏳ Đang đọc dải mã vạch MRZ mặt sau...";
+          try {
+            if (typeof Tesseract !== 'undefined') {
+              const res = await Tesseract.recognize(img, 'vie+eng');
+              const text = res && res.data ? res.data.text : '';
+              const mrzData = parseMrzBackOfNewId(text);
+              if (mrzData && mrzData.idCard) {
+                document.getElementById('gIdCard').value = mrzData.idCard;
+                if (mrzData.name && mrzData.name !== "Căn cước mới") {
+                  document.getElementById('gName').value = mrzData.name;
+                }
+                alert(`✓ Đã đọc được Căn cước mới qua mã vạch!\n- Số CCCD: ${mrzData.idCard}\n- Họ tên: ${mrzData.name}`);
+                if (msg) msg.innerText = "✓ Nhận diện thành công!";
+                return;
+              } else {
+                const digits = text.match(/\d{12}/);
+                if (digits) {
+                  document.getElementById('gIdCard').value = digits[0];
+                  alert(`✓ Đã nhận diện số CCCD: ${digits[0]}`);
+                  if (msg) msg.innerText = "✓ Đã lấy được số CCCD!";
+                  return;
+                }
+              }
+            }
+          } catch (err) {}
+
+          alert("Ảnh chưa đủ nét. Hãy bấm 'Chụp đọc CCCD' lại gần hơn và đủ sáng!");
+          if (msg) msg.innerText = "Chụp lại ảnh nét hơn để nhận diện.";
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(input.files[0]);
       input.value = "";
+    }
+
+    async function startLiveCameraStream() {
+      const video = document.getElementById('camVideo');
+      const msg = document.getElementById('camStatusMsg');
+      closeCameraStream();
+      if (msg) msg.innerText = "Đang kết nối camera Full HD...";
+
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } }
+        });
+        video.srcObject = localStream;
+        await video.play();
+        isScanning = true; lastScanTime = performance.now();
+        if (msg) msg.innerText = "Đưa mã QR hoặc mặt sau thẻ vào khung.";
+        requestAnimationFrame(scanLiveVideo);
+      } catch (e) {
+        if (msg) msg.innerText = "Camera trực tiếp bị chặn. Bấm nút 'Chụp đọc CCCD' ở dưới!";
+      }
+    }
+
+    function scanLiveVideo(now) {
+      if (!isScanning) return;
+      const video = document.getElementById('camVideo');
+      const canvas = document.getElementById('qrCanvas');
+      if (typeof jsQR !== 'function') { isScanning = false; return; }
+
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && (now - lastScanTime > 150)) {
+        lastScanTime = now;
+        const vw = video.videoWidth, vh = video.videoHeight;
+        canvas.width = 640; canvas.height = 400;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(video, Math.round(vw * 0.1), Math.round(vh * 0.15), Math.round(vw * 0.8), Math.round(vh * 0.7), 0, 0, 640, 400);
+
+        try {
+          const imgData = ctx.getImageData(0, 0, 640, 400);
+          let code = jsQR(imgData.data, 640, 400, { inversionAttempts: "attemptBoth" });
+          if (code && code.data) {
+            isScanning = false; closeCameraStream();
+            if (navigator.vibrate) navigator.vibrate(80);
+            parseCccdData(code.data);
+            return;
+          }
+        } catch (err) {}
+      }
+      requestAnimationFrame(scanLiveVideo);
     }
 
     function saveQuickScanWorker() {
@@ -1891,206 +1353,127 @@
       if (db[targetKey].isLocked) return alert("Phòng đang khóa!");
       if ((db[targetKey].workers || []).length >= CAPACITY) return alert("Phòng đã đủ 20 người!");
       if (!name || !idCard) return alert("Vui lòng nhập Tên và CCCD!");
-      if (!/^\d{12}$/.test(cleanId(idCard))) return alert("CCCD phải gồm đúng 12 chữ số!");
+      if (!/^\d{12}$/.test(cleanId(idCard))) return alert("CCCD phải đủ 12 chữ số!");
 
-      const dupError = findDuplicateWorker(idCard, empId);
-      if (dupError) return alert(dupError);
+      const dup = findDuplicateWorker(idCard, empId); if (dup) return alert(dup);
 
       db[targetKey].workers.push({
-        empId, name, idCard,
-        gender: document.getElementById('gGender').value,
-        dob: document.getElementById('gDob').value.trim(),
-        phone: document.getElementById('gPhone').value.trim(),
-        address: document.getElementById('gAddress').value.trim(),
-        note: document.getElementById('gNote').value.trim(),
-        joinDate: getTodayVN(),
-        attendance: {}
+        empId, name, idCard, gender: document.getElementById('gGender').value,
+        dob: document.getElementById('gDob').value.trim(), phone: document.getElementById('gPhone').value.trim(),
+        address: document.getElementById('gAddress').value.trim(), note: document.getElementById('gNote').value.trim(),
+        joinDate: getTodayVN(), attendance: {}
       });
-
-      db[targetKey].isModified = true;
-      saveOfflineData();
-      renderRooms();
-      closeGlobalScanner();
+      db[targetKey].isModified = true; saveOfflineData(); renderRooms(); closeGlobalScanner();
       alert(`Đã lưu ${name} vào phòng!`);
     }
 
     function openGlobalScanner() {
       populateTargetRooms();
-      ['gNote', 'gAddress'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-      });
-      lastCccdImageForOcr = null;
+      ['gNote', 'gAddress'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
       openModal('globalScanModal');
       startLiveCameraStream();
     }
-
     function closeCameraStream() {
       isScanning = false;
-      if (localStream) {
-        localStream.getTracks().forEach(t => t.stop());
-        localStream = null;
-      }
+      if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
     }
-
     function closeGlobalScanner() {
-      closeCameraStream();
-      closeModal('globalScanModal');
+      closeCameraStream(); closeModal('globalScanModal');
     }
 
     /* ==========================================================================
-       8. XUẤT EXCEL & SAO LƯU DỮ LIỆU
+       5. XUẤT EXCEL & SAO LƯU DỰ PHÒNG
        ========================================================================== */
     function exportDataExcel() {
       if (typeof XLSX === 'undefined') return alert("Thư viện Excel chưa được tải xong!");
-      const todayISO = getLocalDateISO();
-      const todayVN = getTodayVN();
-
+      const todayISO = getLocalDateISO(); const todayVN = getTodayVN();
       const currentRows = [];
-      let total = 0, male = 0, female = 0, dirty = 0, full = 0, empty = 0;
-      let enteredToday = 0, presentToday = 0, absentToday = 0;
-      let warnAbsentCount = 0;
+      let total = 0, male = 0, female = 0, dirty = 0, full = 0, empty = 0, enteredToday = 0, presentToday = 0, absentToday = 0, warnAbsentCount = 0;
 
       Object.values(db).forEach(r => {
-        const rName = (rowNames && rowNames[r.row]) ? rowNames[r.row] : `Dãy ${r.row}`;
-        const displayId = getDisplayRoomId(r.row, r.no);
-        const count = (r.workers || []).length;
-        total += count;
-
-        if ((r.damage || []).includes('Phòng bẩn / Chưa dọn') || (r.damage || []).length > 0) dirty++;
+        const count = (r.workers || []).length; total += count;
+        if ((r.damage || []).length > 0) dirty++;
         if (count >= CAPACITY) full++; else empty++;
-
         (r.workers || []).forEach(w => {
           if (w.gender === 'Nữ') female++; else male++;
           if (w.joinDate === todayVN) enteredToday++;
-
           const att = w.attendance ? w.attendance[todayISO] : null;
-          if (att === true) presentToday++;
-          else if (att === false) absentToday++;
-
+          if (att === true) presentToday++; else if (att === false) absentToday++;
           if (countAbsentTimes(w) >= 3) warnAbsentCount++;
 
           currentRows.push({
-            'Tên Dãy': rName,
-            'Phòng': displayId,
-            'Mã NV': w.empId || '',
-            'Họ và Tên': w.name,
-            'Số CCCD': w.idCard ? String(w.idCard) : '',
-            'Giới Tính': w.gender,
-            'Ngày Sinh': w.dob || '',
-            'Số ĐT': w.phone ? String(w.phone) : '',
-            'Địa Chỉ': w.address || '',
-            'Ngày Vào': w.joinDate,
-            'Ghi Chú': w.note || ''
+            'Tên Dãy': rowNames[r.row] || `Dãy ${r.row}`, 'Phòng': getDisplayRoomId(r.row, r.no),
+            'Mã NV': w.empId || '', 'Họ và Tên': w.name, 'Số CCCD': w.idCard ? String(w.idCard) : '',
+            'Giới Tính': w.gender, 'Ngày Sinh': w.dob || '', 'Số ĐT': w.phone ? String(w.phone) : '',
+            'Địa Chỉ': w.address || '', 'Ngày Vào': w.joinDate, 'Ghi Chú': w.note || ''
           });
         });
       });
 
       const retiredToday = (retiredList || []).filter(w => w.retireDate === todayVN).length;
       const diffToday = enteredToday - retiredToday;
-      const occPercent = Math.round((total / 600) * 100);
-
       const wb = XLSX.utils.book_new();
 
-      const wsCurrent = XLSX.utils.json_to_sheet(currentRows);
-      XLSX.utils.book_append_sheet(wb, wsCurrent, 'DanhSach');
-
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(currentRows), 'DanhSach');
       const retiredRows = (retiredList || []).map((w, idx) => ({
-        'STT': idx + 1,
-        'Mã NV': w.empId || '',
-        'Họ và Tên': w.name,
-        'Số CCCD': w.idCard ? String(w.idCard) : '',
-        'Giới Tính': w.gender || 'Nam',
-        'Địa Chỉ': w.address || '',
-        'Phòng Cũ': w.room || '',
-        'Ngày Vào': w.joinDate || '-',
-        'Ngày Nghỉ': w.retireDate || ''
+        'STT': idx + 1, 'Mã NV': w.empId || '', 'Họ và Tên': w.name, 'Số CCCD': w.idCard ? String(w.idCard) : '',
+        'Giới Tính': w.gender || 'Nam', 'Địa Chỉ': w.address || '', 'Phòng Cũ': w.room || '', 'Ngày Vào': w.joinDate || '-', 'Ngày Nghỉ': w.retireDate || ''
       }));
-      const wsRetired = XLSX.utils.json_to_sheet(retiredRows);
-      XLSX.utils.book_append_sheet(wb, wsRetired, 'DanhSachNghiViec');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(retiredRows), 'DanhSachNghiViec');
 
-      const reportRows = [
-        {
-          'STT': 1,
-          'Ngày Báo Cáo': todayVN,
-          'Hiệu Suất (%)': `${occPercent}%`,
-          'Tổng Quân Số': `${total}/600`,
-          'Vào Hôm Nay': enteredToday > 0 ? `+${enteredToday}` : `${enteredToday}`,
-          'Nghỉ Hôm Nay': retiredToday > 0 ? `-${retiredToday}` : `${retiredToday}`,
-          'Biến Động (+/-)': diffToday > 0 ? `+${diffToday}` : `${diffToday}`,
-          'Điểm Danh Có Mặt': `${presentToday} người`,
-          'Điểm Danh Vắng': `${absentToday} người`,
-          'Nam': male,
-          'Nữ': female,
-          'Phòng Trống': empty,
-          'Phòng Đầy': full,
-          'Cần Dọn/Hỏng': dirty,
-          'Cảnh Báo Vắng ≥ 3 Lần': warnAbsentCount
-        }
-      ];
-      const wsReport = XLSX.utils.json_to_sheet(reportRows);
-      XLSX.utils.book_append_sheet(wb, wsReport, 'BaoCaoNgay');
+      const reportRows = [{
+        'STT': 1, 'Ngày Báo Cáo': todayVN, 'Hiệu Suất (%)': `${Math.round((total / 600) * 100)}%`,
+        'Tổng Quân Số': `${total}/600`, 'Vào Hôm Nay': enteredToday > 0 ? `+${enteredToday}` : `${enteredToday}`,
+        'Nghỉ Hôm Nay': retiredToday > 0 ? `-${retiredToday}` : `${retiredToday}`,
+        'Biến Động (+/-)': diffToday > 0 ? `+${diffToday}` : `${diffToday}`,
+        'Điểm Danh Có Mặt': `${presentToday} người`, 'Điểm Danh Vắng': `${absentToday} người`,
+        'Nam': male, 'Nữ': female, 'Phòng Trống': empty, 'Phòng Đầy': full, 'Cần Dọn/Hỏng': dirty, 'Cảnh Báo Vắng ≥ 3 Lần': warnAbsentCount
+      }];
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(reportRows), 'BaoCaoNgay');
 
       try {
         const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
         const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         triggerMobileDownload(blob, `BaoCao_LanTrai_${todayISO}.xlsx`);
-      } catch (e) {
-        alert("Lỗi xuất file: " + e.message);
-      }
+      } catch (e) { alert("Lỗi xuất file: " + e.message); }
     }
 
     function handleExcelUpload(e) {
-      if (typeof XLSX === 'undefined') return alert("Thư viện Excel chưa được tải!");
-      const file = e.target.files[0];
-      if (!file) return;
+      const file = e.target.files[0]; if (!file) return;
       const reader = new FileReader();
       reader.onload = (evt) => {
         try {
           const wb = XLSX.read(new Uint8Array(evt.target.result), { type: 'array' });
           const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-          let count = 0, rIdx = 0;
-          const roomList = Object.values(db).filter(r => !r.isLocked);
-
+          let count = 0, rIdx = 0; const roomList = Object.values(db).filter(r => !r.isLocked);
           rows.forEach(row => {
             const name = row['Họ và Tên'] || row['Họ tên'] || row['Tên'];
             const idCard = String(row['Số CCCD'] || row['CCCD'] || row['CMND'] || '').trim();
             const empId = String(row['Mã NV'] || '').trim();
             const gender = (row['Giới tính'] || '').includes('Nữ') ? 'Nữ' : 'Nam';
-
             if (name && idCard) {
               if (findDuplicateWorker(idCard, empId)) return;
               while (rIdx < roomList.length && roomList[rIdx].workers.length >= CAPACITY) rIdx++;
               if (rIdx < roomList.length) {
                 roomList[rIdx].workers.push({
                   empId, name: String(name).trim(), idCard, gender,
-                  dob: String(row['Ngày Sinh'] || ''),
-                  phone: String(row['SĐT'] || ''),
-                  address: String(row['Địa Chỉ'] || row['Quê Quán'] || ''),
-                  note: String(row['Ghi Chú'] || ''),
-                  joinDate: getTodayVN(),
-                  attendance: {}
+                  dob: String(row['Ngày Sinh'] || ''), phone: String(row['SĐT'] || ''),
+                  address: String(row['Địa Chỉ'] || row['Quê Quán'] || ''), note: String(row['Ghi Chú'] || ''),
+                  joinDate: getTodayVN(), attendance: {}
                 });
-                roomList[rIdx].isModified = true;
-                count++;
+                roomList[rIdx].isModified = true; count++;
               }
             }
           });
-
-          saveOfflineData();
-          renderRooms();
-          closeModal('importModal');
-          alert(`Đã nạp ${count} công nhân từ Excel!`);
+          saveOfflineData(); renderRooms(); closeModal('importModal'); alert(`Đã nạp ${count} công nhân từ Excel!`);
         } catch (err) { alert("Lỗi đọc file: " + err.message); }
       };
       reader.readAsArrayBuffer(file);
     }
 
     function downloadExcelTemplate() {
-      if (typeof XLSX === 'undefined') return alert("Thư viện Excel chưa sẵn sàng!");
       const data = [['Mã NV', 'Họ và Tên', 'Số CCCD', 'Giới tính', 'Ngày Sinh', 'SĐT', 'Địa Chỉ', 'Ghi Chú'], ['NV01', 'Nguyễn Văn A', '012345678901', 'Nam', '01/01/1990', '0900000000', 'Bình Định', 'Tổ thợ hàn']];
-      const ws = XLSX.utils.aoa_to_sheet(data);
-      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(data); const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'MauNhap');
       const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
       const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -2104,44 +1487,27 @@
     }
 
     function restoreJsonDatabase(e) {
-      const file = e.target.files[0];
-      if (!file) return;
+      const file = e.target.files[0]; if (!file) return;
       const reader = new FileReader();
       reader.onload = (evt) => {
         try {
           const parsed = JSON.parse(evt.target.result);
           if (parsed && parsed.db) {
-            db = parsed.db;
-            retiredList = parsed.retiredList || [];
-            if (parsed.rowNames) {
-              rowNames = parsed.rowNames;
-              localStorage.setItem('CAMP_CUSTOM_ROW_NAMES', JSON.stringify(rowNames));
-            }
-            if (parsed.journals) {
-              localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(parsed.journals));
-            }
-            saveOfflineData();
-            updateRowNamesUI();
-            renderRooms();
-            populateTargetRooms();
+            db = parsed.db; retiredList = parsed.retiredList || [];
+            if (parsed.rowNames) { rowNames = parsed.rowNames; localStorage.setItem('CAMP_CUSTOM_ROW_NAMES', JSON.stringify(rowNames)); }
+            if (parsed.journals) localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(parsed.journals));
+            saveOfflineData(); updateRowNamesUI(); renderRooms(); populateTargetRooms();
             alert("✓ Phục hồi dữ liệu thành công!");
-          } else alert("File sao lưu không đúng định dạng!");
-        } catch (err) { alert("Lỗi đọc file: " + err.message); }
+          }
+        } catch (err) { alert("Lỗi đọc file!"); }
       };
-      reader.readAsText(file);
-      e.target.value = '';
+      reader.readAsText(file); e.target.value = '';
     }
 
     function resetAllData() {
       if (!confirm("CẢNH BÁO: Xóa toàn bộ dữ liệu phòng, công nhân và nhật ký?")) return;
-      localStorage.removeItem('CAMP_OFFLINE_DB_30');
-      localStorage.removeItem('CAMP_OFFLINE_RETIRED');
-      localStorage.removeItem('CAMP_DAILY_JOURNALS');
-      db = buildDefault30Rooms();
-      retiredList = [];
-      renderRooms();
-      populateTargetRooms();
-      updateDashboardStats();
+      localStorage.removeItem('CAMP_OFFLINE_DB_30'); localStorage.removeItem('CAMP_OFFLINE_RETIRED'); localStorage.removeItem('CAMP_DAILY_JOURNALS');
+      db = buildDefault30Rooms(); retiredList = []; renderRooms(); populateTargetRooms(); updateDashboardStats();
       alert("Đã làm sạch dữ liệu!");
     }
 
@@ -2151,16 +1517,11 @@
       const matched = [];
       Object.values(db).forEach(r => {
         const hasWorker = (r.workers || []).some(w =>
-          (w.name && w.name.toLowerCase().includes(val)) ||
-          (w.idCard && w.idCard.includes(val)) ||
-          (w.empId && w.empId.toLowerCase().includes(val)) ||
-          (w.phone && w.phone.includes(val)) ||
-          (w.address && w.address.toLowerCase().includes(val))
+          (w.name && w.name.toLowerCase().includes(val)) || (w.idCard && w.idCard.includes(val)) ||
+          (w.empId && w.empId.toLowerCase().includes(val)) || (w.phone && w.phone.includes(val)) || (w.address && w.address.toLowerCase().includes(val))
         );
         const displayId = getDisplayRoomId(r.row, r.no).toLowerCase();
-        if (hasWorker || displayId.includes(val) || (r.customNote && r.customNote.toLowerCase().includes(val))) {
-          matched.push(r.key);
-        }
+        if (hasWorker || displayId.includes(val) || (r.customNote && r.customNote.toLowerCase().includes(val))) matched.push(r.key);
       });
       renderRooms(matched);
     }
@@ -2168,31 +1529,24 @@
     function openRetiredModal() {
       const tbody = document.getElementById('retiredTableBody');
       tbody.innerHTML = (retiredList || []).length === 0 ? `<tr><td colspan="5" style="text-align:center; padding:10px; color:#64748b;">Chưa có ai nghỉ việc.</td></tr>` :
-        retiredList.map(w => `
-          <tr>
-            <td><b style="color:#475569;">${w.empId || '-'}</b></td>
-            <td><b>${w.name}</b></td>
-            <td>${w.idCard}</td>
-            <td>${w.room}</td>
-            <td>${w.retireDate}</td>
-          </tr>
-        `).join('');
+        retiredList.map(w => `<tr><td><b>${w.empId || '-'}</b></td><td><b>${w.name}</b></td><td>${w.idCard}</td><td>${w.room}</td><td>${w.retireDate}</td></tr>`).join('');
       openModal('retiredModal');
     }
 
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { 
-      if (id === 'globalScanModal') closeCameraStream();
-      document.getElementById(id).style.display = 'none'; 
-    }
+    function closeModal(id) { if (id === 'globalScanModal') closeCameraStream(); document.getElementById(id).style.display = 'none'; }
 
     // KHỞI ĐỘNG HỆ THỐNG
-    (function init() {
+    document.addEventListener("DOMContentLoaded", function () {
       updateWelcomeBannerDate();
       if (checkDeviceActivation()) {
         loadOfflineData();
       }
-    })();
+    });
+
+    window.onload = function() {
+      checkDeviceActivation();
+    };
   </script>
 </body>
 </html>
