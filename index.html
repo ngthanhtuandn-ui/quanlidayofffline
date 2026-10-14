@@ -794,130 +794,38 @@
     }
 
     /* ==========================================================================
-       3. GOOGLE DRIVE BACKUP (TỰ ĐỘNG + THỦ CÔNG)
-       Lưu cục bộ trước; sao lưu Drive khi có mạng. Tự động chỉ chạy khi trang
-       đang mở/được hệ điều hành cho phép chạy nền.
+       3. GOOGLE DRIVE SYNC
        ========================================================================== */
-    const DRIVE_BACKUP_INTERVAL_MS = 30 * 60 * 1000;
-    const DRIVE_BACKUP_DEBOUNCE_MS = 4000;
-    let driveBackupDebounceTimer = null;
-    let driveBackupInProgress = false;
-    let driveBackupPending = false;
-
     function openGoogleDriveModal() {
       const savedUrl = localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') || '';
       document.getElementById('txtGoogleScriptUrl').value = savedUrl;
-      document.getElementById('driveStatusMsg').innerHTML =
-        '<span style="color:#64748b">Dữ liệu được lưu trên điện thoại trước. Khi có Webhook và Internet, ứng dụng sẽ tự sao lưu sau khi thay đổi.</span>';
+      document.getElementById('driveStatusMsg').innerHTML = '';
       openModal('googleDriveModal');
     }
 
-    function getDriveBackupPayload() {
-      return {
-        app: 'QuanLyLanTrai',
-        schemaVersion: 1,
-        updatedAt: new Date().toISOString(),
-        rowNames: rowNames,
-        db: db,
-        retiredList: retiredList,
-        journals: getJournalsStorage()
-      };
-    }
-
-    function setDriveBackupStatus(message, isError = false) {
-      const el = document.getElementById('driveStatusMsg');
-      if (el) el.innerHTML = `<span style="color:${isError ? 'var(--red)' : 'var(--green)'}">${message}</span>`;
-    }
-
-    async function syncToGoogleDriveFolder(silent = false) {
-      const input = document.getElementById('txtGoogleScriptUrl');
-      const scriptUrl = ((input && input.value.trim()) || localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') || '').trim();
-      if (!scriptUrl) {
-        if (!silent) {
-          openGoogleDriveModal();
-          setDriveBackupStatus('Chưa cấu hình URL Webhook. Hãy dán URL Apps Script rồi bấm sao lưu.', true);
-          alert('Bạn cần dán URL Webhook Google Apps Script trước khi sao lưu.');
-        }
-        return false;
-      }
-      if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(scriptUrl)) {
-        if (!silent) alert('URL Webhook chưa đúng định dạng /exec của Google Apps Script.');
-        setDriveBackupStatus('URL Webhook không đúng định dạng.', true);
-        return false;
-      }
+    async function syncToGoogleDriveFolder() {
+      const scriptUrl = document.getElementById('txtGoogleScriptUrl').value.trim();
+      if (!scriptUrl) return alert("Vui lòng dán Webhook URL của Google Apps Script!");
       localStorage.setItem('CAMP_GOOGLE_SCRIPT_URL', scriptUrl);
-      if (!navigator.onLine) {
-        driveBackupPending = true;
-        setDriveBackupStatus('Đang ngoại tuyến; dữ liệu vẫn ở trên điện thoại. Sẽ thử sao lưu khi có mạng.', true);
-        return false;
-      }
-      if (driveBackupInProgress) {
-        driveBackupPending = true;
-        return false;
-      }
-
-      driveBackupInProgress = true;
       const statusEl = document.getElementById('driveStatusMsg');
-      if (statusEl) statusEl.innerHTML = '<span style="color:var(--primary)">⏳ Đang sao lưu dữ liệu lên Google Drive…</span>';
+      statusEl.innerHTML = '<span style="color:var(--primary); font-weight:bold;">⏳ Đang truyền dữ liệu vào thư mục Google Drive...</span>';
+
+      const payload = { updatedAt: new Date().toISOString(), rowNames, db, retiredList, journals: getJournalsStorage() };
       try {
-        const payload = getDriveBackupPayload();
         const response = await fetch(scriptUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload),
-          redirect: 'follow'
+          body: JSON.stringify(payload)
         });
-        if (!response.ok) throw new Error('HTTP ' + response.status);
         const result = await response.json();
-        if (!result || result.status !== 'success') {
-          throw new Error((result && result.message) || 'Webhook không xác nhận thành công');
-        }
-        localStorage.setItem('CAMP_DRIVE_LAST_SUCCESS', new Date().toISOString());
-        localStorage.removeItem('CAMP_DRIVE_BACKUP_PENDING');
-        driveBackupPending = false;
-        const msg = '✓ Sao lưu Drive thành công lúc ' + new Date().toLocaleString('vi-VN') +
-          (result.fileUrl ? `<br><a href="${result.fileUrl}" target="_blank" rel="noopener" style="text-decoration:underline">Mở bản sao lưu trên Drive</a>` : '');
-        setDriveBackupStatus(msg);
-        if (!silent) alert('✓ Đã sao lưu dữ liệu lên Google Drive.');
-        return true;
+        if (result && result.status === 'success') {
+          statusEl.innerHTML = `<b style="color:var(--green);">✓ Đã lưu thành công vào Google Drive!</b><br><a href="${result.fileUrl}" target="_blank" style="color:var(--primary); text-decoration:underline;">Xem file trên Drive</a>`;
+          alert("✓ Sao lưu dữ liệu vào Google Drive thành công!");
+        } else throw new Error(result.message || "Lỗi phản hồi");
       } catch (err) {
-        driveBackupPending = true;
-        localStorage.setItem('CAMP_DRIVE_BACKUP_PENDING', '1');
-        setDriveBackupStatus('⚠️ Sao lưu Drive thất bại: ' + (err.message || err) +
-          '. Dữ liệu vẫn được lưu trên điện thoại; ứng dụng sẽ thử lại khi có thay đổi/mạng.', true);
-        if (!silent) alert('Không sao lưu được lên Drive. Dữ liệu vẫn ở trên điện thoại. Kiểm tra Webhook, quyền truy cập và Internet.');
-        return false;
-      } finally {
-        driveBackupInProgress = false;
-        if (driveBackupPending && navigator.onLine) {
-          driveBackupPending = false;
-          scheduleDriveBackup(1500);
-        }
+        statusEl.innerHTML = `<span style="color:var(--red);">⚠️ Đã tự động sao lưu file về máy...</span>`;
+        backupJsonDatabase();
       }
-    }
-
-    function scheduleDriveBackup(delay = DRIVE_BACKUP_DEBOUNCE_MS) {
-      if (!localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL')) return;
-      if (driveBackupDebounceTimer) clearTimeout(driveBackupDebounceTimer);
-      driveBackupDebounceTimer = setTimeout(() => {
-        driveBackupDebounceTimer = null;
-        syncToGoogleDriveFolder(true);
-      }, delay);
-    }
-
-    function startDriveAutoBackup() {
-      // Nếu trước đó có thay đổi chưa sao lưu, thử lại khi ứng dụng mở.
-      if (localStorage.getItem('CAMP_DRIVE_BACKUP_PENDING') === '1') scheduleDriveBackup(2500);
-      else if (localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') && !localStorage.getItem('CAMP_DRIVE_LAST_SUCCESS')) scheduleDriveBackup(3000);
-      // Lịch 30 phút chỉ hoạt động khi trang còn chạy; đây không phải tác vụ máy chủ.
-      setInterval(() => {
-        if (localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') && navigator.onLine) {
-          syncToGoogleDriveFolder(true);
-        }
-      }, DRIVE_BACKUP_INTERVAL_MS);
-      window.addEventListener('online', () => {
-        if (localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL')) scheduleDriveBackup(1200);
-      });
     }
 
     /* ==========================================================================
@@ -1055,9 +963,7 @@
       try {
         localStorage.setItem('CAMP_OFFLINE_DB_30', JSON.stringify(db));
         localStorage.setItem('CAMP_OFFLINE_RETIRED', JSON.stringify(retiredList));
-        updateDashboardStats();
-        scheduleDriveBackup();
-        return true;
+        updateDashboardStats(); return true;
       } catch (e) { return false; }
     }
 
@@ -1089,13 +995,13 @@
       const selDate = document.getElementById('journalDateInput').value || getLocalDateISO();
       const content = document.getElementById('journalContentText').value.trim();
       const journals = getJournalsStorage(); journals[selDate] = content;
-      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals)); scheduleDriveBackup(); alert(`✓ Đã lưu nhật ký ngày ${selDate}!`);
+      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals)); alert(`✓ Đã lưu nhật ký ngày ${selDate}!`);
     }
     function clearDailyJournal() {
       const selDate = document.getElementById('journalDateInput').value || getLocalDateISO();
       if (!confirm(`Bạn có chắc muốn xóa nội dung nhật ký ngày ${selDate}?`)) return;
       const journals = getJournalsStorage(); delete journals[selDate];
-      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals)); scheduleDriveBackup();
+      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals));
       document.getElementById('journalContentText').value = '';
     }
     function printJournalNote() {
@@ -1777,7 +1683,6 @@
 
     document.addEventListener("DOMContentLoaded", function () {
       updateWelcomeBannerDate();
-      startDriveAutoBackup();
       if (checkDeviceActivation()) {
         loadOfflineData();
       }
