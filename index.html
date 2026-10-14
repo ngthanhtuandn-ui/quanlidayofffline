@@ -63,6 +63,7 @@
       user-select: none;
     }
 
+    /* HIỆU ỨNG THỜI TIẾT ĐỘNG */
     .sun-rays { animation: rotateRays 14s linear infinite; transform-origin: 24px 24px; }
     @keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
@@ -213,6 +214,7 @@
       color: #22c55e; font-size: 8.5px; font-weight: 800; text-align: center;
     }
 
+    /* MÀN HÌNH KHÓA XÁC THỰC */
     #lockScreen { position: fixed; inset: 0; background: #0f172a; z-index: 999999; display: flex; justify-content: center; align-items: center; padding: 10px; }
     .lock-box { background: white; border-radius: 12px; max-width: 360px; width: 100%; padding: 22px 16px; text-align: center; box-shadow: 0 14px 30px rgba(0,0,0,0.5); }
   </style>
@@ -231,6 +233,7 @@
     </div>
   </div>
 
+  <!-- INPUT FILE CHỤP & TẢI ẢNH ĐỘ NÉT CAO -->
   <input type="file" id="fileDirectHdCamera" accept="image/*" capture="camera" onchange="handleProcessHighDefImage(this)" style="display:none;">
   <input type="file" id="fileFallbackGallery" accept="image/*" onchange="handleProcessHighDefImage(this)" style="display:none;">
   <input type="file" id="fileRestoreDb" accept=".json" onchange="restoreJsonDatabase(event)" style="display:none;">
@@ -244,7 +247,7 @@
     <button class="retired" onclick="openRetiredModal()">📋 Nghỉ Việc</button>
   </div>
 
-  <!-- BANNER LỜI CHÀO & THỜI TIẾT DỰ BÁO -->
+  <!-- BANNER LỜI CHÀO & THỜI TIẾT DỰ BÁO THÔNG MINH -->
   <div class="welcome-banner" id="welcomeBanner">
     <div class="weather-widget-box" id="weatherBox" onclick="cycleWeatherMode()" title="Chạm để chuyển: Nắng gắt / Mây / Mưa / Ban đêm"></div>
     <div>
@@ -316,7 +319,7 @@
   <!-- LƯỚI DANH SÁCH PHÒNG -->
   <div class="room-grid" id="roomGrid"></div>
 
-  <!-- MODAL QUÉT CCCD TINH GỌN -->
+  <!-- MODAL QUÉT CCCD TINH GỌN ĐÚNG 2 NÚT NÂNG CAO -->
   <div class="modal" id="globalScanModal">
     <div class="modal-content">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
@@ -385,11 +388,8 @@
           <input type="text" id="txtGoogleScriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
         </div>
       </div>
-      <button onclick="syncToGoogleDriveFolder(false)" class="btn btn-drive" style="width:100%; padding:10px; margin-top:6px;">☁️ Tải Lên Thư Mục Google Drive</button>
+      <button onclick="syncToGoogleDriveFolder()" class="btn btn-drive" style="width:100%; padding:10px; margin-top:6px;">☁️ Tải Lên Thư Mục Google Drive</button>
       <div id="driveStatusMsg" style="margin-top:8px; font-size:0.75rem; text-align:center;"></div>
-      <div id="autoSyncStatusMsg" style="margin-top:4px; font-size:0.72rem; color:#10b981; text-align:center;">
-        ⚡ Chế độ tự động: Đang kích hoạt định kỳ 30 phút/lần.
-      </div>
     </div>
   </div>
 
@@ -594,7 +594,7 @@
 
   <script>
     /* ==========================================================================
-       1. BẢO MẬT & THIẾT BỊ
+       1. BẢO MẬT THIẾT BỊ
        ========================================================================== */
     const APP_VERSION = "V2_SECURE_2026_10";
     const LICENSE_SALT = "CAMP_SECURE_2026";
@@ -659,6 +659,7 @@
 
       if (mode === 'sunny') {
         banner.classList.remove('night-mode');
+        // NẮNG GẮT: Mặt trời xoay nhẹ và tỏa tia nắng rực rỡ
         svgHtml = `
           <svg viewBox="0 0 48 48" width="38" height="38">
             <g class="sun-rays" stroke="#f59e0b" stroke-width="2.6" stroke-linecap="round">
@@ -683,6 +684,7 @@
         `;
       } else if (mode === 'cloudy') {
         banner.classList.remove('night-mode');
+        // NẮNG ĐẸP NHIỀU MÂY: Mặt trời bồng bềnh sau đám mây trôi
         svgHtml = `
           <svg viewBox="0 0 48 48" width="38" height="38">
             <circle cx="18" cy="18" r="8" fill="#fbbf24" />
@@ -694,6 +696,7 @@
         `;
       } else if (mode === 'rainy') {
         banner.classList.remove('night-mode');
+        // TRỜI MƯA: Mây xám + hạt mưa rơi chuyển động sinh động
         svgHtml = `
           <svg viewBox="0 0 48 48" width="38" height="38">
             <path d="M12 24 h24 a6 6 0 0 0 0 -12 a5.5 5.5 0 0 0 -9.5 -2.2 a6 6 0 0 0 -10.5 5.2 a5 5 0 0 0 -4 9 z" fill="#64748b" />
@@ -706,6 +709,7 @@
         `;
       } else {
         banner.classList.add('night-mode');
+        // BAN ĐÊM: Trăng sao nhấp nháy
         svgHtml = `
           <svg viewBox="0 0 48 48" width="38" height="38">
             <path d="M30 11 A12 12 0 1 1 16 32 A13 13 0 0 0 30 11 Z" fill="#fde047" />
@@ -718,16 +722,19 @@
       box.innerHTML = svgHtml;
     }
 
+    // NÚT CHẠM ĐỔI NHANH 4 TRẠNG THÁI THỜI TIẾT
     function cycleWeatherMode() {
       currentWeatherIndex = (currentWeatherIndex + 1) % WEATHER_MODES.length;
       localStorage.setItem('CAMP_WEATHER_MANUAL_MODE', currentWeatherIndex);
       renderWeatherWidget();
     }
 
+    // TỰ ĐỘNG PHÁT HIỆN THỜI TIẾT THỰC TẾ (OPEN-METEO API & GPS)
     async function detectSmartLiveWeather() {
       const hour = new Date().getHours();
       const isNight = (hour >= 18 || hour < 6);
 
+      // Bước 1: Ưu tiên lấy tọa độ GPS thực tế
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           async (pos) => {
@@ -741,13 +748,13 @@
                 const isDay = data.current.is_day === 1;
 
                 if (!isDay) {
-                  currentWeatherIndex = 3;
+                  currentWeatherIndex = 3; // night
                 } else if ([51,53,55,61,63,65,80,81,82,95].includes(code)) {
-                  currentWeatherIndex = 2;
+                  currentWeatherIndex = 2; // rainy
                 } else if ([1,2,3,45,48].includes(code)) {
-                  currentWeatherIndex = 1;
+                  currentWeatherIndex = 1; // cloudy
                 } else {
-                  currentWeatherIndex = 0;
+                  currentWeatherIndex = 0; // sunny
                 }
                 renderWeatherWidget();
                 return;
@@ -787,60 +794,130 @@
     }
 
     /* ==========================================================================
-       3. GOOGLE DRIVE SYNC (THỦ CÔNG & TỰ ĐỘNG ĐỊNH KỲ 30 PHÚT)
+       3. GOOGLE DRIVE BACKUP (TỰ ĐỘNG + THỦ CÔNG)
+       Lưu cục bộ trước; sao lưu Drive khi có mạng. Tự động chỉ chạy khi trang
+       đang mở/được hệ điều hành cho phép chạy nền.
        ========================================================================== */
+    const DRIVE_BACKUP_INTERVAL_MS = 30 * 60 * 1000;
+    const DRIVE_BACKUP_DEBOUNCE_MS = 4000;
+    let driveBackupDebounceTimer = null;
+    let driveBackupInProgress = false;
+    let driveBackupPending = false;
+
     function openGoogleDriveModal() {
       const savedUrl = localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') || '';
       document.getElementById('txtGoogleScriptUrl').value = savedUrl;
-      document.getElementById('driveStatusMsg').innerHTML = '';
+      document.getElementById('driveStatusMsg').innerHTML =
+        '<span style="color:#64748b">Dữ liệu được lưu trên điện thoại trước. Khi có Webhook và Internet, ứng dụng sẽ tự sao lưu sau khi thay đổi.</span>';
       openModal('googleDriveModal');
     }
 
-    async function syncToGoogleDriveFolder(isSilent = false) {
-      const scriptUrl = (document.getElementById('txtGoogleScriptUrl')?.value || localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') || '').trim();
+    function getDriveBackupPayload() {
+      return {
+        app: 'QuanLyLanTrai',
+        schemaVersion: 1,
+        updatedAt: new Date().toISOString(),
+        rowNames: rowNames,
+        db: db,
+        retiredList: retiredList,
+        journals: getJournalsStorage()
+      };
+    }
+
+    function setDriveBackupStatus(message, isError = false) {
+      const el = document.getElementById('driveStatusMsg');
+      if (el) el.innerHTML = `<span style="color:${isError ? 'var(--red)' : 'var(--green)'}">${message}</span>`;
+    }
+
+    async function syncToGoogleDriveFolder(silent = false) {
+      const input = document.getElementById('txtGoogleScriptUrl');
+      const scriptUrl = ((input && input.value.trim()) || localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') || '').trim();
       if (!scriptUrl) {
-        if (!isSilent) alert("Vui lòng dán Webhook URL của Google Apps Script!");
-        return;
+        if (!silent) {
+          openGoogleDriveModal();
+          setDriveBackupStatus('Chưa cấu hình URL Webhook. Hãy dán URL Apps Script rồi bấm sao lưu.', true);
+          alert('Bạn cần dán URL Webhook Google Apps Script trước khi sao lưu.');
+        }
+        return false;
+      }
+      if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(scriptUrl)) {
+        if (!silent) alert('URL Webhook chưa đúng định dạng /exec của Google Apps Script.');
+        setDriveBackupStatus('URL Webhook không đúng định dạng.', true);
+        return false;
       }
       localStorage.setItem('CAMP_GOOGLE_SCRIPT_URL', scriptUrl);
-      const statusEl = document.getElementById('driveStatusMsg');
-      if (statusEl && !isSilent) {
-        statusEl.innerHTML = '<span style="color:var(--primary); font-weight:bold;">⏳ Đang truyền dữ liệu vào thư mục Google Drive...</span>';
+      if (!navigator.onLine) {
+        driveBackupPending = true;
+        setDriveBackupStatus('Đang ngoại tuyến; dữ liệu vẫn ở trên điện thoại. Sẽ thử sao lưu khi có mạng.', true);
+        return false;
+      }
+      if (driveBackupInProgress) {
+        driveBackupPending = true;
+        return false;
       }
 
-      const payload = { updatedAt: new Date().toISOString(), rowNames, db, retiredList, journals: getJournalsStorage() };
+      driveBackupInProgress = true;
+      const statusEl = document.getElementById('driveStatusMsg');
+      if (statusEl) statusEl.innerHTML = '<span style="color:var(--primary)">⏳ Đang sao lưu dữ liệu lên Google Drive…</span>';
       try {
+        const payload = getDriveBackupPayload();
         const response = await fetch(scriptUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          redirect: 'follow'
         });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
         const result = await response.json();
-        if (result && result.status === 'success') {
-          const timeStr = new Date().toLocaleTimeString();
-          if (statusEl) {
-            statusEl.innerHTML = `<b style="color:var(--green);">✓ Đã lưu thành công lúc ${timeStr}!</b><br><a href="${result.fileUrl}" target="_blank" style="color:var(--primary); text-decoration:underline;">Xem file trên Drive</a>`;
-          }
-          const autoMsg = document.getElementById('autoSyncStatusMsg');
-          if (autoMsg) autoMsg.innerHTML = `⚡ Tự động lưu thành công lúc: <b>${timeStr}</b>`;
-          if (!isSilent) alert("✓ Sao lưu dữ liệu vào Google Drive thành công!");
-        } else throw new Error(result.message || "Lỗi phản hồi");
+        if (!result || result.status !== 'success') {
+          throw new Error((result && result.message) || 'Webhook không xác nhận thành công');
+        }
+        localStorage.setItem('CAMP_DRIVE_LAST_SUCCESS', new Date().toISOString());
+        localStorage.removeItem('CAMP_DRIVE_BACKUP_PENDING');
+        driveBackupPending = false;
+        const msg = '✓ Sao lưu Drive thành công lúc ' + new Date().toLocaleString('vi-VN') +
+          (result.fileUrl ? `<br><a href="${result.fileUrl}" target="_blank" rel="noopener" style="text-decoration:underline">Mở bản sao lưu trên Drive</a>` : '');
+        setDriveBackupStatus(msg);
+        if (!silent) alert('✓ Đã sao lưu dữ liệu lên Google Drive.');
+        return true;
       } catch (err) {
-        if (!isSilent) {
-          if (statusEl) statusEl.innerHTML = `<span style="color:var(--red);">⚠️ Đã tự động sao lưu file về máy...</span>`;
-          backupJsonDatabase();
+        driveBackupPending = true;
+        localStorage.setItem('CAMP_DRIVE_BACKUP_PENDING', '1');
+        setDriveBackupStatus('⚠️ Sao lưu Drive thất bại: ' + (err.message || err) +
+          '. Dữ liệu vẫn được lưu trên điện thoại; ứng dụng sẽ thử lại khi có thay đổi/mạng.', true);
+        if (!silent) alert('Không sao lưu được lên Drive. Dữ liệu vẫn ở trên điện thoại. Kiểm tra Webhook, quyền truy cập và Internet.');
+        return false;
+      } finally {
+        driveBackupInProgress = false;
+        if (driveBackupPending && navigator.onLine) {
+          driveBackupPending = false;
+          scheduleDriveBackup(1500);
         }
       }
     }
 
-    // KÍCH HOẠT TỰ ĐỘNG SAO LƯU GOOGLE DRIVE ĐỊNH KỲ MỖI 30 PHÚT
-    function setupPeriodicDriveAutoBackup() {
+    function scheduleDriveBackup(delay = DRIVE_BACKUP_DEBOUNCE_MS) {
+      if (!localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL')) return;
+      if (driveBackupDebounceTimer) clearTimeout(driveBackupDebounceTimer);
+      driveBackupDebounceTimer = setTimeout(() => {
+        driveBackupDebounceTimer = null;
+        syncToGoogleDriveFolder(true);
+      }, delay);
+    }
+
+    function startDriveAutoBackup() {
+      // Nếu trước đó có thay đổi chưa sao lưu, thử lại khi ứng dụng mở.
+      if (localStorage.getItem('CAMP_DRIVE_BACKUP_PENDING') === '1') scheduleDriveBackup(2500);
+      else if (localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') && !localStorage.getItem('CAMP_DRIVE_LAST_SUCCESS')) scheduleDriveBackup(3000);
+      // Lịch 30 phút chỉ hoạt động khi trang còn chạy; đây không phải tác vụ máy chủ.
       setInterval(() => {
-        const savedUrl = localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL');
-        if (savedUrl) {
-          syncToGoogleDriveFolder(true); // Lưu ngầm không hiện popup làm phiền
+        if (localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL') && navigator.onLine) {
+          syncToGoogleDriveFolder(true);
         }
-      }, 30 * 60 * 1000); // 30 phút
+      }, DRIVE_BACKUP_INTERVAL_MS);
+      window.addEventListener('online', () => {
+        if (localStorage.getItem('CAMP_GOOGLE_SCRIPT_URL')) scheduleDriveBackup(1200);
+      });
     }
 
     /* ==========================================================================
@@ -978,7 +1055,9 @@
       try {
         localStorage.setItem('CAMP_OFFLINE_DB_30', JSON.stringify(db));
         localStorage.setItem('CAMP_OFFLINE_RETIRED', JSON.stringify(retiredList));
-        updateDashboardStats(); return true;
+        updateDashboardStats();
+        scheduleDriveBackup();
+        return true;
       } catch (e) { return false; }
     }
 
@@ -1010,13 +1089,13 @@
       const selDate = document.getElementById('journalDateInput').value || getLocalDateISO();
       const content = document.getElementById('journalContentText').value.trim();
       const journals = getJournalsStorage(); journals[selDate] = content;
-      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals)); alert(`✓ Đã lưu nhật ký ngày ${selDate}!`);
+      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals)); scheduleDriveBackup(); alert(`✓ Đã lưu nhật ký ngày ${selDate}!`);
     }
     function clearDailyJournal() {
       const selDate = document.getElementById('journalDateInput').value || getLocalDateISO();
       if (!confirm(`Bạn có chắc muốn xóa nội dung nhật ký ngày ${selDate}?`)) return;
       const journals = getJournalsStorage(); delete journals[selDate];
-      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals));
+      localStorage.setItem('CAMP_DAILY_JOURNALS', JSON.stringify(journals)); scheduleDriveBackup();
       document.getElementById('journalContentText').value = '';
     }
     function printJournalNote() {
@@ -1698,10 +1777,10 @@
 
     document.addEventListener("DOMContentLoaded", function () {
       updateWelcomeBannerDate();
+      startDriveAutoBackup();
       if (checkDeviceActivation()) {
         loadOfflineData();
       }
-      setupPeriodicDriveAutoBackup();
     });
 
     window.onload = function() {
