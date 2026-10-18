@@ -12,6 +12,7 @@
   <!-- LIÊN KẾT PWA MANIFEST -->
   <link rel="manifest" href="./manifest.json">
 
+  <!-- LƯU Ý: Các thư viện dưới đây tải từ CDN; bản HTML chưa hoàn toàn offline nếu chưa lưu thư viện cục bộ. -->
   <!-- THƯ VIỆN BÊN NGOÀI -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
@@ -964,7 +965,7 @@
         localStorage.setItem('CAMP_OFFLINE_DB_30', JSON.stringify(db));
         localStorage.setItem('CAMP_OFFLINE_RETIRED', JSON.stringify(retiredList));
         updateDashboardStats(); return true;
-      } catch (e) { return false; }
+      } catch (e) { alert('Không lưu được dữ liệu offline (có thể bộ nhớ trình duyệt đã đầy). Hãy xuất file sao lưu JSON ngay, sau đó giải phóng dung lượng hoặc chuyển sang giải pháp lưu trữ bền vững.'); return false; }
     }
 
     function getJournalsStorage() {
@@ -1356,27 +1357,59 @@
       }
     }
 
+    // Giải mã QR theo nhiều lượt: ảnh gốc, xám/tăng tương phản, đảo sáng-tối,
+    // và các góc xoay. Giới hạn kích thước để không làm treo điện thoại.
     function multiAngleQrScan(img) {
       if (typeof jsQR !== 'function') return null;
-      const origW = img.naturalWidth || img.width;
-      const origH = img.naturalHeight || img.height;
-      const canvas = document.createElement('canvas');
-      canvas.width = origW; canvas.height = origH;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
+      const srcW = img.naturalWidth || img.videoWidth || img.width;
+      const srcH = img.naturalHeight || img.videoHeight || img.height;
+      if (!srcW || !srcH) return null;
+      const MAX_SIDE = 1800;
+      const scale = Math.min(1, MAX_SIDE / Math.max(srcW, srcH));
+      const base = document.createElement('canvas');
+      base.width = Math.max(1, Math.round(srcW * scale));
+      base.height = Math.max(1, Math.round(srcH * scale));
+      const bctx = base.getContext('2d', { willReadFrequently: true });
+      bctx.drawImage(img, 0, 0, base.width, base.height);
 
-      for (let angle of [0, 90, 180, 270]) {
-        const rCanvas = document.createElement('canvas');
-        rCanvas.width = (angle === 90 || angle === 270) ? origH : origW;
-        rCanvas.height = (angle === 90 || angle === 270) ? origW : origH;
-        const rCtx = rCanvas.getContext('2d');
-        rCtx.translate(rCanvas.width / 2, rCanvas.height / 2);
-        rCtx.rotate((angle * Math.PI) / 180);
-        rCtx.drawImage(canvas, -origW / 2, -origH / 2);
+      const variants = [base];
+      // Tạo bản xám và tăng tương phản nhẹ, hữu ích khi ánh sáng yếu/ảnh bạc màu.
+      try {
+        const gray = document.createElement('canvas'); gray.width = base.width; gray.height = base.height;
+        const gctx = gray.getContext('2d', { willReadFrequently: true });
+        gctx.drawImage(base, 0, 0);
+        const id = gctx.getImageData(0, 0, gray.width, gray.height);
+        for (let i = 0; i < id.data.length; i += 4) {
+          const y = 0.299 * id.data[i] + 0.587 * id.data[i+1] + 0.114 * id.data[i+2];
+          const v = Math.max(0, Math.min(255, (y - 128) * 1.35 + 128));
+          id.data[i] = id.data[i+1] = id.data[i+2] = v;
+        }
+        gctx.putImageData(id, 0, 0); variants.push(gray);
+        const inv = document.createElement('canvas'); inv.width = gray.width; inv.height = gray.height;
+        const ictx = inv.getContext('2d', { willReadFrequently: true });
+        const invData = ictx.createImageData(id);
+        for (let i = 0; i < id.data.length; i += 4) {
+          const v = 255 - id.data[i]; invData.data[i] = invData.data[i+1] = invData.data[i+2] = v; invData.data[i+3] = 255;
+        }
+        ictx.putImageData(invData, 0, 0); variants.push(inv);
+      } catch (e) {}
 
-        let imgData = rCtx.getImageData(0, 0, rCanvas.width, rCanvas.height);
-        let code = jsQR(imgData.data, rCanvas.width, rCanvas.height, { inversionAttempts: "attemptBoth" });
-        if (code && code.data) return code;
+      const rotations = [0, 90, 180, 270];
+      for (const variant of variants) {
+        for (const angle of rotations) {
+          const rotated = document.createElement('canvas');
+          rotated.width = (angle === 90 || angle === 270) ? variant.height : variant.width;
+          rotated.height = (angle === 90 || angle === 270) ? variant.width : variant.height;
+          const ctx = rotated.getContext('2d', { willReadFrequently: true });
+          ctx.translate(rotated.width / 2, rotated.height / 2);
+          ctx.rotate(angle * Math.PI / 180);
+          ctx.drawImage(variant, -variant.width / 2, -variant.height / 2);
+          try {
+            const pixels = ctx.getImageData(0, 0, rotated.width, rotated.height);
+            const result = jsQR(pixels.data, rotated.width, rotated.height, { inversionAttempts: 'attemptBoth' });
+            if (result && result.data) return result;
+          } catch (e) {}
+        }
       }
       return null;
     }
@@ -1440,7 +1473,7 @@
 
       try {
         localStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } }
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 }, focusMode: "continuous" }
         });
         video.srcObject = localStream;
         await video.play();
@@ -1456,25 +1489,47 @@
       if (!isScanning) return;
       const video = document.getElementById('camVideo');
       const canvas = document.getElementById('qrCanvas');
-      if (typeof jsQR !== 'function') { isScanning = false; return; }
-
-      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && (now - lastScanTime > 150)) {
+      if (typeof jsQR !== 'function') {
+        isScanning = false;
+        const msg = document.getElementById('camStatusMsg');
+        if (msg) msg.innerText = 'Không tải được thư viện giải mã QR. Hãy kết nối mạng để tải thư viện hoặc dùng ảnh chụp nếu đã có thư viện lưu sẵn.';
+        return;
+      }
+      // Quét khoảng 4 lần/giây để cân bằng tốc độ và nhiệt/pin điện thoại.
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && (now - lastScanTime > 240)) {
         lastScanTime = now;
         const vw = video.videoWidth, vh = video.videoHeight;
-        canvas.width = 640; canvas.height = 400;
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        ctx.drawImage(video, Math.round(vw * 0.1), Math.round(vh * 0.15), Math.round(vw * 0.8), Math.round(vh * 0.7), 0, 0, 640, 400);
-
-        try {
-          const imgData = ctx.getImageData(0, 0, 640, 400);
-          let code = jsQR(imgData.data, 640, 400, { inversionAttempts: "attemptBoth" });
-          if (code && code.data) {
-            isScanning = false; closeCameraStream();
-            if (navigator.vibrate) navigator.vibrate(80);
-            parseCccdData(code.data);
-            return;
-          }
-        } catch (err) {}
+        if (vw && vh) {
+          const scale = Math.min(1, 1280 / Math.max(vw, vh));
+          const outW = Math.max(1, Math.round(vw * scale));
+          const outH = Math.max(1, Math.round(vh * scale));
+          canvas.width = outW; canvas.height = outH;
+          const ctx = canvas.getContext('2d', { willReadFrequently: true });
+          // Lượt 1: toàn khung hình để không bỏ sót QR nhỏ/lệch tâm.
+          ctx.drawImage(video, 0, 0, outW, outH);
+          try {
+            let pixels = ctx.getImageData(0, 0, outW, outH);
+            let code = jsQR(pixels.data, outW, outH, { inversionAttempts: 'attemptBoth' });
+            // Lượt 2: phóng vùng trung tâm khi QR nhỏ, nhưng vẫn giữ lượt toàn khung.
+            if (!code || !code.data) {
+              const cropW = Math.round(outW * 0.72), cropH = Math.round(outH * 0.72);
+              const cropX = Math.round((outW - cropW) / 2), cropY = Math.round((outH - cropH) / 2);
+              const crop = document.createElement('canvas'); crop.width = Math.min(1000, cropW * 2); crop.height = Math.min(1000, cropH * 2);
+              const cctx = crop.getContext('2d', { willReadFrequently: true });
+              cctx.drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, crop.width, crop.height);
+              pixels = cctx.getImageData(0, 0, crop.width, crop.height);
+              code = jsQR(pixels.data, crop.width, crop.height, { inversionAttempts: 'attemptBoth' });
+            }
+            if (code && code.data) {
+              isScanning = false; closeCameraStream();
+              if (navigator.vibrate) navigator.vibrate(80);
+              parseCccdData(code.data);
+              const msg = document.getElementById('camStatusMsg');
+              if (msg) msg.innerText = '✓ Đã đọc được mã. Vui lòng kiểm tra thông tin trước khi lưu.';
+              return;
+            }
+          } catch (err) {}
+        }
       }
       requestAnimationFrame(scanLiveVideo);
     }
